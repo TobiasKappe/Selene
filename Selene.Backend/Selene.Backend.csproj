@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F9B6A6D6-FEBD-4413-8049-899981B556C8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Selene.Backend</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Selene.Backend.Infrastructure\Control.cs" />
+    <Compile Include="Selene.Backend.Infrastructure\ControlCategory.cs" />
+    <Compile Include="Selene.Backend.Infrastructure\ControlSubcategory.cs" />
+    <Compile Include="Introspector.cs" />
+    <Compile Include="Selene.Backend.Attributes\ControlIgnoreAttribute.cs" />
+    <Compile Include="Selene.Backend.Infrastructure\ControlManifest.cs" />
+    <Compile Include="IConverter.cs" />
+    <Compile Include="ConverterBase.cs" />
+    <Compile Include="IPresenter.cs" />
+    <Compile Include="DisplayBase.cs" />
+    <Compile Include="Selene.Backend.Attributes\ControlAttribute.cs" />
+    <Compile Include="ListViewerBase.cs" />
+    <Compile Include="InspectionException.cs" />
+    <Compile Include="WarningFactory.cs" />
+    <Compile Include="IValidator.cs" />
+    <Compile Include="ValidatorBase.cs" />
+    <Compile Include="IEmbeddable.cs" />
+    <Compile Include="Selene.Backend.Attributes\ControlManifestAttribute.cs" />
+    <Compile Include="EnumBase.cs" />
+    <Compile Include="Selene.Backend.Attributes\ControlFlagsAttribute.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Selene.Backend.Attributes\" />
+  </ItemGroup>
+</Project>

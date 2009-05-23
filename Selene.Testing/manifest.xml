@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ControlManifest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Category Name="Default" Count="2">
+    <Subcategory Name="Why hello there!">
+      <Control SubType="Default" Name="KudosIf">
+        <Label>Bananas are</Label>
+      </Control>
+      <Control SubType="Default" Name="YouGetThis">
+        <Label>Alons-y!</Label>
+      </Control>
+    </Subcategory>
+  </Category>
+</ControlManifest>

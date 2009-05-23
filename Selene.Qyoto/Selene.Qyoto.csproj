@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0AF12417-C0DF-495B-B439-B68191DF358E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Selene.Qyoto</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="qt-dotnet, Version=4.4.0.0, Culture=neutral, PublicKeyToken=194a23ba31c08164">
+      <Package>qyoto</Package>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Selene.Qyoto.Midend\StringEntry.cs" />
+    <Compile Include="Selene.Qyoto.Midend\WidgetPair.cs" />
+    <Compile Include="Selene.Qyoto.Frontend\NotebookDialog.cs" />
+    <Compile Include="Selene.Qyoto.Frontend\SubcatLay.cs" />
+    <Compile Include="Selene.Qyoto.Midend\BoolToggler.cs" />
+    <Compile Include="Selene.Qyoto.Midend\EnumChooser.cs" />
+    <Compile Include="Selene.Qyoto.Midend\DateTimeEdit.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Selene.Qyoto.Midend\" />
+    <Folder Include="Selene.Qyoto.Frontend\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Selene.Backend\Selene.Backend.csproj">
+      <Project>{F9B6A6D6-FEBD-4413-8049-899981B556C8}</Project>
+      <Name>Selene.Backend</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

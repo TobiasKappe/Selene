@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{EF3F5A62-C8BC-47ED-A22E-2FF18CA8DDAD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <AssemblyName>Selene.Frontend.Gtk</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="Mono.Posix" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <EmbeddedResource Include="gtk-gui\gui.stetic">
+      <LogicalName>gui.stetic</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Selene.Gtk.Frontend\CategoryTable.cs" />
+    <Compile Include="Selene.Gtk.Midend\BoolToggler.cs" />
+    <Compile Include="Selene.Gtk.Midend\ColorPicker.cs" />
+    <Compile Include="Selene.Gtk.Midend\DateTimeCalendar.cs" />
+    <Compile Include="Selene.Gtk.Midend\EnumChooser.cs" />
+    <Compile Include="Selene.Gtk.Midend\StringEntry.cs" />
+    <Compile Include="Selene.Gtk.Midend\WidgetPair.cs" />
+    <Compile Include="Selene.Gtk.Frontend\ListStoreDialog.cs" />
+    <Compile Include="Selene.Gtk.Frontend\NotebookDialog.cs" />
+    <Compile Include="Selene.Gtk.Frontend\TreeStoreDialog.cs" />
+    <Compile Include="Selene.Gtk.Frontend\WizardDialog.cs" />
+    <Compile Include="Selene.Gtk.Midend\ListViewer.cs" />
+    <Compile Include="gtk-gui\generated.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Selene.Backend\Selene.Backend.csproj">
+      <Project>{F9B6A6D6-FEBD-4413-8049-899981B556C8}</Project>
+      <Name>Selene.Backend</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Selene.Gtk.Frontend\" />
+    <Folder Include="Selene.Gtk.Midend\" />
+  </ItemGroup>
+</Project>
