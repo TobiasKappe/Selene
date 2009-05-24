@@ -53,7 +53,7 @@
       <Project>{F9B6A6D6-FEBD-4413-8049-899981B556C8}</Project>
       <Name>Selene.Backend</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Selene.Frontend.Gtk\Selene.Gtk.csproj">
+    <ProjectReference Include="..\Selene.Gtk\Selene.Gtk.csproj">
       <Project>{EF3F5A62-C8BC-47ED-A22E-2FF18CA8DDAD}</Project>
       <Name>Selene.Gtk</Name>
     </ProjectReference>

@@ -7,6 +7,10 @@ using Gtk;
 using Selene.Gtk.Frontend;
 #endif
 
+#if QYOTO
+using Selene.Qyoto.Frontend;
+#endif
+
 namespace Selene.Testing
 {
 	public class Embedding

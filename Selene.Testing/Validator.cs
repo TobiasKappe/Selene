@@ -57,10 +57,12 @@ namespace Selene.Testing
 	{
 		public static void Show()
 		{
+#if GTK
 			var Disp = new WizardDialog<ValidTest>("Selene");
 			var Test = new ValidTest();
 			Disp.Validator = new Validator();
 			Disp.Run(Test);
+#endif
 		}
 	}
 }

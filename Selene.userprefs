@@ -1,23 +1,18 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Selene.Testing/Main.cs" ctype="Workbench">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Selene.Testing/Embedding.cs" ctype="Workbench">
     <Files>
       <File FileName="Selene.Testing/Main.cs" Line="22" Column="27" />
       <File FileName="Selene.Qyoto/AssemblyInfo.cs" Line="1" Column="1" />
       <File FileName="Selene.Testing/Validator.cs" Line="8" Column="7" />
-      <File FileName="Selene.Testing/Embedding.cs" Line="46" Column="19" />
-      <File FileName="Selene.Frontend.Gtk/Selene.Gtk.Frontend/NotebookDialog.cs" Line="54" Column="26" />
+      <File FileName="Selene.Testing/Embedding.cs" Line="21" Column="29" />
       <File FileName="Selene.Testing/ListView.cs" Line="17" Column="4" />
       <File FileName="Selene.Testing/Naming.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Selene.Backend" expanded="True" />
-          <Node name="Selene.Gtk" expanded="True">
-            <Node name="Selene.Gtk.Frontend" expanded="True" />
-          </Node>
-          <Node name="Selene.Qyoto" expanded="True">
-            <Node name="Selene.Qyoto.Midend" expanded="True" />
+          <Node name="Selene.Testing" expanded="True">
+            <Node name="Embedding.cs" selected="True" />
           </Node>
         </State>
       </Pad>
