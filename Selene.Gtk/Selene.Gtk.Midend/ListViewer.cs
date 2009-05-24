@@ -43,7 +43,7 @@ namespace Selene.Gtk.Midend
 			Pair.Widget = Separator;
 			Cont = Pair;
 			
-			return new NotebookDialog<object>("");
+			return new NotebookDialog<object>(Cont.GetFlag<string>());
 		}
 		
 		// If a row is removed, we need to decrease the Id on the other rows,

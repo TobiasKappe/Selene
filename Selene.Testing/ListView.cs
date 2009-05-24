@@ -17,6 +17,7 @@ namespace Selene.Testing
 	{	
 		public class Container
 		{
+			[ControlFlags("Person dialog")]
 			public Enclosed[] People = new Enclosed[] { 
 				new Enclosed { Name = "Lisa Cuddy", Single = true } };
 		}
