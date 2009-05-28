@@ -16,6 +16,9 @@ namespace Selene.Gtk.Midend
 		
 		protected override IPresenter<object> Construct (Type[] Types, ref Control Cont)
 		{
+			if(Cont.SubType != ControlType.Default)
+				throw new OverrideException (typeof(ListViewer), Cont.SubType, ControlType.Default);
+			
 			IdColumn = Types.Length-1;
 			WidgetPair Pair = new WidgetPair(Cont);
 			

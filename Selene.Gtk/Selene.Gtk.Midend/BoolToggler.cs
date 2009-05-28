@@ -5,17 +5,22 @@ using Gtk;
 namespace Selene.Gtk.Midend
 {
 	public class BoolToggler : ConverterBase<WidgetPair, bool>
-	{			
+	{	
+		public BoolToggler() : base(ControlType.Check, ControlType.Toggle)
+		{
+		}
+		
 		protected override bool ToValue (WidgetPair Start)
 		{
-			return (Start.Widget as CheckButton).Active;
+			// We can assume the widget derives from ToggleButton because ConverterBase would
+			// have thrown an exception on anything else than Check, Toggle or Default
+			return (Start.Widget as ToggleButton).Active;
 		}
 		
 		protected override void SetValue (WidgetPair Original, bool Value)
 		{
 			// Checkbutton inherits from ToggleButton, so this covers both
-			if(Original.Widget is ToggleButton)
-				(Original.Widget as ToggleButton).Active = Value;
+			(Original.Widget as ToggleButton).Active = Value;
 		}
 				
 		protected override WidgetPair ToWidget(WidgetPair Original, bool Value)

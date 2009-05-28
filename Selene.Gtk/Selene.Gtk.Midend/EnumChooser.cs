@@ -78,6 +78,8 @@ namespace Selene.Gtk.Midend
 				Box.Active = 0;
 				Ret = Box;
 			}
+			else throw new OverrideException(typeof(Enum), Start.SubType, ControlType.Dropdown, ControlType.Radio);
+			
 			Start.Widget = Ret;
 			return Start;
 		}

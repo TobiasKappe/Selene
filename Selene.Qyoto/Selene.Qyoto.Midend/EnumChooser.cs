@@ -66,8 +66,7 @@ namespace Selene.Qyoto.Midend
 				
 				return Start;
 			}
-			
-			return null;
+			else throw new OverrideException(typeof(Enum), Start.SubType, ControlType.Radio, ControlType.Dropdown);
 		}
 	}
 }

@@ -6,6 +6,11 @@ namespace Selene.Qyoto.Midend
 {
 	public class StringEntry : ConverterBase<WidgetPair, string>
 	{
+		// We do not "support" these modes but default to entry for all
+		public StringEntry() : base(ControlType.Entry, ControlType.FileSelect, ControlType.DirectorySelect)
+		{
+		}
+		
 		protected override WidgetPair ToWidget (WidgetPair Original, string Value)
 		{
 			QLineEdit Entry = new QLineEdit(Value);

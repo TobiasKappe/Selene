@@ -47,6 +47,7 @@
     <Compile Include="Selene.Backend.Attributes\ControlManifestAttribute.cs" />
     <Compile Include="EnumBase.cs" />
     <Compile Include="Selene.Backend.Attributes\ControlFlagsAttribute.cs" />
+    <Compile Include="OverrideException.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

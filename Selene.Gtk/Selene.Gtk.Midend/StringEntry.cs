@@ -5,7 +5,11 @@ using Gtk;
 namespace Selene.Gtk.Midend
 {
 	public class StringEntry : ConverterBase<WidgetPair, string>
-	{				
+	{		
+		public StringEntry() : base(ControlType.DirectorySelect, ControlType.FileSelect, ControlType.Entry)
+		{
+		}
+		
 		protected override string ToValue (WidgetPair Start)
 		{
 			if(Start.SubType == ControlType.Entry || Start.SubType == ControlType.Default)
