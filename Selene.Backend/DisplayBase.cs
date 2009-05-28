@@ -78,7 +78,7 @@ namespace Selene.Backend
 				}
 			}
 			
-			if(Cont.Type.IsArray && !Cont.Type.GetElementType().IsValueType)
+			if(Cont.Type.IsArray && !Cont.Type.GetElementType().IsValueType && ArrayConverter != null)
 			{
 				IConverter Viewer = (IConverter)ArrayConverter.Invoke(null);
 				Viewer.Type = Cont.Type.GetElementType();
