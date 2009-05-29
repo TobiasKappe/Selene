@@ -27,27 +27,27 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Selene.Backend.Infrastructure\Control.cs" />
-    <Compile Include="Selene.Backend.Infrastructure\ControlCategory.cs" />
-    <Compile Include="Selene.Backend.Infrastructure\ControlSubcategory.cs" />
+    <Compile Include="Hierachy\Control.cs" />
+    <Compile Include="Hierachy\ControlCategory.cs" />
+    <Compile Include="Hierachy\ControlSubcategory.cs" />
     <Compile Include="Introspector.cs" />
-    <Compile Include="Selene.Backend.Attributes\ControlIgnoreAttribute.cs" />
-    <Compile Include="Selene.Backend.Infrastructure\ControlManifest.cs" />
-    <Compile Include="IConverter.cs" />
-    <Compile Include="ConverterBase.cs" />
-    <Compile Include="IPresenter.cs" />
-    <Compile Include="DisplayBase.cs" />
-    <Compile Include="Selene.Backend.Attributes\ControlAttribute.cs" />
-    <Compile Include="ListViewerBase.cs" />
+    <Compile Include="Attributes\ControlIgnoreAttribute.cs" />
+    <Compile Include="Hierachy\ControlManifest.cs" />
+    <Compile Include="Attributes\ControlAttribute.cs" />
     <Compile Include="InspectionException.cs" />
     <Compile Include="WarningFactory.cs" />
-    <Compile Include="IValidator.cs" />
-    <Compile Include="ValidatorBase.cs" />
-    <Compile Include="IEmbeddable.cs" />
-    <Compile Include="Selene.Backend.Attributes\ControlManifestAttribute.cs" />
-    <Compile Include="EnumBase.cs" />
-    <Compile Include="Selene.Backend.Attributes\ControlFlagsAttribute.cs" />
+    <Compile Include="Attributes\ControlManifestAttribute.cs" />
+    <Compile Include="Attributes\ControlFlagsAttribute.cs" />
     <Compile Include="OverrideException.cs" />
+    <Compile Include="Base classes\ConverterBase.cs" />
+    <Compile Include="Base classes\DisplayBase.cs" />
+    <Compile Include="Base classes\EnumBase.cs" />
+    <Compile Include="Base classes\ListViewerBase.cs" />
+    <Compile Include="Base classes\ValidatorBase.cs" />
+    <Compile Include="Interfaces\IConverter.cs" />
+    <Compile Include="Interfaces\IEmbeddable.cs" />
+    <Compile Include="Interfaces\IPresenter.cs" />
+    <Compile Include="Interfaces\IValidator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -55,6 +55,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Selene.Backend.Attributes\" />
+    <Folder Include="Attributes\" />
+    <Folder Include="Base classes\" />
+    <Folder Include="Interfaces\" />
   </ItemGroup>
 </Project>
