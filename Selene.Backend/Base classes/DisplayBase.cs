@@ -23,7 +23,20 @@ namespace Selene.Backend
 			if(Converters.Length < 1) WarningFactory.Warn("No converters found in assembly "+Caller.FullName+". Presenters will be empty");
 			
 			if(typeof(SaveType) != typeof(object))
-				Manifest = Introspector.Inspect(typeof(SaveType));		
+				Manifest = Introspector.Inspect(typeof(SaveType));
+		}
+		
+		internal void ForceInspect(Type Inspect)
+		{
+			Manifest = Introspector.Inspect(Inspect);
+			ResetConverters();
+		}
+		
+		private void ResetConverters()
+		{
+			Manifest.EachControl(delegate(ref Control Arg) {
+				Arg.Converter = null;
+			});
 		}
 		
 		public static void StubManifest(string Filename)
@@ -31,12 +44,14 @@ namespace Selene.Backend
 			Manifest.Save(Filename);
 		}
 		
+		protected DisplayBase()
+		{
+			if(Manifest != null) ResetConverters();
+		}
+		
 		#region Partial interface implementation
 		public virtual bool Run(SaveType Present)
-		{
-			if(Manifest == null && typeof(SaveType) == typeof(object))
-				Manifest = Introspector.Inspect(Present.GetType());
-			
+		{			
 			Prepare(Present);
 			Show();
 			Save();

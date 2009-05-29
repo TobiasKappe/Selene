@@ -11,6 +11,8 @@ namespace Selene.Gtk.Frontend
 		protected Dialog Win;
 		protected bool mIsEmbedded = false;
 		protected HBox MainBox;
+		protected bool HasRun = false;
+		protected bool PerSubcat = false;
 		
 		private bool HasButtons = false;
 		
@@ -30,7 +32,7 @@ namespace Selene.Gtk.Frontend
 			return Ret;
 		}
 		
-		public NotebookDialog(string Title) 
+		public NotebookDialog(string Title)  : base()
 		{
 			Book = new Notebook();
 			Win = new Dialog(Title, null, DialogFlags.Modal);
@@ -51,12 +53,12 @@ namespace Selene.Gtk.Frontend
 		
 		public override bool Run (T Present)
 		{
-			if(Win.VBox.Children.Length == 1) Win.VBox.Add(MainBox);
-			if(MainBox.Children.Length == 0) MainBox.Add(Book);
 			base.Run (Present);
 			if(!HasButtons) AddButtons();
 			
-			return Win.Run() == (int)ResponseType.Ok;
+			bool Ret = Win.Run() == (int)ResponseType.Ok;
+			HasRun = true;
+			return Ret;
 		}
 		
 		public override void Hide ()
@@ -73,8 +75,21 @@ namespace Selene.Gtk.Frontend
 		{
 			foreach(ControlCategory Category in Manifest.Categories)
 			{
-				CategoryTable PageTable = new CategoryTable(Category);
-				Book.AppendPage(PageTable, new Label(Category.Name));
+				
+				if(!PerSubcat)
+				{
+					CategoryTable PageTable = new CategoryTable(Category);
+					Book.AppendPage(PageTable, new Label(Category.Name));
+				}
+				else
+				{
+					foreach(ControlSubcategory Subcat in Category.Subcategories)
+					{
+						CategoryTable PageTable = new CategoryTable(Subcat);
+						Book.AppendPage(PageTable, new Label(Subcat.Name));
+					}
+				}
+				
 				EachCategory(Category);
 			}
 			
@@ -82,6 +97,12 @@ namespace Selene.Gtk.Frontend
 			{
 				Book.ShowBorder = false;
 				Book.ShowTabs = false;
+			}
+			
+			if(!HasRun)
+			{
+				Win.VBox.Add(MainBox);
+				MainBox.Add(Book);
 			}
 		}
 		

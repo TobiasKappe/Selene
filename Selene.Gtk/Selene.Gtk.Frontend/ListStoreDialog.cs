@@ -30,8 +30,11 @@ namespace Selene.Gtk.Frontend
 			View.HeadersVisible = false;
 			Frame BorderMaker = new Frame();
 			
-			BorderMaker.Add(View);
-			MainBox.Add(BorderMaker);
+			if(!HasRun)
+			{
+				BorderMaker.Add(View);
+				MainBox.Add(BorderMaker);
+			}
 			
 			base.Build();
 			

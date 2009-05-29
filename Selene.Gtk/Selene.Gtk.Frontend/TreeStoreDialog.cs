@@ -9,6 +9,7 @@ namespace Selene.Gtk.Frontend
 	{
 		private TreeStore Store;
 		private TreeView View;
+		int Counter = 0;
 		
 		public override Widget Content(T Present)
 		{
@@ -18,7 +19,6 @@ namespace Selene.Gtk.Frontend
 		public TreeStoreDialog(string Title) : base(Title)
 		{
 			Store = new TreeStore(typeof(string), typeof(int));
-			View = new TreeView(Store);
 			MainBox = new HBox();
 		}
 
@@ -41,24 +41,19 @@ namespace Selene.Gtk.Frontend
 		}
 		
 		protected override void Build ()
-		{			
-			int i = 0;
-			foreach(ControlCategory Cat in Manifest.Categories)
-			{
-				TreeIter Parent = Store.AppendValues(Cat.Name, i);
-				foreach(ControlSubcategory Subcat in Cat.Subcategories)
-				{
-					if(Cat.Subcategories.Length > 1) Store.AppendValues(Parent, Subcat.Name, i);
-					CategoryTable SubcatTable = new CategoryTable(Subcat);
-					Book.AppendPage(SubcatTable, null);
-					i++;
-				}
-			}
+		{		
+			Counter = 0;
+			PerSubcat = true;
 			
-			Frame BorderMaker = new Frame();
-			BorderMaker.Add(View);
-			MainBox.PackStart(BorderMaker);
-			MainBox.Add(Book);
+			View = new TreeView(Store);	
+			
+			if(!HasRun)
+			{
+				Frame BorderMaker = new Frame();
+				BorderMaker.Add(View);
+				MainBox.PackStart(BorderMaker);
+			}
+			base.Build();
 			
 			View.AppendColumn("Subcategory", new CellRendererText(), "text", 0);
 			View.HeadersVisible = false;
@@ -67,6 +62,16 @@ namespace Selene.Gtk.Frontend
 			MainBox.Spacing = 5;
 			Book.ShowTabs = false;
 			Book.ShowBorder = false;
+		}
+		
+		protected override void EachCategory (ControlCategory Cat)
+		{
+			TreeIter Parent = Store.AppendValues(Cat.Name, Counter);
+			foreach(ControlSubcategory Subcat in Cat.Subcategories)
+			{
+				if(Cat.Subcategories.Length > 1) Store.AppendValues(Parent, Subcat.Name, Counter);
+				Counter++;
+			}
 		}
 	}
 }

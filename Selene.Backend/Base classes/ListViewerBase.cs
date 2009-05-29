@@ -8,9 +8,10 @@ namespace Selene.Backend
 	{
 		private int i = 0;
 		protected int Counter = 0;
-		protected IPresenter<object> Presenter;
+		protected DisplayBase<object> Presenter;
 		private List<object> Content;
 		private ConstructorInfo Constructor;
+		private bool Inspected = false;
 		
 		#region Manipulation functions
 		protected void DeleteRow(int Id)
@@ -22,6 +23,11 @@ namespace Selene.Backend
 		{			
 			object Fill = Constructor.Invoke(null);
 			
+			if(!Inspected)
+			{
+				Presenter.ForceInspect(Fill.GetType());
+				Inspected = true;          
+			}
 			bool Ret = Presenter.Run(Fill);
 			
 			if(!Ret) return;
@@ -132,7 +138,7 @@ namespace Selene.Backend
 		
 		#region Abstract members
 		protected abstract void AddColumn(string Name, Type Type);
-		protected abstract IPresenter<object> Construct(Type[] Types, ref Control Cont);
+		protected abstract DisplayBase<object> Construct(Type[] Types, ref Control Cont);
 		protected abstract void RowAdded(int Id, object[] Items);
 		protected abstract void RowEdited(int Id, object[] Items);
 		protected abstract bool IsViewable(Type T);

@@ -14,7 +14,7 @@ namespace Selene.Gtk.Midend
 		private int IdColumn;
 		private int CurrentColumn = 0;
 		
-		protected override IPresenter<object> Construct (Type[] Types, ref Control Cont)
+		protected override DisplayBase<object> Construct (Type[] Types, ref Control Cont)
 		{
 			if(Cont.SubType != ControlType.Default)
 				throw new OverrideException (typeof(ListViewer), Cont.SubType, ControlType.Default);
