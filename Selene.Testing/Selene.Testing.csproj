@@ -33,19 +33,24 @@
     </Reference>
     <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <Reference Include="System.Xml" />
+    <Reference Include="nunit.framework, Version=2.4.7.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
+      <Package>nunit-2.4</Package>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Simplest.cs" />
-    <Compile Include="Grouping.cs" />
-    <Compile Include="Naming.cs" />
-    <Compile Include="Properties.cs" />
-    <Compile Include="Manifest.cs" />
-    <Compile Include="Validator.cs" />
-    <Compile Include="Embedding.cs" />
-    <Compile Include="ListView.cs" />
-    <Compile Include="Serializing.cs" />
+    <Compile Include="Setup.cs" />
+    <Compile Include="ITest.cs" />
+    <Compile Include="Tests\Embedding.cs" />
+    <Compile Include="Tests\Grouping.cs" />
+    <Compile Include="Tests\ListView.cs" />
+    <Compile Include="Tests\Manifest.cs" />
+    <Compile Include="Tests\Naming.cs" />
+    <Compile Include="Tests\Properties.cs" />
+    <Compile Include="Tests\Serializing.cs" />
+    <Compile Include="Tests\Simplest.cs" />
+    <Compile Include="Tests\Validator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -64,5 +69,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="manifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Tests\" />
   </ItemGroup>
 </Project>

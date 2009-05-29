@@ -1,19 +1,22 @@
-using System;
+using NUnit.Framework;
 using Selene.Backend;
 
-#if QYOTO
+using System;
 using Qyoto;
+using Gtk;
+
+#if QYOTO
 using Selene.Qyoto.Frontend;
 #endif
 
 #if GTK
-using Gtk;
 using Selene.Gtk.Frontend;
 #endif
 
 namespace Selene.Testing
 {
-	public class ListView
+	[TestFixture]
+	public class ListView : ITest
 	{	
 		public class Container
 		{
@@ -28,16 +31,14 @@ namespace Selene.Testing
 			public bool Single;
 		}
 		
-		public static void Show()
+		[Test]
+		public void Run()
 		{
-			var Disp = new NotebookDialog<Container>("Selene");
+			var Disp = new NotebookDialog<Container>("Add one person");
 			var Test = new Container();
-			Disp.Run(Test);
 			
-			foreach(Enclosed Person in Test.People)
-			{
-				Console.WriteLine(Person.Name + " => " + Person.Single);
-			}
+			Assert.IsTrue(Disp.Run(Test));
+			Assert.AreEqual(Test.People.Length, 2);
 		}
 	}
 }

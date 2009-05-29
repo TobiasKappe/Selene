@@ -1,19 +1,22 @@
-using System;
+using NUnit.Framework;
 using Selene.Backend;
 
-#if QYOTO
+using System;
 using Qyoto;
+using Gtk;
+
+#if QYOTO
 using Selene.Qyoto.Frontend;
 #endif
 
 #if GTK
-using Gtk;
 using Selene.Gtk.Frontend;
 #endif
 
 namespace Selene.Testing
 {	
-	public class Properties
+	[TestFixture]
+	public class Properties : ITest
 	{
 		public enum Cat { Alive, Dead, Neither, Both }
 		
@@ -23,11 +26,12 @@ namespace Selene.Testing
 			public Cat Status;
 		}
 		
-		public static void Show()
+		[Test]
+		public void Run()
 		{
-			var Test = new NotebookDialog<PropertiesTest>("Selene");
+			var Test = new NotebookDialog<PropertiesTest>("Vertical radiobuttons?");
 			PropertiesTest Val = new PropertiesTest();
-			Test.Run(Val);
+			Assert.IsTrue(Test.Run(Val));
 		}
 	}
 }

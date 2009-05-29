@@ -1,20 +1,23 @@
-using System;
-using System.IO;
+using NUnit.Framework;
 using Selene.Backend;
 
-#if QYOTO
+using System.IO;
+using System;
 using Qyoto;
+using Gtk;
+
+#if QYOTO
 using Selene.Qyoto.Frontend;
 #endif
 
 #if GTK
-using Gtk;
 using Selene.Gtk.Frontend;
 #endif
 
 namespace Selene.Testing
 {
-	public class Manifest
+	[TestFixture]
+	public class Manifest : ITest
 	{
 		public enum Bananas { Good, Yellow, Square }
 		private const string ManifestFile = "../../manifest.xml";
@@ -36,13 +39,14 @@ namespace Selene.Testing
 			return false;
 		}
 		
-		public static void Show()
+		[Test]
+		public void Run()
 		{
 			if(Stub()) return;
 			
-			var Disp = new NotebookDialog<ManifestTest>("Selene");
+			var Disp = new NotebookDialog<ManifestTest>("OK if loaded correctly");
 			var Feed = new ManifestTest();
-			Disp.Run(Feed);
+			Assert.IsTrue(Disp.Run(Feed));
 		}
 	}
 }

@@ -1,22 +1,24 @@
-using System;
-using System.Text.RegularExpressions;
+using NUnit.Framework;
 using Selene.Backend;
 
-#if GTK
+using System;
+using Qyoto;
 using Gtk;
-using Selene.Gtk.Frontend;
-#endif
 
 #if QYOTO
 using Selene.Qyoto.Frontend;
 #endif
 
+#if GTK
+using Selene.Gtk.Frontend;
+#endif
+
 namespace Selene.Testing
 {
-	public class Embedding
+	public class Embedding : ITest
 	{
-		static EmbeddingTest Test;
-		static NotebookDialog<EmbeddingTest> Embed;
+		EmbeddingTest Test;
+		NotebookDialog<EmbeddingTest> Embed;
 		
 		public class EmbeddingTest
 		{
@@ -28,13 +30,13 @@ namespace Selene.Testing
 			public ushort[] Color = new ushort[3] { 65535, 0, 0 };
 		}
 		
-		private static void Clicked(object sender, EventArgs Args)
+		void Clicked(object sender, EventArgs Args)
 		{
 			Embed.Save();
 			Console.WriteLine(Test.Alpha);
 		}
 		
-		public static void Show()
+		public void Run()
 		{
 #if GTK
 			Window Container = new Window("Selene");

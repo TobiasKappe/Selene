@@ -1,21 +1,24 @@
-using System;
-using System.Xml.Serialization;
+using NUnit.Framework;
 using Selene.Backend;
+
+using System.Xml.Serialization;
 using System.IO;
+using System;
+using Qyoto;
+using Gtk;
 
 #if QYOTO
-using Qyoto;
 using Selene.Qyoto.Frontend;
 #endif
 
 #if GTK
-using Gtk;
 using Selene.Gtk.Frontend;
 #endif
 
 namespace Selene.Testing
 {
-	public class Serializing
+	[TestFixture]
+	public class Serializing : ITest
 	{
 		public class Person
 		{
@@ -63,11 +66,12 @@ namespace Selene.Testing
 		
 		const string Filename = "person.xml";
 			
-		public static void Show()
+		[Test]
+		public void Run()
 		{
 			var Disp = new NotebookDialog<Person>("Selene demo application");
 			var Test = Person.Load(Filename);
-			Disp.Run(Test);
+			Assert.IsTrue(Disp.Run(Test));
 			Test.Save(Filename);
 		}
 	}

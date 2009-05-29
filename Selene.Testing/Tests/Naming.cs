@@ -1,19 +1,22 @@
-using System;
+using NUnit.Framework;
 using Selene.Backend;
 
-#if QYOTO
+using System;
 using Qyoto;
+using Gtk;
+
+#if QYOTO
 using Selene.Qyoto.Frontend;
 #endif
 
 #if GTK
-using Gtk;
 using Selene.Gtk.Frontend;
 #endif
 
 namespace Selene.Testing
 {
-	public class NamingPicking
+	[TestFixture]
+	public class NamingPicking : ITest
 	{
 		public class NamingPickingTest
 		{
@@ -27,13 +30,13 @@ namespace Selene.Testing
 			public string Hostname = System.Environment.UserDomainName;
 		}
 		
-		public static void Show()
+		[Test]
+		public void Run()
 		{
 			IPresenter<NamingPickingTest> Present = 
-				new NotebookDialog<NamingPickingTest>("Selene");
+				new NotebookDialog<NamingPickingTest>("OK if values match");
 			NamingPickingTest Save = new NamingPickingTest();
-			Present.Run(Save);
-			
+			Assert.IsTrue(Present.Run(Save));
 		}
 	}
 }

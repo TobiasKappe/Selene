@@ -1,14 +1,16 @@
-using System;
-using System.Text.RegularExpressions;
+using NUnit.Framework;
 using Selene.Backend;
 
-#if QYOTO
+using System.Text.RegularExpressions;
+using System;
 using Qyoto;
+using Gtk;
+
+#if QYOTO
 using Selene.Qyoto.Frontend;
 #endif
 
 #if GTK
-using Gtk;
 using Selene.Gtk.Frontend;
 #endif
 
@@ -53,9 +55,11 @@ namespace Selene.Testing
 		}
 	}
 	
-	public class Validating
+	[TestFixture]
+	public class Validating : ITest
 	{
-		public static void Show()
+		[Test]
+		public void Run()
 		{
 #if GTK
 			var Disp = new WizardDialog<ValidTest>("Selene");
