@@ -30,10 +30,8 @@ namespace Selene.Backend
 			
 			TController Orig = new TController();
 			Orig.Label = Original.Label;
-			Orig.Type = Original.Type;
 			Orig.SubType = Original.SubType;
 			Orig.Info = Original.Info;
-			Orig.Name = Original.Name;
 			Orig.Flags = Original.Flags;
 			
 			return ToWidget(Orig, (TDisplay) Value);

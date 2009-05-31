@@ -18,7 +18,6 @@ namespace Selene.Gtk.Midend
 			this.Info = Original.Info;
 			this.Label = Original.Label;
 			this.SubType = Original.SubType;
-			this.Type = Original.Type;
 		}
 		
 		public WidgetPair()

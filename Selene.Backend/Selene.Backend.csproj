@@ -30,7 +30,6 @@
     <Compile Include="Hierachy\Control.cs" />
     <Compile Include="Hierachy\ControlCategory.cs" />
     <Compile Include="Hierachy\ControlSubcategory.cs" />
-    <Compile Include="Introspector.cs" />
     <Compile Include="Attributes\ControlIgnoreAttribute.cs" />
     <Compile Include="Hierachy\ControlManifest.cs" />
     <Compile Include="Attributes\ControlAttribute.cs" />
@@ -48,6 +47,12 @@
     <Compile Include="Interfaces\IEmbeddable.cs" />
     <Compile Include="Interfaces\IPresenter.cs" />
     <Compile Include="Interfaces\IValidator.cs" />
+    <Compile Include="Interfaces\IControlMiner.cs" />
+    <Compile Include="Mining\XmlMiner.cs" />
+    <Compile Include="Mining\ReflectionMiner.cs" />
+    <Compile Include="Mining\ManifestBuilding.cs" />
+    <Compile Include="Mining\AttributeHelper.cs" />
+    <Compile Include="Mining\Introspector.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -58,5 +63,15 @@
     <Folder Include="Attributes\" />
     <Folder Include="Base classes\" />
     <Folder Include="Interfaces\" />
+    <Folder Include="Mining\" />
   </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <DotNetNamingPolicy DirectoryNamespaceAssociation="None" ResourceNamePolicy="FileFormatDefault" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
 </Project>
