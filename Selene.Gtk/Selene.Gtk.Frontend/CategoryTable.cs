@@ -5,32 +5,32 @@ using Gtk;
 
 namespace Selene.Gtk.Frontend
 {
-	internal class CategoryTable : Table
-	{
-		uint CurrentRow = 0;
+    internal class CategoryTable : Table
+    {
+        uint CurrentRow = 0;
         bool HasHeading = false;
 
-		public CategoryTable(int Rows) : base((uint)Rows, 2, false)
-		{
-			this.BorderWidth = 6;
-			ColumnSpacing = 25;
-			RowSpacing = 2;
-		}
+        public CategoryTable(int Rows) : base((uint)Rows, 2, false)
+        {
+            this.BorderWidth = 6;
+            ColumnSpacing = 25;
+            RowSpacing = 2;
+        }
 
-		public void AddSubcatHeading(ControlSubcategory Subcat)
-		{
-        	Label Heading = new Label(string.Format("<b>{0}</b>", Subcat.Name));
-			Heading.UseMarkup = true;
-			Heading.SetAlignment(0, 0.5f);
-			Attach(Heading, 0, 2, CurrentRow, CurrentRow+1, AttachOptions.Fill, AttachOptions.Shrink, 0, 0);
-			CurrentRow++;
+        public void AddSubcatHeading(ControlSubcategory Subcat)
+        {
+            Label Heading = new Label(string.Format("<b>{0}</b>", Subcat.Name));
+            Heading.UseMarkup = true;
+            Heading.SetAlignment(0, 0.5f);
+            Attach(Heading, 0, 2, CurrentRow, CurrentRow+1, AttachOptions.Fill, AttachOptions.Shrink, 0, 0);
+            CurrentRow++;
             HasHeading = true;
-		}
+        }
 
-		public void AddWidget(WidgetPair Add)
-		{
-			Add.Marker = new Label(Add.Label);
-			Add.Marker.SetAlignment(0, 0.5f);
+        public void AddWidget(WidgetPair Add)
+        {
+            Add.Marker = new Label(Add.Label);
+            Add.Marker.SetAlignment(0, 0.5f);
             uint Indent = HasHeading ? 20u : 0u;
 
             if(Add.HasLabel)
@@ -42,7 +42,7 @@ namespace Selene.Gtk.Frontend
             {
                 Attach(Add.Widget, 0, 2, CurrentRow, CurrentRow+1, AttachOptions.Expand | AttachOptions.Fill, AttachOptions.Shrink, Indent, 0);
             }
-			CurrentRow++;
-		}
-	}
+            CurrentRow++;
+        }
+    }
 }

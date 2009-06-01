@@ -6,22 +6,22 @@ using Gtk;
 
 namespace Selene.Gtk.Frontend
 {
-	public class WizardDialog<T> : DisplayBase<T> where T : class, ICloneable
-	{
-		public Assistant Win;
-		public IValidator<T> Validator;
+    public class WizardDialog<T> : DisplayBase<T> where T : class, ICloneable
+    {
+        public Assistant Win;
+        public IValidator<T> Validator;
 
         T Dummy;
-		
-		public WizardDialog(string Title) 
-		{
-			Win = new Assistant();
-			Win.Title = Title;
-			Win.Modal = true;
+        
+        public WizardDialog(string Title) 
+        {
+            Win = new Assistant();
+            Win.Title = Title;
+            Win.Modal = true;
 
             Win.Apply += WinApply;
             Win.Cancel += WinCancel;
-		}
+        }
 
         void WinCancel (object sender, EventArgs e)
         {
@@ -36,21 +36,21 @@ namespace Selene.Gtk.Frontend
             Win.Hide();
             FireDone();
         }
-		
-		public override void Hide ()
-		{
-			Win.Hide();
-		}
-		
-		protected override void Build()
-		{
-			List<Control> StateList = new List<Control>();
-			int i = 0;
-			foreach(ControlCategory Cat in Manifest.Categories)
-			{
-				bool end = i == Manifest.Categories.Length-1;
+        
+        public override void Hide ()
+        {
+            Win.Hide();
+        }
+        
+        protected override void Build()
+        {
+            List<Control> StateList = new List<Control>();
+            int i = 0;
+            foreach(ControlCategory Cat in Manifest.Categories)
+            {
+                bool end = i == Manifest.Categories.Length-1;
 
-				CategoryTable Table = new CategoryTable(Cat.ControlCount);
+                CategoryTable Table = new CategoryTable(Cat.ControlCount);
                 Table.Homogeneous = false;
                 Table.ColumnSpacing = 5;
                 foreach(ControlSubcategory Subcat in Cat.Subcategories)
@@ -64,21 +64,21 @@ namespace Selene.Gtk.Frontend
                     }
                 }
 
-				Win.AppendPage(Table);
-				Win.SetPageTitle(Table, Cat.Name);
-				Win.SetPageType(Table, end ? AssistantPageType.Confirm : AssistantPageType.Content);
-				Win.SetPageComplete(Table, true);
-				i++;
-			}
-			Win.WidgetEvent += HandleWidgetEvent;
+                Win.AppendPage(Table);
+                Win.SetPageTitle(Table, Cat.Name);
+                Win.SetPageType(Table, end ? AssistantPageType.Confirm : AssistantPageType.Content);
+                Win.SetPageComplete(Table, true);
+                i++;
+            }
+            Win.WidgetEvent += HandleWidgetEvent;
             State = StateList.ToArray();
-		}
+        }
 
-		void HandleWidgetEvent(object o, WidgetEventArgs args)
-		{
+        void HandleWidgetEvent(object o, WidgetEventArgs args)
+        {
             if(args.Event.Type == Gdk.EventType.KeyRelease || args.Event.Type == Gdk.EventType.LeaveNotify)
                 Revalidate();
-		}
+        }
 
         void Revalidate()
         {
@@ -92,17 +92,17 @@ namespace Selene.Gtk.Frontend
             }
         }
 
-		public override bool Run(T Present)
-		{
-			base.Run(Present);
-			Win.Show();
+        public override bool Run(T Present)
+        {
+            base.Run(Present);
+            Win.Show();
             Revalidate();
-			return true;
-		}
-		
-		public override void Show()
-		{
-			Win.ShowAll();
-		}
-	}
+            return true;
+        }
+        
+        public override void Show()
+        {
+            Win.ShowAll();
+        }
+    }
 }

@@ -4,15 +4,15 @@ using System.Xml.Serialization;
 
 namespace Selene.Backend
 {
-	public class ControlCategory
-	{
-		[XmlElement("Subcategory")]
-		public ControlSubcategory[] Subcategories;
-		[XmlAttribute]
-		public string Name;
+    public class ControlCategory
+    {
+        [XmlElement("Subcategory")]
+        public ControlSubcategory[] Subcategories;
+        [XmlAttribute]
+        public string Name;
 
-		[XmlIgnore]
-		public int ControlCount
+        [XmlIgnore]
+        public int ControlCount
         {
             get {
                 int Ret = 0;
@@ -23,13 +23,13 @@ namespace Selene.Backend
                 return Ret;
             }
         }
-		
-		public void EachControl(ControlWalker Do)
-		{
-			foreach(ControlSubcategory Subcat in Subcategories)
-			{
-				Subcat.EachControl(Do);
-			}
-		}
-	}
+        
+        public void EachControl(ControlWalker Do)
+        {
+            foreach(ControlSubcategory Subcat in Subcategories)
+            {
+                Subcat.EachControl(Do);
+            }
+        }
+    }
 }

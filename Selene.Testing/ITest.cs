@@ -3,8 +3,8 @@ using System;
 
 namespace Selene.Testing
 {
-	public interface ITest
-	{
-		void Run();
-	}
+    public interface ITest
+    {
+        void Run();
+    }
 }

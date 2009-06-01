@@ -15,30 +15,30 @@ using Selene.Gtk.Frontend;
 
 namespace Selene.Testing
 {
-	[TestFixture]
-	public class ListView : ITest
-	{	
-		public class Container
-		{
-			[ControlFlags("Person dialog")]
-			public Enclosed[] People = new Enclosed[] { 
-				new Enclosed { Name = "Lisa Cuddy", Single = true } };
-		}
-		
-		public class Enclosed
-		{
-			public string Name;
-			public bool Single;
-		}
-		
-		[Test]
-		public void Run()
-		{
-			var Disp = new NotebookDialog<Container>("Add one person");
-			var Test = new Container();
-			
-			Assert.IsTrue(Disp.Run(Test));
-			Assert.AreEqual(Test.People.Length, 2);
-		}
-	}
+    [TestFixture]
+    public class ListView : ITest
+    {   
+        public class Container
+        {
+            [ControlFlags("Person dialog")]
+            public Enclosed[] People = new Enclosed[] { 
+                new Enclosed { Name = "Lisa Cuddy", Single = true } };
+        }
+        
+        public class Enclosed
+        {
+            public string Name;
+            public bool Single;
+        }
+        
+        [Test]
+        public void Run()
+        {
+            var Disp = new NotebookDialog<Container>("Add one person");
+            var Test = new Container();
+            
+            Assert.IsTrue(Disp.Run(Test));
+            Assert.AreEqual(Test.People.Length, 2);
+        }
+    }
 }

@@ -15,28 +15,28 @@ using Selene.Gtk.Frontend;
 
 namespace Selene.Testing
 {
-	[TestFixture]
-	public class NamingPicking : ITest
-	{
-		public class NamingPickingTest
-		{
-			[Control(Name = "Given name")]
-			public string Name;
-			
-			[Control(Name = "Home directory", Override = ControlType.DirectorySelect)]
-			public string HomeDir = "/home/"+System.Environment.UserName;
-			[Control(Name = "Favourite file", Override = ControlType.FileSelect)]
-			public string Favfile;
-			public string Hostname = System.Environment.UserDomainName;
-		}
-		
-		[Test]
-		public void Run()
-		{
-			IPresenter<NamingPickingTest> Present = 
-				new NotebookDialog<NamingPickingTest>("OK if values match");
-			NamingPickingTest Save = new NamingPickingTest();
-			Assert.IsTrue(Present.Run(Save));
-		}
-	}
+    [TestFixture]
+    public class NamingPicking : ITest
+    {
+        public class NamingPickingTest
+        {
+            [Control(Name = "Given name")]
+            public string Name;
+            
+            [Control(Name = "Home directory", Override = ControlType.DirectorySelect)]
+            public string HomeDir = "/home/"+System.Environment.UserName;
+            [Control(Name = "Favourite file", Override = ControlType.FileSelect)]
+            public string Favfile;
+            public string Hostname = System.Environment.UserDomainName;
+        }
+        
+        [Test]
+        public void Run()
+        {
+            IPresenter<NamingPickingTest> Present = 
+                new NotebookDialog<NamingPickingTest>("OK if values match");
+            NamingPickingTest Save = new NamingPickingTest();
+            Assert.IsTrue(Present.Run(Save));
+        }
+    }
 }
