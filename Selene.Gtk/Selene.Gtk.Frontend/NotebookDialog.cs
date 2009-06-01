@@ -28,8 +28,8 @@ namespace Selene.Gtk.Frontend
         
         protected Widget Embed(T Present, Widget Ret)
         {
-            Prepare(Present);
             mIsEmbedded = true;
+            Prepare(Present);
             return Ret;
         }
         
@@ -125,7 +125,7 @@ namespace Selene.Gtk.Frontend
                 Book.ShowTabs = false;
             }
             
-            if(!HasRun)
+            if(!HasRun && !mIsEmbedded)
             {
                 Win.VBox.Add(MainBox);
                 MainBox.Add(Book);
