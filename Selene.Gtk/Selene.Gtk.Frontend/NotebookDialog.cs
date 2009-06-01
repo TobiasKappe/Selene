@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Selene.Gtk.Midend;
 using Selene.Backend;
 using Gtk;
@@ -73,19 +74,36 @@ namespace Selene.Gtk.Frontend
 		
 		protected override void Build()
 		{
+            List<Control> StateList = new List<Control>();
 			foreach(ControlCategory Category in Manifest.Categories)
 			{
-				
 				if(!PerSubcat)
 				{
-					CategoryTable PageTable = new CategoryTable(Category);
+					CategoryTable PageTable = new CategoryTable(Category.ControlCount + Category.Subcategories.Length);
+					foreach(ControlSubcategory Subcat in Category.Subcategories)
+					{
+						if(Category.Subcategories.Length > 1) PageTable.AddSubcatHeading(Subcat);
+						foreach(Control Cont in Subcat.Controls)
+						{
+                            WidgetPair Add = ProcureState(Cont) as WidgetPair;
+							PageTable.AddWidget(Add);
+                            StateList.Add(Add);
+						}
+					}
 					Book.AppendPage(PageTable, new Label(Category.Name));
 				}
 				else
 				{
 					foreach(ControlSubcategory Subcat in Category.Subcategories)
 					{
-						CategoryTable PageTable = new CategoryTable(Subcat);
+                        CategoryTable PageTable = new CategoryTable(Subcat.Controls.Length);
+						foreach(Control Cont in Subcat.Controls)
+						{
+                            WidgetPair Add = ProcureState(Cont) as WidgetPair;
+							PageTable.AddWidget(Add);
+                            StateList.Add(Add);
+						}
+						
 						Book.AppendPage(PageTable, new Label(Subcat.Name));
 					}
 				}
@@ -104,6 +122,8 @@ namespace Selene.Gtk.Frontend
 				Win.VBox.Add(MainBox);
 				MainBox.Add(Book);
 			}
+
+            State = StateList.ToArray();
 		}
 		
 		protected virtual void EachCategory(ControlCategory Cat)

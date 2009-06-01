@@ -11,7 +11,7 @@ namespace Selene.Backend
 		[XmlAttribute]
 		public string Name;
 		
-		public void EachCategory(ControlWalker Do)
+		public void EachControl(ControlWalker Do)
 		{
 			for(int i = 0; i < Controls.Length; i++)
 			{

@@ -11,9 +11,12 @@ namespace Selene.Backend
 		protected static ControlManifest Manifest;
 		protected static IConverter[] Converters;
 		protected static ConstructorInfo ArrayConverter;
+		
 		protected SaveType Present;
-		private bool HasBuilt = false;
+		protected Control[] State;
+		
 		public event Done OnDone;
+		bool HasBuilt = false;
 		
 		static DisplayBase()
 		{
@@ -49,69 +52,65 @@ namespace Selene.Backend
 			if(Manifest != null) ResetConverters();
 		}
 		
-		#region Partial interface implementation
-		public virtual bool Run(SaveType Present)
-		{			
-			Prepare(Present);
-			Show();
-			Save();
-			
-			return true;
-		}
-		
-		public void Save()
+		protected Control ProcureState(Control Original)
 		{
-			Manifest.EachControl(SaveField);
-		}
-		#endregion
-
-		#region Iterating functions
-		private void SaveField(ref Control Cont)
-		{
-			if(Cont.Converter == null) return;
-			
-			Cont.Info.SetValue(Present, Cont.Converter.ToObject(Cont));
-		}
-		
-		private void SetField(ref Control Cont)
-		{	
-			object Pass = Cont.Info.GetValue(Present);
-			
-			if(Cont.Converter != null)
-			{
-				Cont.Converter.SetValue(Cont, Pass);
-				return;
-			}
+			object Pass = Original.Info.GetValue(Present);
 			
 			foreach(IConverter Converter in Converters)
 			{				
-				if(Converter.Type == Cont.Type || (Cont.Type.IsEnum && Converter.Type == typeof(Enum))) 
+				if(Converter.Type == Original.Type || (Original.Type.IsEnum && Converter.Type == typeof(Enum))) 
 				{
-					Cont = Converter.ToWidget(Cont, Pass);
-					Cont.Converter = Converter;
-					return;
+					Control Add = Converter.ToWidget(Original, Pass);
+					Add.Converter = Converter;
+					return Add;
 				}
 			}
 			
-			if(Cont.Type.IsArray && !Cont.Type.GetElementType().IsValueType && ArrayConverter != null)
+			if(Original.Type.IsArray && ArrayConverter != null && !Original.Type.GetElementType().IsValueType)
 			{
 				IConverter Viewer = (IConverter)ArrayConverter.Invoke(null);
-				Viewer.Type = Cont.Type.GetElementType();
-				Cont = Viewer.ToWidget(Cont, Pass);
-				Cont.Converter = Viewer;
+				Viewer.Type = Original.Type.GetElementType();
+				Original = Viewer.ToWidget(Original, Pass);
+				Original.Converter = Viewer;
+			
+				return Original;
+			}	
+			
+			return null;
+		}
+		
+		#region Partial interface implementation
+		public virtual bool Run(SaveType Present)
+		{
+			Prepare(Present);
+			Show();
+
+			return true;
+		}
+
+		public void Save()
+		{
+			foreach(Control Cont in State)
+			{
+				if(Cont.Converter == null) continue;
+				Cont.Info.SetValue(Present, Cont.Converter.ToObject(Cont));
 			}
 		}
 		#endregion
-		
+
 		private void SetFields()
 		{
-			Manifest.EachControl(SetField);
+            foreach(Control Cont in State)
+            {
+                object Pass = Cont.Info.GetValue(Present);
+                Cont.Converter.SetValue(Cont, Pass);
+            }
 		}
 		
 		protected void Prepare(SaveType Present)
 		{
 			this.Present = Present;	
-			SetFields();
+
 			if(!HasBuilt)
 			{
 				Build();

@@ -1,6 +1,7 @@
 using System;
 using Selene.Backend;
 using Selene.Gtk.Midend;
+using System.Collections.Generic;
 using Gtk;
 
 namespace Selene.Gtk.Frontend
@@ -24,26 +25,40 @@ namespace Selene.Gtk.Frontend
 		
 		protected override void Build()
 		{
+			List<Control> StateList = new List<Control>();
 			int i = 0;
 			foreach(ControlCategory Cat in Manifest.Categories)
 			{
 				bool end = i == Manifest.Categories.Length-1;
-				CategoryTable Table = new CategoryTable(Cat);
-				Table.ShowAll();
-				
+
+				CategoryTable Table = new CategoryTable(Cat.ControlCount);
+                Table.Homogeneous = false;
+                Table.ColumnSpacing = 5;
+                foreach(ControlSubcategory Subcat in Cat.Subcategories)
+                {
+                    if(Cat.Subcategories.Length > 1) Table.AddSubcatHeading(Subcat);
+                    foreach(Control Cont in Subcat.Controls)
+                    {
+                        WidgetPair Add = ProcureState(Cont) as WidgetPair;
+                        Table.AddWidget(Add);
+                        StateList.Add(Add);
+                    }
+                }
+
 				Win.AppendPage(Table);
 				Win.SetPageTitle(Table, Cat.Name);
 				Win.SetPageType(Table, end ? AssistantPageType.Confirm : AssistantPageType.Content);
 				Win.SetPageComplete(Table, true);
 				i++;
 			}
-			
-			Win.WidgetEvent +=HandleWidgetEvent; 
+
+			Win.WidgetEvent +=HandleWidgetEvent;
+            State = StateList.ToArray();
 		}
 
 		void HandleWidgetEvent(object o, WidgetEventArgs args)
 		{
-			if(Validator != null) 
+			if(Validator != null)
 			{
 				Save();
 				bool IsValid = Validator.CatIsValid(Present, Win.CurrentPage);
@@ -60,7 +75,7 @@ namespace Selene.Gtk.Frontend
 		
 		public override void Show()
 		{
-			Win.Show();
+			Win.ShowAll();
 		}
 	}
 }
