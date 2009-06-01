@@ -1,50 +1,48 @@
 using System;
 using Selene.Backend;
 using Selene.Qyoto.Midend;
+using System.Collections.Generic;
 using Qyoto;
 
 namespace Selene.Qyoto.Frontend
 {
     public class CategoryLay : QVBoxLayout
-    {   
+    {
         int i = 0;
-        
+        QFont NewFont;
+        bool HasHeading = false;
+
         public CategoryLay(QWidget Parent) : base(Parent)
         {
+            NewFont = new QFont();
+            NewFont.SetBold(true);
         }
-        
-        public CategoryLay() : base()
+
+        public void AddHeading(ControlSubcategory Subcat)
         {
+            QLabel SubcatLabel = new QLabel(Subcat.Name);
+            SubcatLabel.Font = NewFont;
+            InsertWidget(i++, SubcatLabel);
+            HasHeading = true;
         }
-        
-        public void Add(ControlSubcategory Subcat, bool Label)
+
+        public void AddWidget(WidgetPair Add)
         {
-            if(Label)
+            if(Add == null) return;
+
+            QHBoxLayout Row = new QHBoxLayout();
+
+            if(Add.HasLabel)
             {
-                QLabel SubcatLabel = new QLabel(Subcat.Name);
-                QFont NewFont = new QFont();
-                NewFont.SetBold(true);
-                SubcatLabel.Font = NewFont;
-                InsertWidget(i++, SubcatLabel); 
+                Add.LabelWidget = new QLabel(Add.Label);
+                Row.InsertWidget(0, Add.LabelWidget);
+                Add.LabelWidget.Indent = HasHeading ? 20 : 0;
             }
-            
-            foreach(Control Cont in Subcat.Controls)
-            {
-                WidgetPair WP = Cont as WidgetPair;
-                if(WP == null) return;
-                
-                QHBoxLayout Row = new QHBoxLayout();
-                
-                if(WP.HasLabel) 
-                {
-                    WP.LabelWidget = new QLabel(Cont.Label);
-                    Row.InsertWidget(0, WP.LabelWidget);
-                    WP.LabelWidget.Indent = Label ? 20 : 0;
-                }
-                if(WP.Widget is QWidget) Row.InsertWidget(1, WP.Widget as QWidget);
-                if(WP.Widget is QLayout) Row.InsertLayout(1, WP.Widget as QLayout);
-                InsertLayout(i++, Row);
-            }
+
+            if(Add.Widget is QWidget) Row.InsertWidget(1, Add.Widget as QWidget);
+            if(Add.Widget is QLayout) Row.InsertLayout(1, Add.Widget as QLayout);
+
+            InsertLayout(i++, Row, 0);
         }
     }
 }

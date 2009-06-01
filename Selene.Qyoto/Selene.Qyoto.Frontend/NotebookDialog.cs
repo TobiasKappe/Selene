@@ -1,7 +1,7 @@
 using System;
 using Selene.Backend;
 using Selene.Qyoto.Midend;
-using System.Threading;
+using System.Collections.Generic;
 using Qyoto;
 
 namespace Selene.Qyoto.Frontend
@@ -52,33 +52,58 @@ namespace Selene.Qyoto.Frontend
         }
         
         protected override void Build ()
-        {   
+        {
+            List<Control> StateList = new List<Control>();
             if(Manifest.Categories.Length == 1)
             {
                 CategoryLay Lay = new CategoryLay(Page);
                 foreach(ControlSubcategory Subcategory in Manifest.Categories[0].Subcategories)
                 {
-                    Lay.Add(Subcategory, !(Manifest.Categories[0].Subcategories.Length == 1 && 
-                            Manifest.Categories[0].Subcategories[0].Name == "Default"));
-                }               
+                    if(Manifest.Categories[0].Subcategories.Length > 1) Lay.AddHeading(Subcategory);
+
+                    foreach(Control Cont in Subcategory.Controls)
+                    {
+                        WidgetPair Add = ProcureState(Cont) as WidgetPair;
+
+                        if(Add != null)
+                        {
+                            Lay.AddWidget(Add);
+                            StateList.Add(Add);
+                        }
+                    }
+                }
                 Tabs.Hide();
                 Page.Show();
-                
-                return;
             }
-            
-            foreach(ControlCategory Category in Manifest.Categories)
+            else
             {
-                Page = new QWidget();
-                CategoryLay Lay = new CategoryLay(Page);
-                foreach(ControlSubcategory Subcategory in Category.Subcategories)
+                foreach(ControlCategory Category in Manifest.Categories)
                 {
-                    Lay.Add(Subcategory, Category.Subcategories.Length > 1);
+                    Page = new QWidget();
+                    CategoryLay Lay = new CategoryLay(Page);
+                    foreach(ControlSubcategory Subcategory in Category.Subcategories)
+                    {
+                        if(Category.Subcategories.Length > 1) Lay.AddHeading(Subcategory);
+
+                        foreach(Control Cont in Subcategory.Controls)
+                        {
+                            WidgetPair Add = ProcureState(Cont) as WidgetPair;
+
+                            if(Add != null)
+                            {
+                                Lay.AddWidget(Add);
+                                StateList.Add(Add);
+                            }
+                        }
+                    }
+                    Lay.AddSpacerItem(new QSpacerItem(0, 0, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding));
+                    Tabs.AddTab(Page, Category.Name);
                 }
-                Tabs.AddTab(Page, Category.Name);
+                Tabs.Show();
             }
+            State = StateList.ToArray();
         }
-        
+
         public override void Hide ()
         {
             Dialog.Hide();
