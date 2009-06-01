@@ -14,19 +14,22 @@ using Selene.Gtk.Frontend;
 namespace Selene.Testing
 {  
     public class Demo
-    {       
+    {
+        public delegate void Show();
+
         public static void Main(string[] Args)
-        {   
-            ITest Execute = new Grouping();
+        {
+            Harness Testing = new Harness();
+            Show Execute = Testing.Simplest;
 #if QYOTO
             new QApplication(Args);
-            Execute.Run();
+            Execute();
             QApplication.Exec();
 #endif
-            
+
 #if GTK
             Application.Init();
-            Execute.Run();
+            Execute();
             Application.Run();
 #endif
         }

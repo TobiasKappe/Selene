@@ -1,38 +1,31 @@
+#if GTK
 using NUnit.Framework;
 using Selene.Backend;
 
 using System;
-using Qyoto;
 using Gtk;
 
-#if QYOTO
-using Selene.Qyoto.Frontend;
-#endif
-
-#if GTK
 using Selene.Gtk.Frontend;
-#endif
 
 namespace Selene.Testing
 {
-    [TestFixture]
-    public class ListView : ITest
-    {   
-        public class Container
+    public partial class Harness
+    {
+        class Container
         {
             [ControlFlags("Person dialog")]
-            public Enclosed[] People = new Enclosed[] { 
+            public Enclosed[] People = new Enclosed[] {
                 new Enclosed { Name = "Lisa Cuddy", Single = true } };
         }
-        
-        public class Enclosed
+
+        class Enclosed
         {
             public string Name;
             public bool Single;
         }
-        
+
         [Test]
-        public void Run()
+        public void ListView()
         {
             var Disp = new NotebookDialog<Container>("Add one person");
             var Test = new Container();
@@ -42,3 +35,4 @@ namespace Selene.Testing
         }
     }
 }
+#endif

@@ -16,20 +16,19 @@ using Selene.Gtk.Frontend;
 
 namespace Selene.Testing
 {
-    [TestFixture]
-    public class Manifest : ITest
+    public partial class Harness
     {
-        public enum Bananas { Good, Yellow, Square }
-        private const string ManifestFile = "../../manifest.xml";
-        
-        [ControlManifest(Manifest.ManifestFile)]
-        public class ManifestTest
+        enum Bananas { Good, Yellow, Square }
+        const string ManifestFile = "../../manifest.xml";
+
+        [ControlManifest(ManifestFile)]
+        class ManifestTest
         {
             public Bananas KudosIf;
             public bool YouGetThis;
         }
-        
-        public static bool Stub()
+
+        static bool Stub()
         {
             if(!File.Exists(ManifestFile))
             {
@@ -38,12 +37,12 @@ namespace Selene.Testing
             }
             return false;
         }
-        
+
         [Test]
-        public void Run()
+        public void Manifest()
         {
             if(Stub()) return;
-            
+
             var Disp = new NotebookDialog<ManifestTest>("OK if loaded correctly");
             var Feed = new ManifestTest();
             Assert.IsTrue(Disp.Run(Feed));

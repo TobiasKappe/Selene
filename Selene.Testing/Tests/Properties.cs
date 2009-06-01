@@ -14,20 +14,19 @@ using Selene.Gtk.Frontend;
 #endif
 
 namespace Selene.Testing
-{   
-    [TestFixture]
-    public class Properties : ITest
+{
+    public partial class Harness
     {
-        public enum Cat { Alive, Dead, Neither, Both }
-        
-        public class PropertiesTest
+        enum Cat { Alive, Dead, Neither, Both }
+
+        class PropertiesTest
         {
             [Control(Override = ControlType.Radio), ControlFlags(true)]
             public Cat Status;
         }
-        
+
         [Test]
-        public void Run()
+        public void Properties()
         {
             var Test = new NotebookDialog<PropertiesTest>("Vertical radiobuttons?");
             PropertiesTest Val = new PropertiesTest();

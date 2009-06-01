@@ -15,29 +15,26 @@ using Selene.Gtk.Frontend;
 
 namespace Selene.Testing
 {
-    [TestFixture]
-    public class Grouping : ITest
+    public partial class Harness
     {
-        public class GroupingTest
+        class GroupingTest
         {
             [Control(Category = "Spare time", Subcategory = "Sports")]
             public string Sport;
             public bool Enjoys;
-            
+
             [Control(Subcategory = "Preference")]
             public string Music;
             public ushort[] Color;
-            
+
             [Control(Category = "Employment")]
             public string Employer;
             public DateTime Paycheck;
         }
-        
+
         [Test]
-        public void Run()
+        public void Grouping()
         {
-            Setup.TkSetup();
-            
             IPresenter<GroupingTest> Present;
             GroupingTest Save = new GroupingTest();
         

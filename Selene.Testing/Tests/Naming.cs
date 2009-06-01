@@ -15,10 +15,9 @@ using Selene.Gtk.Frontend;
 
 namespace Selene.Testing
 {
-    [TestFixture]
-    public class NamingPicking : ITest
+    public partial class Harness
     {
-        public class NamingPickingTest
+        class NamingPickingTest
         {
             [Control(Name = "Given name")]
             public string Name;
@@ -29,9 +28,9 @@ namespace Selene.Testing
             public string Favfile;
             public string Hostname = System.Environment.UserDomainName;
         }
-        
+
         [Test]
-        public void Run()
+        public void NamingPicking()
         {
             IPresenter<NamingPickingTest> Present = 
                 new NotebookDialog<NamingPickingTest>("OK if values match");

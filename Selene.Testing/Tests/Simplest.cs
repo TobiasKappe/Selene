@@ -15,27 +15,25 @@ using Selene.Gtk.Frontend;
 
 namespace Selene.Testing
 {
-    [TestFixture]
-    public class Simplest : ITest
+    public partial class Harness
     {
-        public enum Sex { Male, Female } 
-     
-        class Test 
-        {                        
-            public string Surname; 
-            public Sex Gender; 
-            public bool Newsletter;       
-        }
-        
-        [Test]
-        public void Run()
+        enum Sex { Male, Female }
+
+        class Test
         {
-            Setup.TkSetup();
-            var Present = new NotebookDialog<Test>("Doe, Male, Yes"); 
-            var SaveTo = new Test(); 
+            public string Surname;
+            public Sex Gender;
+            public bool Newsletter;
+        }
+
+        [Test]
+        public void Simplest()
+        {
+            var Present = new NotebookDialog<Test>("Doe, Female, Yes");
+            var SaveTo = new Test();
             Assert.IsTrue(Present.Run(SaveTo));
             Assert.AreEqual(SaveTo.Surname, "Doe");
-            Assert.AreEqual(SaveTo.Gender, Sex.Male);
+            Assert.AreEqual(SaveTo.Gender, Sex.Female);
             Assert.IsTrue(SaveTo.Newsletter);
         }
     }
