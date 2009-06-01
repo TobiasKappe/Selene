@@ -11,11 +11,11 @@ namespace Selene.Qyoto.Midend
         {
         }
         
-        protected override WidgetPair ToWidget (WidgetPair Original, string Value)
+        protected override WidgetPair ToWidget (WidgetPair Original)
         {
-            QLineEdit Entry = new QLineEdit(Value);
+            QLineEdit Entry = new QLineEdit();
             Original.Widget = Entry;
-            
+
             return Original;
         }
         

@@ -21,7 +21,7 @@ namespace Selene.Gtk.Midend
             
             IdColumn = Types.Length-1;
             WidgetPair Pair = new WidgetPair(Cont);
-            
+
             View = new TreeView();
             Store = new ListStore(Types);
             View.Model = Store;

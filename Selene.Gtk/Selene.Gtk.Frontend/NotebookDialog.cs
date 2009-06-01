@@ -86,8 +86,12 @@ namespace Selene.Gtk.Frontend
                         foreach(Control Cont in Subcat.Controls)
                         {
                             WidgetPair Add = ProcureState(Cont) as WidgetPair;
-                            PageTable.AddWidget(Add);
-                            StateList.Add(Add);
+
+                            if(Add != null)
+                            {
+                                PageTable.AddWidget(Add);
+                                StateList.Add(Add);
+                            }
                         }
                     }
                     Book.AppendPage(PageTable, new Label(Category.Name));
@@ -100,8 +104,12 @@ namespace Selene.Gtk.Frontend
                         foreach(Control Cont in Subcat.Controls)
                         {
                             WidgetPair Add = ProcureState(Cont) as WidgetPair;
-                            PageTable.AddWidget(Add);
-                            StateList.Add(Add);
+
+                            if(Add != null)
+                            {
+                                PageTable.AddWidget(Add);
+                                StateList.Add(Add);
+                            }
                         }
                         
                         Book.AppendPage(PageTable, new Label(Subcat.Name));

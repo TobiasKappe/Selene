@@ -11,7 +11,7 @@ namespace Selene.Gtk.Midend
         public bool Fills = true;
         public Label Marker;
         public bool HasLabel = true;
-        
+
         public WidgetPair(Control Original)
         {
             this.Flags = Original.Flags;

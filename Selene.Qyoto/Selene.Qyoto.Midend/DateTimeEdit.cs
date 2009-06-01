@@ -21,11 +21,10 @@ namespace Selene.Qyoto.Midend
             return Ret;
         }
         
-        protected override WidgetPair ToWidget (WidgetPair Original, DateTime Value)
+        protected override WidgetPair ToWidget (WidgetPair Original)
         {
             QDateTimeEdit Edit = new QDateTimeEdit();
             Original.Widget = Edit;
-            SetValue(Original, Value);
             
             return Original;
         }

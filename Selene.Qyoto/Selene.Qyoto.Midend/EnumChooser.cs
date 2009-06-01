@@ -4,20 +4,22 @@ using Qyoto;
 
 namespace Selene.Qyoto.Midend
 {
-    public class EnumChooser : EnumBase<WidgetPair>
+    public class EnumChooser : EnumBase
     {   
-        protected override int GetIndex (WidgetPair Original)
+        protected override int GetIndex (Control Start)
         {
-            if(Original.SubType == ControlType.Dropdown || Original.SubType == ControlType.Default) 
+            WidgetPair Original = Start as WidgetPair;
+            if(Original.SubType == ControlType.Dropdown || Original.SubType == ControlType.Default)
                 return (Original.Widget as QComboBox).CurrentIndex;
             else if(Original.SubType == ControlType.Radio)
                 return ((Original.Widget as QBoxLayout).Children()[0] as QButtonGroup).CheckedId();
-            
+
             return 0;
         }
 
-        protected override void SetIndex (WidgetPair Original, int Index)
+        protected override void SetIndex (Control Start, int Index)
         {
+            WidgetPair Original = Start as WidgetPair;
             if(Original.SubType == ControlType.Dropdown || Original.SubType == ControlType.Default)
                 (Original.Widget as QComboBox).CurrentIndex = Index;
             else
@@ -26,21 +28,22 @@ namespace Selene.Qyoto.Midend
                 Lay.Button(Index).Checked = true;
             }
         }
-        
-        protected override Control ToWidget (WidgetPair Start, string[] Values)
+
+        protected override Control ToWidget (Control Start, string[] Values)
         {
-            if(Start.SubType == ControlType.Dropdown || Start.SubType == ControlType.Default)
+            WidgetPair Original = new WidgetPair(Start);
+            if(Original.SubType == ControlType.Dropdown || Original.SubType == ControlType.Default)
             {
                 QComboBox Box = new QComboBox();
-                
+
                 foreach(string Value in Values)
                     Box.AddItem(Value);
-                
-                Start.Widget = Box;
-            
-                return Start;
+
+                Original.Widget = Box;
+
+                return Original;
             }
-            else if(Start.SubType == ControlType.Radio)
+            else if(Original.SubType == ControlType.Radio)
             {
                 bool Vertical = false;
                 Start.GetFlag<bool>(ref Vertical);
@@ -62,11 +65,11 @@ namespace Selene.Qyoto.Midend
                     Group.AddButton(Add, i);
                     Lay.AddWidget(Add);
                 }
-                Start.Widget = Lay;
+                Original.Widget = Lay;
                 
-                return Start;
+                return Original;
             }
-            else throw new OverrideException(typeof(Enum), Start.SubType, ControlType.Radio, ControlType.Dropdown);
+            else throw new OverrideException(typeof(Enum), Original.SubType, ControlType.Radio, ControlType.Dropdown);
         }
     }
 }

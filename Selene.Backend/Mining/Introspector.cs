@@ -24,10 +24,10 @@ namespace Selene.Backend
             return Miner.Mine(Root);
         }
         
-        public static IConverter[] GetConverters(Assembly Calling, out ConstructorInfo ArrayConverter)
+        public static IConverter[] GetConverters(Assembly Calling, out ConstructorInfo ArrayConverter, out ConstructorInfo EnumConverter)
         {
             var Ret = new List<IConverter>();
-            ArrayConverter = null;
+            ArrayConverter = EnumConverter = null;
             
             foreach(Type Browse in Calling.GetTypes())
             {
@@ -38,7 +38,13 @@ namespace Selene.Backend
                     ArrayConverter = Browse.GetConstructor(Type.EmptyTypes);
                     continue;
                 }
-                
+
+                if(Browse.BaseType == typeof(EnumBase))
+                {
+                    EnumConverter = Browse.GetConstructor(Type.EmptyTypes);
+                    continue;
+                }
+
                 foreach(Type Interface in Browse.GetInterfaces())
                 {
                     if(Interface == typeof(IConverter))

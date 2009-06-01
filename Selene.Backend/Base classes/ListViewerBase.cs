@@ -4,14 +4,16 @@ using System.Reflection;
 
 namespace Selene.Backend
 {
-    public abstract class ListViewerBase : IConverter
+    public abstract class ListViewerBase : IHasUnderlying
     {
-        private int i = 0;
         protected int Counter = 0;
         protected DisplayBase<object> Presenter;
-        private List<object> Content;
-        private ConstructorInfo Constructor;
-        private bool Inspected = false;
+
+        int i = 0;
+        List<object> Content;
+        ConstructorInfo Constructor;
+        bool Inspected = false;
+        Type Underlying;
         
         #region Manipulation functions
         protected void DeleteRow(int Id)
@@ -22,7 +24,7 @@ namespace Selene.Backend
         protected void AddRow()
         {           
             object Fill = Constructor.Invoke(null);
-            
+
             if(!Inspected)
             {
                 Presenter.ForceInspect(Fill.GetType());
@@ -66,20 +68,25 @@ namespace Selene.Backend
         #region Interface implementation
         public Type Type 
         { 
-            get { return null; } 
-            set  { 
-                if((Constructor = value.GetConstructor(Type.EmptyTypes)) == null)
-                    throw new InspectionException(Underlying, "Type for list view should contain paramaterless constructor");
-                
-                Underlying = value; 
-            } 
+            get { return null; }
         }
-        
-        private Type Underlying;
-        
+
+        public void SetUnderlying(Type Given)
+        {
+            if((Constructor = Given.GetConstructor(Type.EmptyTypes)) == null)
+                throw new InspectionException(Given, "Type for list view should contain paramaterless constructor");
+
+            Underlying = Given;
+        }
+
         public void SetValue(Control asd, object Value)
         {
-            
+            foreach(object Item in (object[])Value)
+            {
+                object[] Columns = BreakItDown(Item);
+                Content.Add(Item);
+                RowAdded(i++, Columns);
+            }
         }
         
         public object ToObject(Control Start)
@@ -100,7 +107,7 @@ namespace Selene.Backend
             return GoodType;
         }
         
-        public Control ToWidget(Control Original, object Value)
+        public Control ToWidget(Control Original)
         {       
             Content = new List<object>();
             FieldInfo[] Infos = Underlying.GetFields();         
@@ -121,16 +128,7 @@ namespace Selene.Backend
                 if(IsViewable(Info.FieldType))
                     AddColumn(Info.Name, Info.FieldType);
             }
-            
-            if(Value == null) return Original;
-            
-            foreach(object Item in (object[])Value)
-            {
-                object[] Columns = BreakItDown(Item);
-                Content.Add(Item);
-                RowAdded(i++, Columns);
-            }
-            
+
             return Original;
         }
         

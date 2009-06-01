@@ -6,7 +6,7 @@ namespace Selene.Backend
     public abstract class ConverterBase<TController, TDisplay> : IConverter where TController: Control, new()
     {
         #region Interface implementation
-        public Type Type { get { return typeof(TDisplay); } set { } }
+        public Type Type { get { return typeof(TDisplay); } }
         protected ControlType[] Supported = new ControlType[] { ControlType.Default };
         
         // To prevent implicit base() invocation from setting Supported to a zero-length array
@@ -19,7 +19,7 @@ namespace Selene.Backend
             this.Supported = Supported;
         }
         
-        public Control ToWidget(Control Original, object Value)
+        public Control ToWidget(Control Original)
         {
             int i;
             for(i = 0; i < Supported.Length; i++)
@@ -34,7 +34,7 @@ namespace Selene.Backend
             Orig.Info = Original.Info;
             Orig.Flags = Original.Flags;
             
-            return ToWidget(Orig, (TDisplay) Value);
+            return ToWidget(Orig);
         }
         
         public object ToObject(Control Start)
@@ -49,7 +49,7 @@ namespace Selene.Backend
         #endregion
         
         #region Abstract members
-        protected abstract TController ToWidget(TController Original, TDisplay Value);
+        protected abstract TController ToWidget(TController Original);
         protected abstract TDisplay ToValue(TController Start);
         protected abstract void SetValue(TController Original, TDisplay Value);
         #endregion

@@ -23,7 +23,7 @@ namespace Selene.Gtk.Midend
             (Original.Widget as ToggleButton).Active = Value;
         }
                 
-        protected override WidgetPair ToWidget(WidgetPair Original, bool Value)
+        protected override WidgetPair ToWidget(WidgetPair Original)
         {
             ToggleButton Ret;
             if(Original.SubType == ControlType.Check || Original.SubType == ControlType.Default) 
@@ -35,7 +35,6 @@ namespace Selene.Gtk.Midend
             }
             else return null;
                 
-            Ret.Active = Value;
             Original.HasLabel = false;
             Original.Widget = Ret;
                 

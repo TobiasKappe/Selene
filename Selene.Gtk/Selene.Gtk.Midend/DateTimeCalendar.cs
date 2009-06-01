@@ -17,12 +17,11 @@ namespace Selene.Gtk.Midend
                 (Original.Widget as Calendar).Date = Value;
         }
 
-        protected override WidgetPair ToWidget (WidgetPair Original, DateTime Value)
+        protected override WidgetPair ToWidget (WidgetPair Original)
         {
             Calendar Cal = new Calendar();
-            Cal.Date = Value;
-            
             Original.Widget = Cal;
+
             return Original;
         }
     }

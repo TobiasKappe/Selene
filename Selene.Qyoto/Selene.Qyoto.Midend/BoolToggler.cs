@@ -16,7 +16,7 @@ namespace Selene.Qyoto.Midend
             return (Start.Widget as QCheckBox).Checked;
         }
 
-        protected override WidgetPair ToWidget (WidgetPair Original, bool Value)
+        protected override WidgetPair ToWidget (WidgetPair Original)
         {
             QCheckBox Box = new QCheckBox(Original.Label);
             Original.Widget = Box;

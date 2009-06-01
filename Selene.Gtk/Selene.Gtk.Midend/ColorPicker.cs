@@ -32,20 +32,13 @@ namespace Selene.Gtk.Midend
                 (Original.Widget as ColorButton).Color = C;
         }
 
-        protected override WidgetPair ToWidget (WidgetPair Original, ushort[] Value)
+        protected override WidgetPair ToWidget (WidgetPair Original)
         {
-            Gdk.Color C = GetColor(ref Value);
-            
-            if(Value.Length == 3)
-            {
-                ColorButton Button = new ColorButton(C);
-                Original.Widget = Button;
-                Original.Expands = false;
-                
-                return Original;
-            }
-            
-            return null;
+            ColorButton Button = new ColorButton();
+            Original.Widget = Button;
+            Original.Expands = false;
+
+            return Original;
         }
     }
 }

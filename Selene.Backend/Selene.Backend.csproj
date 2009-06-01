@@ -53,6 +53,7 @@
     <Compile Include="Mining\ManifestBuilding.cs" />
     <Compile Include="Mining\AttributeHelper.cs" />
     <Compile Include="Mining\Introspector.cs" />
+    <Compile Include="Interfaces\IHasUnderlying.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

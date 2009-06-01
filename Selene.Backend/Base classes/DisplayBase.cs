@@ -10,7 +10,7 @@ namespace Selene.Backend
     { 
         protected static ControlManifest Manifest;
         protected static IConverter[] Converters;
-        protected static ConstructorInfo ArrayConverter;
+        protected static ConstructorInfo ArrayConverter, EnumConverter;
         
         protected SaveType Present;
         protected Control[] State;
@@ -21,7 +21,7 @@ namespace Selene.Backend
         static DisplayBase()
         {
             Assembly Caller = Assembly.GetCallingAssembly();
-            Converters = Introspector.GetConverters(Caller, out ArrayConverter);
+            Converters = Introspector.GetConverters(Caller, out ArrayConverter, out EnumConverter);
             
             if(Converters.Length < 1) WarningFactory.Warn("No converters found in assembly "+Caller.FullName+". Presenters will be empty");
             
@@ -32,14 +32,6 @@ namespace Selene.Backend
         internal void ForceInspect(Type Inspect)
         {
             Manifest = Introspector.Inspect(Inspect);
-            ResetConverters();
-        }
-        
-        private void ResetConverters()
-        {
-            Manifest.EachControl(delegate(ref Control Arg) {
-                Arg.Converter = null;
-            });
         }
         
         public static void StubManifest(string Filename)
@@ -49,33 +41,40 @@ namespace Selene.Backend
         
         protected DisplayBase()
         {
-            if(Manifest != null) ResetConverters();
         }
         
         protected Control ProcureState(Control Original)
         {
-            object Pass = Original.Info.GetValue(Present);
-            
+            if(Original.Type.IsArray && ArrayConverter != null && !Original.Type.GetElementType().IsValueType)
+            {
+                IHasUnderlying Viewer = (IHasUnderlying)ArrayConverter.Invoke(null);
+                Viewer.SetUnderlying(Original.Type.GetElementType());
+                Original = Viewer.ToWidget(Original);
+                Original.Converter = Viewer;
+
+                return Original;
+            }
+
+            if(Original.Type.IsEnum)
+            {
+                IHasUnderlying Viewer = (IHasUnderlying)EnumConverter.Invoke(null);
+                Viewer.SetUnderlying(Original.Type);
+                Original = Viewer.ToWidget(Original);
+                Original.Converter = Viewer;
+
+                return Original;
+            }
+
             foreach(IConverter Converter in Converters)
-            {               
-                if(Converter.Type == Original.Type || (Original.Type.IsEnum && Converter.Type == typeof(Enum))) 
+            {
+                if(Converter.Type == Original.Type)
                 {
-                    Control Add = Converter.ToWidget(Original, Pass);
+                    Control Add = Converter.ToWidget(Original);
                     Add.Converter = Converter;
                     return Add;
                 }
             }
-            
-            if(Original.Type.IsArray && ArrayConverter != null && !Original.Type.GetElementType().IsValueType)
-            {
-                IConverter Viewer = (IConverter)ArrayConverter.Invoke(null);
-                Viewer.Type = Original.Type.GetElementType();
-                Original = Viewer.ToWidget(Original, Pass);
-                Original.Converter = Viewer;
-            
-                return Original;
-            }   
-            
+
             return null;
         }
         
@@ -121,6 +120,7 @@ namespace Selene.Backend
                 Build();
                 HasBuilt = true;
             }
+            SetFields();
         }
         
         protected void FireDone()

@@ -5,10 +5,11 @@ using Gtk;
 
 namespace Selene.Gtk.Midend
 {   
-    public class EnumChooser : EnumBase<WidgetPair>
+    public class EnumChooser : EnumBase
     {
-        protected override int GetIndex (WidgetPair Original)
+        protected override int GetIndex (Control Start)
         {
+            WidgetPair Original = Start as WidgetPair;
             if(Original.SubType == ControlType.Radio)
             {
                 Box B = (Original.Widget as Box);
@@ -19,15 +20,14 @@ namespace Selene.Gtk.Midend
                 }
             }
             else if(Original.SubType == ControlType.Dropdown || Original.SubType == ControlType.Default)
-            {
                 return (Original.Widget as ComboBox).Active;
-            }       
             
             return 0;
         }
 
-        protected override void SetIndex (WidgetPair Original, int Index)
+        protected override void SetIndex (Control Start, int Index)
         {
+            WidgetPair Original = Start as WidgetPair;
             if(Original.SubType == ControlType.Radio)
             {
                 Box B = (Original.Widget as Box);
@@ -39,10 +39,12 @@ namespace Selene.Gtk.Midend
             }
         }
 
-        protected override Control ToWidget (WidgetPair Start, string[] Values)
+        protected override Control ToWidget (Control Start, string[] Values)
         {
             Widget Ret = null;
-            if(Start.SubType == ControlType.Radio)
+            WidgetPair Original = new WidgetPair(Start);
+
+            if(Original.SubType == ControlType.Radio)
             {
                 bool Vertical = false;
                 Start.GetFlag<bool>(ref Vertical);
@@ -68,7 +70,7 @@ namespace Selene.Gtk.Midend
                 }
                 Ret = Box;
             }
-            else if(Start.SubType == ControlType.Dropdown || Start.SubType == ControlType.Default)
+            else if(Original.SubType == ControlType.Dropdown || Original.SubType == ControlType.Default)
             {
                 ComboBox Box = ComboBox.NewText();
                 foreach(string Str in Values)
@@ -78,10 +80,10 @@ namespace Selene.Gtk.Midend
                 Box.Active = 0;
                 Ret = Box;
             }
-            else throw new OverrideException(typeof(Enum), Start.SubType, ControlType.Dropdown, ControlType.Radio);
+            else throw new OverrideException(typeof(Enum), Original.SubType, ControlType.Dropdown, ControlType.Radio);
             
-            Start.Widget = Ret;
-            return Start;
+            Original.Widget = Ret;
+            return Original;
         }
     }
 }

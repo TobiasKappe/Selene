@@ -30,25 +30,19 @@ namespace Selene.Gtk.Midend
                 (Original.Widget as FileChooserButton).SelectFilename(Value);
         }
                 
-        protected override WidgetPair ToWidget (WidgetPair Original, string Value)
+        protected override WidgetPair ToWidget (WidgetPair Original)
         {
             if(Original.SubType == ControlType.Entry || Original.SubType == ControlType.Default)
             {
-                Original.Widget = new Entry(Value ?? string.Empty);
+                Original.Widget = new Entry();
                 return Original;
             }
             if(Original.SubType == ControlType.FileSelect || Original.SubType == ControlType.DirectorySelect)
             {
                 string Title = Original.GetFlag<string>();
-                
-                FileChooserButton Ret = new FileChooserButton(Title ?? "Choose file", Original.SubType == ControlType.FileSelect ? 
+
+                FileChooserButton Ret = new FileChooserButton(Title ?? "Choose file", Original.SubType == ControlType.FileSelect ?
                                                               FileChooserAction.Open : FileChooserAction.SelectFolder);
-                if(Value != null) 
-                {
-                    if(!Ret.SelectFilename(Value)) Ret.WidthChars = 8;
-                    else Ret.WidthChars = System.IO.Path.GetFileName(Value).Length;
-                }
-                else Ret.WidthChars = 8;
                                 
                 Original.Widget = Ret;
                 Original.Expands = false;
