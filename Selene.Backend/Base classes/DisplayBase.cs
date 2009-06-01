@@ -90,12 +90,17 @@ namespace Selene.Backend
 
 		public void Save()
 		{
-			foreach(Control Cont in State)
-			{
-				if(Cont.Converter == null) continue;
-				Cont.Info.SetValue(Present, Cont.Converter.ToObject(Cont));
-			}
+            Save(Present);
 		}
+
+        public void Save(SaveType To)
+        {
+            foreach(Control Cont in State)
+            {
+                if(Cont.Converter == null) continue;
+                Cont.Info.SetValue(To, Cont.Converter.ToObject(Cont));
+            }
+        }
 		#endregion
 
 		private void SetFields()

@@ -6,17 +6,36 @@ using Gtk;
 
 namespace Selene.Gtk.Frontend
 {
-	public class WizardDialog<T> : DisplayBase<T> where T : class
+	public class WizardDialog<T> : DisplayBase<T> where T : class, ICloneable
 	{
 		public Assistant Win;
 		public IValidator<T> Validator;
+
+        T Dummy;
 		
 		public WizardDialog(string Title) 
 		{
 			Win = new Assistant();
 			Win.Title = Title;
 			Win.Modal = true;
+
+            Win.Apply += WinApply;
+            Win.Cancel += WinCancel;
 		}
+
+        void WinCancel (object sender, EventArgs e)
+        {
+            Console.WriteLine(sender.GetType());
+            Win.Hide();
+            FireDone();
+        }
+
+        void WinApply (object sender, EventArgs e)
+        {
+            Save();
+            Win.Hide();
+            FireDone();
+        }
 		
 		public override void Hide ()
 		{
@@ -51,25 +70,33 @@ namespace Selene.Gtk.Frontend
 				Win.SetPageComplete(Table, true);
 				i++;
 			}
-
-			Win.WidgetEvent +=HandleWidgetEvent;
+			Win.WidgetEvent += HandleWidgetEvent;
             State = StateList.ToArray();
 		}
 
 		void HandleWidgetEvent(object o, WidgetEventArgs args)
 		{
-			if(Validator != null)
-			{
-				Save();
-				bool IsValid = Validator.CatIsValid(Present, Win.CurrentPage);
-				Win.SetPageComplete(Win.Children[Win.CurrentPage], IsValid);
-			}
+            if(args.Event.Type == Gdk.EventType.KeyRelease || args.Event.Type == Gdk.EventType.LeaveNotify)
+                Revalidate();
 		}
-		
+
+        void Revalidate()
+        {
+            if(Validator != null && Win.CurrentPage >= 0)
+            {
+                if(Dummy == null) Dummy = Present.Clone() as T;
+                Save(Dummy);
+
+                bool IsValid = Validator.CatIsValid(Dummy, Win.CurrentPage);
+                Win.SetPageComplete(Win.Children[Win.CurrentPage], IsValid);
+            }
+        }
+
 		public override bool Run(T Present)
 		{
 			base.Run(Present);
 			Win.Show();
+            Revalidate();
 			return true;
 		}
 		

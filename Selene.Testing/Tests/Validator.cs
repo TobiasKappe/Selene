@@ -16,20 +16,25 @@ using Selene.Gtk.Frontend;
 
 namespace Selene.Testing
 {	
-	public class ValidTest
+	public class ValidTest : ICloneable
 	{
 		[Control(Category = "Getting started")]
 		public string Surname;
-		
+
 		[Control(Name = "Phone number")]
 		public string PhoneNumber;
-		
-		[Control(Category = "Finishing up", 
+
+		[Control(Category = "Finishing up",
 		         Override = ControlType.FileSelect)]
 		public string Filename;
-		
+
 		[Control(Name = "Do you agree to the license terms?")]
 		public bool AgreesLicense;
+
+        public object Clone()
+        {
+            return MemberwiseClone();
+        }
 	}
 	
 	public enum Page { First, Last }
@@ -50,7 +55,7 @@ namespace Selene.Testing
 					return false;
 				return Category.AgreesLicense;
 			}
-			
+
 			return true;
 		}
 	}
@@ -64,6 +69,12 @@ namespace Selene.Testing
 #if GTK
 			var Disp = new WizardDialog<ValidTest>("Selene");
 			var Test = new ValidTest();
+            Disp.OnDone += delegate {
+                Console.WriteLine(Test.AgreesLicense);
+                Console.WriteLine(Test.Filename);
+                Console.WriteLine(Test.Surname);
+                Console.WriteLine(Test.PhoneNumber);
+            }; 
 			Disp.Validator = new Validator();
 			Disp.Run(Test);
 #endif
