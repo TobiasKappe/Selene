@@ -13,8 +13,7 @@ namespace Selene.Gtk.Midend
         
         protected override void SetValue (WidgetPair Original, DateTime Value)
         {
-            if(Original.Widget is Calendar)
-                (Original.Widget as Calendar).Date = Value;
+            (Original.Widget as Calendar).Date = Value;
         }
 
         protected override WidgetPair ToWidget (WidgetPair Original)

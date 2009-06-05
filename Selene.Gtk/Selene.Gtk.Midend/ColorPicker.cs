@@ -27,9 +27,7 @@ namespace Selene.Gtk.Midend
         protected override void SetValue (WidgetPair Original, ushort[] Value)
         {
             Gdk.Color C = GetColor(ref Value);
-            
-            if(Original.Widget is ColorButton)
-                (Original.Widget as ColorButton).Color = C;
+            (Original.Widget as ColorButton).Color = C;
         }
 
         protected override WidgetPair ToWidget (WidgetPair Original)

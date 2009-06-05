@@ -14,19 +14,19 @@ namespace Selene.Gtk.Midend
         {
             if(Start.SubType == ControlType.Entry || Start.SubType == ControlType.Default)
                 return (Start.Widget as Entry).Text;
-            else if(Start.SubType == ControlType.FileSelect)
+            if(Start.SubType == ControlType.FileSelect || Start.SubType == ControlType.DirectorySelect)
                 return (Start.Widget as FileChooserButton).Filename;
-            
+
             return null;
         }
-        
+
         protected override void SetValue (WidgetPair Original, string Value)
         {
             if(Value == null) Value = string.Empty;
-            
-            if(Original.Widget is Entry)
+
+            if(Original.SubType == ControlType.Entry || Original.SubType == ControlType.Default)
                 (Original.Widget as Entry).Text = Value;
-            if(Original.Widget is FileChooserButton)
+            if(Original.SubType == ControlType.FileSelect || Original.SubType == ControlType.DirectorySelect)
                 (Original.Widget as FileChooserButton).SelectFilename(Value);
         }
                 
