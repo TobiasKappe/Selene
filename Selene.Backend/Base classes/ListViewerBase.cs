@@ -8,21 +8,22 @@ namespace Selene.Backend
     {
         protected int Counter = 0;
         protected DisplayBase<object> Presenter;
+        protected bool AllowsEdit = true, AllowsRemove = true, AllowsAdd = true, GreyButtons = false;
 
         int i = 0;
         List<object> Content;
         ConstructorInfo Constructor;
         bool Inspected = false;
         Type Underlying;
-        
+
         #region Manipulation functions
         protected void DeleteRow(int Id)
         {
-            Content.RemoveAt(Id);           
+            Content.RemoveAt(Id);
         }
-        
+
         protected void AddRow()
-        {           
+        {
             object Fill = Constructor.Invoke(null);
 
             if(!Inspected)
@@ -108,7 +109,12 @@ namespace Selene.Backend
         }
         
         public Control ToWidget(Control Original)
-        {       
+        {
+            Original.GetFlag<bool>(0, ref AllowsEdit);
+            Original.GetFlag<bool>(1, ref AllowsRemove);
+            Original.GetFlag<bool>(2, ref AllowsAdd);
+            Original.GetFlag<bool>(3, ref GreyButtons);
+
             Content = new List<object>();
             FieldInfo[] Infos = Underlying.GetFields();         
             

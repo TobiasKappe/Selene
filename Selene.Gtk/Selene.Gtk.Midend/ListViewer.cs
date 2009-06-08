@@ -31,22 +31,31 @@ namespace Selene.Gtk.Midend
             HBox Separator = new HBox();
             Separator.Add(BorderMaker);
             VBox Buttons = new VBox();
-            Button Add = new Button(new Image(Stock.Add, IconSize.Button));
-            Button Remove = new Button(new Image(Stock.Remove, IconSize.Button));
-            Button Edit = new Button(new Image(Stock.Edit, IconSize.Button));
-            Buttons.PackStart(Add, false, false, 0);
-            Buttons.PackStart(Remove, false, false, 0);
-            Buttons.PackStart(Edit, false, false, 0);
+
+            AddButton(Buttons, AllowsAdd, Stock.Add, HandleAddClicked);
+            AddButton(Buttons, AllowsRemove, Stock.Remove, HandleRemoveClicked);
+            AddButton(Buttons, AllowsEdit, Stock.Edit, HandleEditClicked);
+
             Separator.PackStart(Buttons, false, false, 0);
-            
-            Add.Clicked += HandleAddClicked;
-            Remove.Clicked += HandleRemoveClicked;
-            Edit.Clicked += HandleEditClicked;
-            
             Pair.Widget = Separator;
             Cont = Pair;
-            
+
             return new NotebookDialog<object>(Cont.GetFlag<string>());
+        }
+
+        void AddButton(VBox To, bool DependsOn, string Stock, EventHandler Click)
+        {
+            Button New;
+            if(DependsOn || GreyButtons)
+            {
+                New = new Button(new Image(Stock, IconSize.Button));
+                New.Clicked += Click;
+                To.PackStart(New, false, false, 0);
+                if(!DependsOn && GreyButtons)
+                {
+                    New.Sensitive = false;
+                }
+            }
         }
         
         // If a row is removed, we need to decrease the Id on the other rows,

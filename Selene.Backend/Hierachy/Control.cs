@@ -45,36 +45,56 @@ namespace Selene.Backend
             Label = Attribute == null || Attribute.Name == null ? Info.Name : Attribute.Name;
             SubType = Attribute == null ? ControlType.Default : Attribute.Override;
         }
-        
-        public T GetFlag<T>() where T : class
+
+        public T GetFlag<T>(int Num) where T : class
         {
             if(Flags == null) return null;
-            
+
+            int Current = 0;
             foreach(object Flag in Flags)
             {
-                if(Flag is T) return Flag as T;
+                if(Flag is T)
+                {
+                    if(Current == Num) return Flag as T;
+                    Current++;
+                }
             }
-            
+
             return null;
         }
-        
-        public bool GetFlag<T>(ref T Ret) where T : struct
+
+        public T GetFlag<T>() where T : class
+        {
+            return GetFlag<T>(0);
+        }
+
+        public bool GetFlag<T>(int Num, ref T Ret) where T : struct
         {
             if(Flags == null) return false;
-            
+
+            int Current = 0;
             foreach(object Flag in Flags)
             {
                 T? Try = Flag as T?;
-                if(Try != null)     
+                if(Try != null)
                 {
-                    Ret = Try.HasValue ? Try.Value : default(T);
-                    return Try.HasValue;
+                    if(Current == Num)
+                    {
+                        Ret = Try.HasValue ? Try.Value : default(T);
+                        return Try.HasValue;
+                    }
+                    Current++;
                 }
             }
-            
+
             return false;
         }
-        
+
+        public bool GetFlag<T>(ref T Ret) where T : struct
+        {
+            return GetFlag<T>(0, ref Ret);
+        }
+
         public T Subclassify<T>() where T : Control, new()
         {
             T Ret = new T();
