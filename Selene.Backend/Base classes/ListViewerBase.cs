@@ -20,6 +20,7 @@ namespace Selene.Backend
         protected void DeleteRow(int Id)
         {
             Content.RemoveAt(Id);
+            i--;
         }
 
         protected void AddRow()
