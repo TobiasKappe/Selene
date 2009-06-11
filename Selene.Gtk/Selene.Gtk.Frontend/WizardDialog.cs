@@ -59,6 +59,7 @@ namespace Selene.Gtk.Frontend
                     foreach(Control Cont in Subcat.Controls)
                     {
                         WidgetPair Add = ProcureState(Cont) as WidgetPair;
+                        Add.Converter.ConnectChange(Add, HandleChange);
                         Table.AddWidget(Add);
                         StateList.Add(Add);
                     }
@@ -70,14 +71,12 @@ namespace Selene.Gtk.Frontend
                 Win.SetPageComplete(Table, true);
                 i++;
             }
-            Win.WidgetEvent += HandleWidgetEvent;
             State = StateList.ToArray();
         }
 
-        void HandleWidgetEvent(object o, WidgetEventArgs args)
+        void HandleChange(object o, EventArgs args)
         {
-            if(args.Event.Type == Gdk.EventType.KeyRelease || args.Event.Type == Gdk.EventType.LeaveNotify)
-                Revalidate();
+            Revalidate();
         }
 
         void Revalidate()
