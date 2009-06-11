@@ -42,9 +42,11 @@ namespace Selene.Backend
 
             return obj;
         }
-        
+
+
         protected abstract void SetIndex(Control Original, int Index);
         protected abstract int GetIndex(Control Original);
         protected abstract Control ToWidget(Control Start, string[] Values);
+        public abstract void ConnectChange(Control Start, EventHandler OnChange);
     }
 }

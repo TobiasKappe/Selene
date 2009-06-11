@@ -85,5 +85,19 @@ namespace Selene.Gtk.Midend
             Original.Widget = Ret;
             return Original;
         }
+
+        public override void ConnectChange (Control Start, EventHandler OnChange)
+        {
+            WidgetPair WP;
+
+            WP = Start as WidgetPair;
+            if(Start.SubType == ControlType.Default || Start.SubType == ControlType.Dropdown)
+                (WP.Widget as ComboBox).Changed += OnChange;
+            else if(Start.SubType == ControlType.Radio)
+            {
+                foreach(RadioButton B in (WP.Widget as Box).Children)
+                    B.Clicked += OnChange;
+            }
+        }
     }
 }

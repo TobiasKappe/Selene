@@ -23,5 +23,10 @@ namespace Selene.Qyoto.Midend
             Original.HasLabel = false;
             return Original;
         }
+
+        protected override void ConnectChange (WidgetPair Original, System.EventHandler OnChange)
+        {
+            QWidget.Connect((Original.Widget as QCheckBox), Qt.SIGNAL("toggled(bool)"), delegate { OnChange(null, default(EventArgs)); });
+        }
     }
 }

@@ -13,6 +13,7 @@ namespace Selene.Gtk.Midend
         private ListStore Store;
         private int IdColumn;
         private int CurrentColumn = 0;
+        private EventHandler OnChange;
         
         protected override DisplayBase<object> Construct (Type[] Types, ref Control Cont)
         {
@@ -64,15 +65,16 @@ namespace Selene.Gtk.Midend
         {           
             TreeIter Begin = TreeIter.Zero;
             Store.GetIterFirst(out Begin);
-            
+
+            Console.WriteLine("Removing "+Removed);
             do
             {
                 if(!Store.IterIsValid(Begin)) continue;
-                
+
                 int? Get = Store.GetValue(Begin, IdColumn) as int?;
-                
+
                 if(Get == null) continue;
-                
+
                 if(Get.Value > Removed)
                     Store.SetValue(Begin, IdColumn, Get.Value-1);
             }
@@ -85,22 +87,23 @@ namespace Selene.Gtk.Midend
             
             return !Ret.Equals(TreeIter.Zero);
         }
-        
+
         void HandleEditClicked(object sender, EventArgs e)
         {
             TreeIter Current;
-            
+
             if(CurrentIter(out Current))
             {
                 int Id = (Store.GetValue(Current, IdColumn) as int?).Value;
+                Console.WriteLine("Id: "+Id);
                 EditRow(Id);
             }
         }
-        
+
         void HandleRemoveClicked(object sender, EventArgs e)
         {
             TreeIter Current;
-            
+
             if(CurrentIter(out Current))
             {
                 int Id = (Store.GetValue(Current, IdColumn) as int?).Value;
@@ -109,54 +112,60 @@ namespace Selene.Gtk.Midend
                 if(Store.IterNChildren() > 0)
                     UpdateIds(Id);
             }
+
+            if(OnChange != null) OnChange(View, default(EventArgs));
         }
-        
+
         void HandleAddClicked(object sender, EventArgs e)
         {
             AddRow();
         }
-        
+
         protected override void AddColumn (string Name, System.Type Type)
         {
             CellRenderer Renderer;
-            
+
             if(Type == typeof(bool))
             {
                 Renderer = new CellRendererToggle();
                 View.AppendColumn(Name, Renderer, "active", CurrentColumn++);
             }
-            else 
+            else
             {
                 Renderer = new CellRendererText();
                 View.AppendColumn(Name, Renderer, "text", CurrentColumn++);
             }
         }
-        
+
         protected override void RowAdded (int Id, object[] Items)
         {
             TreeIter Iter = Store.AppendValues(Items);
             Store.SetValue(Iter, IdColumn, Id);
+
+            if(OnChange != null) OnChange(View, default(EventArgs));
         }
 
         protected override void RowEdited (int Id, object[] Items)
         {
             TreeIter Iter = TreeIter.Zero;
-            
+
             int i = -1;
-            
+
             do
             {
-                if(Iter.Equals(TreeIter.Zero)) Store.GetIterFirst(out Iter); 
+                if(Iter.Equals(TreeIter.Zero)) Store.GetIterFirst(out Iter);
                 else Store.IterNext(ref Iter);
-                
+
                 i = (Store.GetValue(Iter, IdColumn) as int?).Value;
             }
             while(i != Id);
-            
+
             for(int j = 0; j < Items.Length; j++)
             {
                 Store.SetValue(Iter, j, Items[j]);
             }
+
+            if(OnChange != null) OnChange(View, default(EventArgs));
         }
         
         protected override bool IsViewable(Type T)
@@ -166,8 +175,13 @@ namespace Selene.Gtk.Midend
             if(T == typeof(Int32)) return true;
             if(T == typeof(Int64)) return true;
             if(T == typeof(Boolean)) return true;
-            
+
             return false;
+        }
+
+        protected override void ConnectChange (EventHandler OnChange)
+        {
+            this.OnChange = OnChange;
         }
     }
 }

@@ -6,9 +6,10 @@ namespace Selene.Backend
     public interface IConverter
     {
         Type Type { get; }
-        
+
         Control ToWidget(Control Original);
         object ToObject(Control Start);
         void SetValue(Control Original, object Value);
+        void ConnectChange(Control Original, EventHandler OnChange);
     }
 }

@@ -28,5 +28,10 @@ namespace Selene.Qyoto.Midend
         {
             (Original.Widget as QLineEdit).Text = Value;
         }
+
+        protected override void ConnectChange (WidgetPair Original, EventHandler OnChange)
+        {
+            QWidget.Connect((Original.Widget as QLineEdit), Qt.SIGNAL("textChanged(QString)"), delegate { OnChange(null, default(EventArgs)); });
+        }
     }
 }

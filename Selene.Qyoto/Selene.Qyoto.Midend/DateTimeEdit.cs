@@ -28,5 +28,12 @@ namespace Selene.Qyoto.Midend
             
             return Original;
         }
+
+        protected override void ConnectChange (WidgetPair Original, System.EventHandler OnChange)
+        {
+            QWidget.Connect(Original.Widget as QDateTimeEdit, Qt.SIGNAL("dateTimeChanged(QDateTime)"),
+                            delegate { OnChange(null, default(EventArgs)); });
+        }
+
     }
 }

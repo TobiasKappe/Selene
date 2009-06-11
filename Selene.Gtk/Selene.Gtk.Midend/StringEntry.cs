@@ -51,5 +51,13 @@ namespace Selene.Gtk.Midend
             
             return null;
         }
+
+        protected override void ConnectChange (WidgetPair Original, System.EventHandler OnChange)
+        {
+            if(Original.SubType == ControlType.Entry || Original.SubType == ControlType.Default)
+                (Original.Widget as Entry).Changed += OnChange;
+            else if(Original.SubType == ControlType.FileSelect || Original.SubType == ControlType.DirectorySelect)
+                (Original.Widget as FileChooserButton).FileSet += OnChange;
+        }
     }
 }

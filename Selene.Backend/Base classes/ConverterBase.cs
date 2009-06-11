@@ -46,9 +46,15 @@ namespace Selene.Backend
         {
             SetValue((TController) Original, (TDisplay)Start);
         }
+
+        public void ConnectChange(Control Original, EventHandler OnChange)
+        {
+            ConnectChange((TController)Original, OnChange);
+        }
         #endregion
-        
+
         #region Abstract members
+        protected abstract void ConnectChange(TController Original, EventHandler OnChange);
         protected abstract TController ToWidget(TController Original);
         protected abstract TDisplay ToValue(TController Start);
         protected abstract void SetValue(TController Original, TDisplay Value);

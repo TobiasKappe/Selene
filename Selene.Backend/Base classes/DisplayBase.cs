@@ -77,7 +77,7 @@ namespace Selene.Backend
 
             return null;
         }
-        
+
         #region Partial interface implementation
         public virtual bool Run(SaveType Present)
         {
@@ -101,6 +101,16 @@ namespace Selene.Backend
             }
         }
         #endregion
+
+        public void SubscribeAllChange(EventHandler Handler)
+        {
+            if(State == null) Build();
+            foreach(Control Cont in State)
+            {
+                if(Cont.Converter != null)
+                    Cont.Converter.ConnectChange(Cont, Handler);
+            }
+        }
 
         private void SetFields()
         {

@@ -137,15 +137,21 @@ namespace Selene.Backend
 
             return Original;
         }
-        
+
+        public void ConnectChange(Control Original, EventHandler OnChange)
+        {
+            ConnectChange(OnChange);
+        }
+
         #endregion
-        
+
         #region Abstract members
         protected abstract void AddColumn(string Name, Type Type);
         protected abstract DisplayBase<object> Construct(Type[] Types, ref Control Cont);
         protected abstract void RowAdded(int Id, object[] Items);
         protected abstract void RowEdited(int Id, object[] Items);
         protected abstract bool IsViewable(Type T);
+        protected abstract void ConnectChange(EventHandler OnChange);
         #endregion
     }
 }

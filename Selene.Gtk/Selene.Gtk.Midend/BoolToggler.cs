@@ -40,5 +40,11 @@ namespace Selene.Gtk.Midend
                 
             return Original;
         }
+
+        protected override void ConnectChange (WidgetPair Original, EventHandler OnChange)
+        {
+            (Original.Widget as ToggleButton).Toggled += OnChange;
+        }
+
     }
 }

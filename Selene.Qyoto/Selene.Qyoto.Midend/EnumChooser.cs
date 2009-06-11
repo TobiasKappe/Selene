@@ -22,10 +22,11 @@ namespace Selene.Qyoto.Midend
             WidgetPair Original = Start as WidgetPair;
             if(Original.SubType == ControlType.Dropdown || Original.SubType == ControlType.Default)
                 (Original.Widget as QComboBox).CurrentIndex = Index;
-            else
+            else if(Original.SubType == ControlType.Radio)
             {
-                QButtonGroup Lay = (Original.Widget as QBoxLayout).Children()[0] as QButtonGroup;
-                Lay.Button(Index).Checked = true;
+                QBoxLayout Lay = (Original.Widget as QBoxLayout);
+                QButtonGroup Group = Lay.Children()[0] as QButtonGroup;
+                Group.Button(Index).Checked = true;
             }
         }
 
@@ -47,29 +48,43 @@ namespace Selene.Qyoto.Midend
             {
                 bool Vertical = false;
                 Start.GetFlag<bool>(ref Vertical);
-                
+
                 QBoxLayout Lay;
                 if(Vertical) Lay = new QVBoxLayout();
                 else Lay = new QHBoxLayout();
                 QButtonGroup Group = new QButtonGroup(Lay);
-                
-                // Wierdest bug ever: without this call, we'll either get a 
+
+                // Wierdest bug ever: without this call, we'll either get a
                 // segfault from Qt or a NullReferenceException later on
                 Console.Write(string.Empty);
-                
+
                 for(int i = 0; i < Values.Length; i++)
                 {
                     string Value = Values[i];
-                    
+
                     QRadioButton Add = new QRadioButton(Value);
                     Group.AddButton(Add, i);
                     Lay.AddWidget(Add);
                 }
                 Original.Widget = Lay;
-                
+
                 return Original;
             }
             else throw new OverrideException(typeof(Enum), Original.SubType, ControlType.Radio, ControlType.Dropdown);
+
+            return Original;
+        }
+
+        public override void ConnectChange (Selene.Backend.Control Start, System.EventHandler OnChange)
+        {
+            WidgetPair WP = Start as WidgetPair;
+            if(Start.SubType == ControlType.Default || Start.SubType == ControlType.Dropdown)
+                QWidget.Connect((WP.Widget as QComboBox), Qt.SIGNAL("activated(int)"), delegate { OnChange(null, default(EventArgs)); });
+            else if(Start.SubType == ControlType.Radio)
+            {
+                QButtonGroup Lay = (WP.Widget as QBoxLayout).Children()[0] as QButtonGroup;
+                QWidget.Connect(Lay, Qt.SIGNAL("buttonPressed(int)"), delegate { OnChange(null, default(EventArgs)); });
+            }
         }
     }
 }
