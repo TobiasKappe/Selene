@@ -54,10 +54,6 @@ namespace Selene.Qyoto.Midend
                 else Lay = new QHBoxLayout();
                 QButtonGroup Group = new QButtonGroup(Lay);
 
-                // Wierdest bug ever: without this call, we'll either get a
-                // segfault from Qt or a NullReferenceException later on
-                Console.Write(string.Empty);
-
                 for(int i = 0; i < Values.Length; i++)
                 {
                     string Value = Values[i];
