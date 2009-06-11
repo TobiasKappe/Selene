@@ -41,6 +41,7 @@
     <Compile Include="Selene.Qyoto.Midend\BoolToggler.cs" />
     <Compile Include="Selene.Qyoto.Midend\EnumChooser.cs" />
     <Compile Include="Selene.Qyoto.Midend\DateTimeEdit.cs" />
+    <Compile Include="Selene.Qyoto.Frontend\WizardDialog.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Selene.Qyoto.Midend\" />
