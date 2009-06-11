@@ -50,6 +50,7 @@
     <Compile Include="Tests\Simplest.cs" />
     <Compile Include="Tests\Validator.cs" />
     <Compile Include="Harness.cs" />
+    <Compile Include="Tests\Changing.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -72,4 +73,13 @@
   <ItemGroup>
     <Folder Include="Tests\" />
   </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <DotNetNamingPolicy DirectoryNamespaceAssociation="None" ResourceNamePolicy="FileFormatDefault" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
 </Project>

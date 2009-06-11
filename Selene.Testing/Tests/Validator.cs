@@ -1,11 +1,18 @@
-#if GTK
 using NUnit.Framework;
 using Selene.Backend;
 
-using Selene.Gtk.Frontend;
 using System.Text.RegularExpressions;
 using System;
 using Gtk;
+
+#if GTK
+using Selene.Gtk.Frontend;
+#endif
+
+#if QYOTO
+using Selene.Qyoto.Frontend;
+#endif
+
 
 namespace Selene.Testing
 {
@@ -55,6 +62,7 @@ namespace Selene.Testing
 
     public partial class Harness
     {
+        [Test]
         public void Validating()
         {
             var Disp = new WizardDialog<ValidTest>("Selene");
@@ -70,4 +78,3 @@ namespace Selene.Testing
         }
     }
 }
-#endif

@@ -1,4 +1,3 @@
-#if GTK
 using NUnit.Framework;
 using Selene.Backend;
 
@@ -38,7 +37,7 @@ namespace Selene.Testing
             public string Name;
             public bool Single;
         }
-
+#if GTK
         [Test]
         public void ListView()
         {
@@ -56,6 +55,6 @@ namespace Selene.Testing
             var Test3 = new EditListInv();
             Assert.IsTrue(Disp3.Run(Test3));
         }
+#endif
     }
 }
-#endif
