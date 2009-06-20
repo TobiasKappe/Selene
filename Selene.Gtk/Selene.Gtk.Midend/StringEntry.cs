@@ -57,7 +57,7 @@ namespace Selene.Gtk.Midend
             if(Original.SubType == ControlType.Entry || Original.SubType == ControlType.Default)
                 (Original.Widget as Entry).Changed += OnChange;
             else if(Original.SubType == ControlType.FileSelect || Original.SubType == ControlType.DirectorySelect)
-                (Original.Widget as FileChooserButton).FileSet += OnChange;
+                (Original.Widget as FileChooserButton).SelectionChanged += OnChange;
         }
     }
 }
