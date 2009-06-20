@@ -6,14 +6,18 @@ using Gtk;
 
 namespace Selene.Gtk.Frontend
 {
-    public class WizardDialog<T> : DisplayBase<T> where T : class, ICloneable
+    public class WizardDialog<T> : NonModalPresenterBase<T>, IValidatable<T> where T : class, ICloneable
     {
         public Assistant Win;
-        public IValidator<T> Validator;
+        IValidator<T> mValidator;
+
+        public IValidator<T> Validator {
+            set { mValidator = value; }
+        }
 
         T Dummy;
-        
-        public WizardDialog(string Title) 
+
+        public WizardDialog(string Title)
         {
             Win = new Assistant();
             Win.Title = Title;
@@ -27,16 +31,16 @@ namespace Selene.Gtk.Frontend
         {
             Console.WriteLine(sender.GetType());
             Win.Hide();
-            FireDone();
+            Success = false;
         }
 
         void WinApply (object sender, EventArgs e)
         {
             Save();
             Win.Hide();
-            FireDone();
+            Success = true;
         }
-        
+
         public override void Hide ()
         {
             Win.Hide();
@@ -76,27 +80,21 @@ namespace Selene.Gtk.Frontend
 
         void HandleChange(object o, EventArgs args)
         {
-            Revalidate();
-        }
-
-        void Revalidate()
-        {
-            if(Validator != null && Win.CurrentPage >= 0)
+            if(mValidator != null && Win.CurrentPage >= 0)
             {
                 if(Dummy == null) Dummy = Present.Clone() as T;
                 Save(Dummy);
 
-                bool IsValid = Validator.CatIsValid(Dummy, Win.CurrentPage);
+                bool IsValid = mValidator.CatIsValid(Dummy, Win.CurrentPage);
                 Win.SetPageComplete(Win.Children[Win.CurrentPage], IsValid);
             }
         }
 
-        public override bool Run(T Present)
+        public override void Run(T Present)
         {
-            base.Run(Present);
-            Win.Show();
-            Revalidate();
-            return true;
+            Prepare(Present);
+            Show();
+            HandleChange(default(object), default(EventArgs));
         }
         
         public override void Show()

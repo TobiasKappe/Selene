@@ -6,7 +6,7 @@ using Qyoto;
 
 namespace Selene.Qyoto.Frontend
 {
-    public class WizardDialog<T> : DisplayBase<T> where T : class, ICloneable
+    public class WizardDialog<T> : NonModalPresenterBase<T>, IValidatable<T> where T : class, ICloneable
     {
         // This is actually surprisingly elegant
         class QValidatablePage : QWizardPage
@@ -29,8 +29,11 @@ namespace Selene.Qyoto.Frontend
 
         QWizard Wiz;
         T Dummy;
+        IValidator<T> mValidator;
 
-        public IValidator<T> Validator;
+        public IValidator<T> Validator {
+            set { mValidator = value; }
+        }
 
         public WizardDialog(string Title)
         {
@@ -67,22 +70,15 @@ namespace Selene.Qyoto.Frontend
 
         void HandleChange(object Sender, EventArgs Args)
         {
-            if(Validator != null)
+            if(mValidator != null)
             {
                 if(Dummy == null) Dummy = Present.Clone() as T;
                 Save(Dummy);
 
-                bool Valid = Validator.CatIsValid(Dummy, Wiz.CurrentId);
+                bool Valid = mValidator.CatIsValid(Dummy, Wiz.CurrentId);
                 Console.WriteLine(Valid);
                 (Wiz.CurrentPage() as QValidatablePage).Complete = Valid;
             }
-        }
-
-        public override bool Run (T Present)
-        {
-            base.Run (Present);
-
-            return true;
         }
 
         public override void Hide ()

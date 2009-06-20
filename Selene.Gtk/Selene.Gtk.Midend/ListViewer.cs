@@ -15,7 +15,7 @@ namespace Selene.Gtk.Midend
         private int CurrentColumn = 0;
         private EventHandler OnChange;
         
-        protected override DisplayBase<object> Construct (Type[] Types, ref Control Cont)
+        protected override ModalPresenterBase<object> Construct (Type[] Types, ref Control Cont)
         {
             if(Cont.SubType != ControlType.Default)
                 throw new OverrideException (typeof(ListViewer), Cont.SubType, ControlType.Default);

@@ -6,7 +6,7 @@ using Gtk;
 
 namespace Selene.Gtk.Frontend
 {
-    public class NotebookDialog<T> : DisplayBase<T>, IEmbeddable<T, Widget> where T : class
+    public class NotebookDialog<T> : ModalPresenterBase<T>, IEmbeddable<T, Widget> where T : class
     {
         protected Notebook Book;
         protected Dialog Win;
@@ -49,9 +49,8 @@ namespace Selene.Gtk.Frontend
         {
             if(args.ResponseId == ResponseType.Ok) Save();
             Win.Hide();
-            FireDone();
         }
-        
+
         public override bool Run (T Present)
         {
             base.Run (Present);

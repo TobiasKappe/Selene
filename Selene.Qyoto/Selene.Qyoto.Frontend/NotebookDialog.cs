@@ -6,7 +6,7 @@ using Qyoto;
 
 namespace Selene.Qyoto.Frontend
 {
-    public class NotebookDialog<T> : DisplayBase<T> where T : class
+    public class NotebookDialog<T> : ModalPresenterBase<T> where T : class
     {
         private QDialog Dialog;
         private QTabWidget Tabs;
@@ -42,13 +42,11 @@ namespace Selene.Qyoto.Frontend
         public void ClickCancel()
         {
             Dialog.Reject();
-            FireDone();
         }
-        
+
         public void ClickOk()
         {
             Dialog.Accept();
-            FireDone();
         }
         
         protected override void Build ()
