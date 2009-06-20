@@ -1,11 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace Selene.Backend
 {
-    public delegate void Done();
-    
     public abstract class DisplayBase <SaveType> : IPresenter<SaveType> where SaveType : class
     { 
         protected static ControlManifest Manifest;
@@ -14,13 +11,11 @@ namespace Selene.Backend
         
         protected SaveType Present;
         protected Control[] State;
-        
-        public event Done OnDone;
+
         bool HasBuilt = false;
         
-        static DisplayBase()
+        protected static void CacheConverters(Assembly Caller)
         {
-            Assembly Caller = Assembly.GetCallingAssembly();
             Converters = Introspector.GetConverters(Caller, out ArrayConverter, out EnumConverter);
             
             if(Converters.Length < 1) WarningFactory.Warn("No converters found in assembly "+Caller.FullName+". Presenters will be empty");
@@ -79,13 +74,7 @@ namespace Selene.Backend
         }
 
         #region Partial interface implementation
-        public virtual bool Run(SaveType Present)
-        {
-            Prepare(Present);
-            Show();
 
-            return true;
-        }
 
         public void Save()
         {
@@ -131,11 +120,6 @@ namespace Selene.Backend
                 HasBuilt = true;
             }
             SetFields();
-        }
-        
-        protected void FireDone()
-        {
-            if(OnDone != null) OnDone();
         }
         
         #region Abstract members

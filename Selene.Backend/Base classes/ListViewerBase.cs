@@ -7,7 +7,7 @@ namespace Selene.Backend
     public abstract class ListViewerBase : IHasUnderlying
     {
         protected int Counter = 0;
-        protected DisplayBase<object> Presenter;
+        protected ModalPresenterBase<object> Presenter;
         protected bool AllowsEdit = true, AllowsRemove = true, AllowsAdd = true, GreyButtons = false;
 
         int i = 0;
@@ -148,7 +148,7 @@ namespace Selene.Backend
 
         #region Abstract members
         protected abstract void AddColumn(string Name, Type Type);
-        protected abstract DisplayBase<object> Construct(Type[] Types, ref Control Cont);
+        protected abstract ModalPresenterBase<object> Construct(Type[] Types, ref Control Cont);
         protected abstract void RowAdded(int Id, object[] Items);
         protected abstract void RowEdited(int Id, object[] Items);
         protected abstract bool IsViewable(Type T);

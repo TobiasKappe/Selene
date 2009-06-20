@@ -54,6 +54,11 @@
     <Compile Include="Mining\AttributeHelper.cs" />
     <Compile Include="Mining\Introspector.cs" />
     <Compile Include="Interfaces\IHasUnderlying.cs" />
+    <Compile Include="Interfaces\IValidatable.cs" />
+    <Compile Include="Interfaces\IModalPresenter.cs" />
+    <Compile Include="Interfaces\INonModalPresenter.cs" />
+    <Compile Include="Base classes\ModalPresenterBase.cs" />
+    <Compile Include="Base classes\NonModalPresenterBase.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
