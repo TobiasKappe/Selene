@@ -25,6 +25,7 @@ namespace Selene.Gtk.Frontend
 
             Win.Apply += WinApply;
             Win.Cancel += WinCancel;
+            Win.Resizable = false;
         }
 
         void WinCancel (object sender, EventArgs e)
@@ -72,7 +73,7 @@ namespace Selene.Gtk.Frontend
                 Win.AppendPage(Table);
                 Win.SetPageTitle(Table, Cat.Name);
                 Win.SetPageType(Table, end ? AssistantPageType.Confirm : AssistantPageType.Content);
-                Win.SetPageComplete(Table, true);
+                Win.SetPageComplete(Table, false);
                 i++;
             }
             State = StateList.ToArray();
