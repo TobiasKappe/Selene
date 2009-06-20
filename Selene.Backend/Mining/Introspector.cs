@@ -31,7 +31,7 @@ namespace Selene.Backend
             
             foreach(Type Browse in Calling.GetTypes())
             {
-                if(Browse.ContainsGenericParameters) continue;
+                if(Browse.ContainsGenericParameters || Browse.IsAbstract) continue;
                 
                 if(Browse.BaseType == typeof(ListViewerBase))
                 {
@@ -49,7 +49,11 @@ namespace Selene.Backend
                 {
                     if(Interface == typeof(IConverter))
                     {
-                        IConverter Add = (IConverter) Browse.GetConstructor(Type.EmptyTypes).Invoke(null);
+                        ConstructorInfo Info = Browse.GetConstructor(Type.EmptyTypes);
+                        if(Info == null)
+                            throw new InspectionException(Browse, "Converters should contain an empty constructor, "+Browse+" does not");
+
+                        IConverter Add = (IConverter) Info.Invoke(null);
                         Ret.Add(Add);
                     }
                 }
