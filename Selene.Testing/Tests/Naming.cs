@@ -32,8 +32,7 @@ namespace Selene.Testing
         [Test]
         public void NamingPicking()
         {
-            IPresenter<NamingPickingTest> Present = 
-                new NotebookDialog<NamingPickingTest>("OK if values match");
+            var Present = new NotebookDialog<NamingPickingTest>("OK if values match");
             NamingPickingTest Save = new NamingPickingTest();
             Assert.IsTrue(Present.Run(Save));
         }

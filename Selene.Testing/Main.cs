@@ -20,7 +20,7 @@ namespace Selene.Testing
         public static void Main(string[] Args)
         {
             Harness Testing = new Harness();
-            Show Execute = Testing.Simplest;
+            Show Execute = Testing.Validating;
 #if QYOTO
             new QApplication(Args);
             Execute();

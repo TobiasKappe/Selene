@@ -35,10 +35,9 @@ namespace Selene.Testing
         [Test]
         public void Grouping()
         {
-            IPresenter<GroupingTest> Present;
             GroupingTest Save = new GroupingTest();
-        
-            Present = new NotebookDialog<GroupingTest>("OK if categories fit");
+
+            var Present = new NotebookDialog<GroupingTest>("OK if categories fit");
             Assert.IsTrue(Present.Run(Save));
             
 #if GTK
