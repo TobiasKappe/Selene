@@ -19,17 +19,17 @@ namespace Selene.Testing
     {
         enum Cat { Alive, Dead, Neither, Both }
 
-        class PropertiesTest
+        class OverrideTest
         {
             [Control(Override = ControlType.Radio), ControlFlags(true)]
             public Cat Status;
         }
 
         [Test]
-        public void Properties()
+        public void Override()
         {
-            var Test = new NotebookDialog<PropertiesTest>("Vertical radiobuttons?");
-            PropertiesTest Val = new PropertiesTest();
+            var Test = new NotebookDialog<OverrideTest>("Vertical radiobuttons?");
+            OverrideTest Val = new OverrideTest();
             Assert.IsTrue(Test.Run(Val));
         }
     }

@@ -45,12 +45,13 @@
     <Compile Include="Tests\ListView.cs" />
     <Compile Include="Tests\Manifest.cs" />
     <Compile Include="Tests\Naming.cs" />
-    <Compile Include="Tests\Properties.cs" />
+    <Compile Include="Tests\Override.cs" />
     <Compile Include="Tests\Serializing.cs" />
     <Compile Include="Tests\Simplest.cs" />
     <Compile Include="Tests\Validator.cs" />
     <Compile Include="Harness.cs" />
     <Compile Include="Tests\Changing.cs" />
+    <Compile Include="Tests\Property.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
