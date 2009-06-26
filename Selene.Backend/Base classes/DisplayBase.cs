@@ -40,6 +40,7 @@ namespace Selene.Backend
         
         protected Control ProcureState(Control Original)
         {
+            Console.WriteLine(Original.Name);
             if(Original.Type.IsArray && ArrayConverter != null && !Original.Type.GetElementType().IsValueType)
             {
                 IHasUnderlying Viewer = (IHasUnderlying)ArrayConverter.Invoke(null);
@@ -86,7 +87,14 @@ namespace Selene.Backend
             foreach(Control Cont in State)
             {
                 if(Cont.Converter == null) continue;
-                Cont.Info.SetValue(To, Cont.Converter.ToObject(Cont));
+
+                object NewValue = Cont.Converter.ToObject(Cont);
+
+                if(Cont.Info.MemberType == MemberTypes.Field)
+                    (Cont.Info as FieldInfo).SetValue(To, Cont.Converter.ToObject(Cont));
+                else if(Cont.Info.MemberType == MemberTypes.Property)
+                    (Cont.Info as PropertyInfo).SetValue(To, Cont.Converter.ToObject(Cont), null);
+                else throw new Exception("MemberInfo not field or property. This should not happen");
             }
         }
         #endregion
@@ -105,7 +113,14 @@ namespace Selene.Backend
         {
             foreach(Control Cont in State)
             {
-                object Pass = Cont.Info.GetValue(Present);
+                object Pass;
+
+                if(Cont.Info.MemberType == MemberTypes.Field)
+                    Pass = (Cont.Info as FieldInfo).GetValue(Present);
+                else if(Cont.Info.MemberType == MemberTypes.Property)
+                    Pass = (Cont.Info as PropertyInfo).GetValue(Present, null);
+                else throw new Exception("MemberInfo not field or property. This should not happen");
+
                 Cont.Converter.SetValue(Cont, Pass);
             }
         }

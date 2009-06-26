@@ -9,12 +9,10 @@ namespace Selene.Backend
         public string Label;
 
         [XmlIgnore] public IConverter Converter;
-        [XmlIgnore] public FieldInfo Info;
+        [XmlIgnore] public MemberInfo Info;
 
         [XmlIgnore]
-        public Type Type {
-            get { return Info.FieldType; }
-        }
+        public Type Type;
 
         // Loaded by XmlMiner
         public string WantedName;
@@ -35,10 +33,10 @@ namespace Selene.Backend
         {
         }
 
-        public Control(FieldInfo Info, ControlFlagsAttribute FlagsAttr, ControlAttribute Attribute)
+        public Control(MemberInfo Info, Type BoundType, ControlFlagsAttribute FlagsAttr, ControlAttribute Attribute)
         {
             this.Info = Info;
-            if(Info == null) Console.WriteLine("WARNING null info");
+            this.Type = BoundType;
             Flags = FlagsAttr == null ? null : FlagsAttr.Flags;
 
             // Use field name if no label is specified

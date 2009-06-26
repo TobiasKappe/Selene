@@ -13,18 +13,11 @@ namespace Selene.Backend
             TempSubcategory CurrentSubcat;
 
             string AddingCat = "Default", AddingSubcat = "Default";
-            foreach(FieldInfo Info in Root.GetFields())
+            foreach(MemberInfo Info in Root.GetMembers())
             {
-                var Ignore = AttributeHelper.GetAttribute<ControlIgnoreAttribute>(Info);
+                bool Ignoring = AttributeHelper.GetAttribute<ControlIgnoreAttribute>(Info) != null;
                 var ControlInfo = AttributeHelper.GetAttribute<ControlAttribute>(Info);
                 var ControlFlags = AttributeHelper.GetAttribute<ControlFlagsAttribute>(Info);
-
-                if(Ignore == null && Info.FieldType.IsArray && Info.FieldType.GetElementType() == Root)
-                {
-                    throw new InspectionException(Info.FieldType, "Types should not contain arrays of themselves, " +
-                                                  "to prevent infinite recursion and StackOverflowException. " +
-                                                  "Add a ControlIgnore attribute to work around this");
-                }
 
                 /* The field might be ignored. However, there could be a category attribute still here,
                    since field attributes are officially given to the next field to be found */
@@ -43,12 +36,34 @@ namespace Selene.Backend
                     if(ControlInfo.Subcategory != null) AddingSubcat = ControlInfo.Subcategory;
                 }
 
-                if(Ignore != null) continue;
+                if(Ignoring) continue;
+
+                Type BoundType;
+                if(Info.MemberType == MemberTypes.Field)
+                {
+                    FieldInfo Field = Info as FieldInfo;
+                    BoundType = Field.FieldType;
+                }
+                else if(Info.MemberType == MemberTypes.Property)
+                {
+                    PropertyInfo Property = Info as PropertyInfo;
+
+                    if(!Property.CanRead || !Property.CanWrite) continue;
+                    BoundType = Property.PropertyType;
+                }
+                else continue;
+
+                if(BoundType.IsArray && BoundType.GetElementType() == Root)
+                {
+                    throw new InspectionException(BoundType, "Types should not contain arrays of themselves, " +
+                                                  "to prevent infinite recursion and StackOverflowException. " +
+                                                  "Add a ControlIgnore attribute to work around this");
+                }
 
                 CurrentCat = Determine<TempCategory>(AddingCat, Manifest);
                 CurrentSubcat = Determine<TempSubcategory>(AddingSubcat, CurrentCat);
 
-                Control C = new Control(Info, ControlFlags, ControlInfo);
+                Control C = new Control(Info, BoundType, ControlFlags, ControlInfo);
                 CurrentSubcat.Add(C);
             }
 
