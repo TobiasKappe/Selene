@@ -4,35 +4,31 @@ using Qyoto;
 
 namespace Selene.Qyoto.Midend
 {
-    public class DateTimeEdit : ConverterBase<WidgetPair, DateTime>
+    public class DateTimeEdit : QConverterProxy<DateTime>
     {
-        protected override void SetValue (WidgetPair Original, DateTime Value)
-        {
-            QDateTimeEdit Edit = Original.Widget as QDateTimeEdit;
-            Edit.SetDate( new QDate(Value.Year, Value.Month, Value.Day) );
-            Edit.SetTime( new QTime(Value.Hour, Value.Minute, Value.Second, Value.Millisecond) );
-        }
-        
-        protected override DateTime ToValue (WidgetPair Start)
-        {
-            QDateTimeEdit Edit = Start.Widget as QDateTimeEdit;
-            DateTime Ret = new DateTime(Edit.Date.Year(), Edit.Date.Month(), Edit.Date.Day(),
-                                        Edit.Time.Hour(), Edit.Time.Minute(), Edit.Time.Second(), Edit.Time.Msec());
-            return Ret;
-        }
-        
-        protected override WidgetPair ToWidget (WidgetPair Original)
-        {
-            QDateTimeEdit Edit = new QDateTimeEdit();
-            Original.Widget = Edit;
-            
-            return Original;
+        protected override DateTime ActualValue {
+            get
+            {
+                QDateTimeEdit Edit = Widget as QDateTimeEdit;
+                return new DateTime(Edit.Date.Year(), Edit.Date.Month(), Edit.Date.Day(),
+                                    Edit.Time.Hour(), Edit.Time.Minute(), Edit.Time.Second(), Edit.Time.Msec());
+            }
+            set
+            {
+                QDateTimeEdit Edit = Widget as QDateTimeEdit;
+                Edit.SetDate( new QDate(value.Year, value.Month, value.Day) );
+                Edit.SetTime( new QTime(value.Hour, value.Minute, value.Second, value.Millisecond) );
+            }
         }
 
-        protected override void ConnectChange (WidgetPair Original, System.EventHandler OnChange)
+        protected override QObject Construct ()
         {
-            QWidget.Connect(Original.Widget as QDateTimeEdit, Qt.SIGNAL("dateTimeChanged(QDateTime)"),
-                            delegate { OnChange(null, default(EventArgs)); });
+            return new QDateTimeEdit();
+        }
+
+        protected override string SignalForType (ControlType Type)
+        {
+            return "dateTimeChanged(QDateTime)";
         }
 
     }

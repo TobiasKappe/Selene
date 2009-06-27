@@ -4,83 +4,84 @@ using Qyoto;
 
 namespace Selene.Qyoto.Midend
 {
-    public class EnumChooser : EnumBase
-    {   
-        protected override int GetIndex (Control Start)
-        {
-            WidgetPair Original = Start as WidgetPair;
-            if(Original.SubType == ControlType.Dropdown || Original.SubType == ControlType.Default)
-                return (Original.Widget as QComboBox).CurrentIndex;
-            else if(Original.SubType == ControlType.Radio)
-                return ((Original.Widget as QBoxLayout).Children()[0] as QButtonGroup).CheckedId();
+    public class EnumChooser : EnumBase<QObject>
+    {
+        QButtonGroup Group;
+        QConverterProxy<Enum> Proxy;
+        int i = 0;
 
-            return 0;
-        }
-
-        protected override void SetIndex (Control Start, int Index)
-        {
-            WidgetPair Original = Start as WidgetPair;
-            if(Original.SubType == ControlType.Dropdown || Original.SubType == ControlType.Default)
-                (Original.Widget as QComboBox).CurrentIndex = Index;
-            else if(Original.SubType == ControlType.Radio)
+        protected override ControlType[] Supported {
+            get
             {
-                QBoxLayout Lay = (Original.Widget as QBoxLayout);
-                QButtonGroup Group = Lay.Children()[0] as QButtonGroup;
-                Group.Button(Index).Checked = true;
+                return new ControlType[] { ControlType.Default, ControlType.Dropdown, ControlType.Radio };
             }
         }
 
-        protected override Control ToWidget (Control Start, string[] Values)
-        {
-            WidgetPair Original = new WidgetPair(Start);
-            if(Original.SubType == ControlType.Dropdown || Original.SubType == ControlType.Default)
+        protected override int CurrentIndex {
+            get
             {
-                QComboBox Box = new QComboBox();
+                if(Original.SubType == ControlType.Dropdown || Original.SubType == ControlType.Default)
+                    return (Widget as QComboBox).CurrentIndex;
+                else if(Original.SubType == ControlType.Radio)
+                    return ((Widget as QBoxLayout).Children()[0] as QButtonGroup).CheckedId();
 
-                foreach(string Value in Values)
-                    Box.AddItem(Value);
-
-                Original.Widget = Box;
-
-                return Original;
+                return 0;
             }
+            set
+            {
+                if(Original.SubType == ControlType.Dropdown || Original.SubType == ControlType.Default)
+                    (Widget as QComboBox).CurrentIndex = value;
+                else if(Original.SubType == ControlType.Radio)
+                    Group.Button(value).Checked = true;
+            }
+        }
+
+        protected string ResolveType(ControlType Type)
+        {
+            if(Type == ControlType.Default || Type == ControlType.Dropdown) return "activated(int)";
+            else if(Type == ControlType.Radio) return "buttonPressed(int)";
+            else return string.Empty;
+        }
+
+        protected override QObject Construct ()
+        {
+            Proxy = new QConverterProxy<Enum>(Original, null);
+            Proxy.Resolve = ResolveType;
+
+            if(Original.SubType == ControlType.Dropdown || Original.SubType == ControlType.Default)
+                return Proxy.Widg = new QComboBox();
             else if(Original.SubType == ControlType.Radio)
             {
                 bool Vertical = false;
-                Start.GetFlag<bool>(ref Vertical);
+                Original.GetFlag<bool>(ref Vertical);
 
                 QBoxLayout Lay;
                 if(Vertical) Lay = new QVBoxLayout();
                 else Lay = new QHBoxLayout();
-                QButtonGroup Group = new QButtonGroup(Lay);
+                Group = new QButtonGroup(Lay);
+                Proxy.Widg = Group;
 
-                for(int i = 0; i < Values.Length; i++)
-                {
-                    string Value = Values[i];
-
-                    QRadioButton Add = new QRadioButton(Value);
-                    Group.AddButton(Add, i);
-                    Lay.AddWidget(Add);
-                }
-                Original.Widget = Lay;
-
-                return Original;
+                return Lay;
             }
-            else throw new OverrideException(typeof(Enum), Original.SubType, ControlType.Radio, ControlType.Dropdown);
 
-            return Original;
+            return null;
         }
 
-        public override void ConnectChange (Selene.Backend.Control Start, System.EventHandler OnChange)
+        protected override void AddOption (string Value)
         {
-            WidgetPair WP = Start as WidgetPair;
-            if(Start.SubType == ControlType.Default || Start.SubType == ControlType.Dropdown)
-                QWidget.Connect((WP.Widget as QComboBox), Qt.SIGNAL("activated(int)"), delegate { OnChange(null, default(EventArgs)); });
-            else if(Start.SubType == ControlType.Radio)
+            if(Original.SubType == ControlType.Default || Original.SubType == ControlType.Dropdown)
+                (Widget as QComboBox).AddItem(Value);
+            else if(Original.SubType == ControlType.Radio)
             {
-                QButtonGroup Lay = (WP.Widget as QBoxLayout).Children()[0] as QButtonGroup;
-                QWidget.Connect(Lay, Qt.SIGNAL("buttonPressed(int)"), delegate { OnChange(null, default(EventArgs)); });
+                QRadioButton Add = new QRadioButton(Value);
+                Group.AddButton(Add, i++);
+                (Widget as QBoxLayout).AddWidget(Add);
             }
+        }
+
+        public override event EventHandler Changed {
+            add { Proxy.Changed += value; }
+            remove { Proxy.Changed -= value; }
         }
     }
 }

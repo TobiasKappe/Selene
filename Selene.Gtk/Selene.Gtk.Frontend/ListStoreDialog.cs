@@ -1,4 +1,3 @@
-
 using System;
 using Selene.Gtk.Midend;
 using Selene.Backend;
@@ -37,13 +36,13 @@ namespace Selene.Gtk.Frontend
             }
             
             base.Build();
-            
+
             Book.ShowTabs = false;
             Book.ShowBorder = false;
             View.WidthRequest = 100;
             View.RowActivated += HandleRowActivated;
             View.CursorChanged += HandleCursorChanged;
-            BorderMaker.BorderWidth = 5;    
+            BorderMaker.BorderWidth = 5;
         }
         
         private void Switch(TreePath Path)

@@ -32,7 +32,7 @@ namespace Selene.Testing
         {
             if(!File.Exists(ManifestFile))
             {
-                DisplayBase<ManifestTest>.StubManifest(ManifestFile);
+                ModalPresenterBase<Widget, ManifestTest>.StubManifest(ManifestFile);
                 return true;
             }
             return false;

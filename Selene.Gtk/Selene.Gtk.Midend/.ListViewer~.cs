@@ -91,7 +91,6 @@ namespace Selene.Gtk.Midend
             if(CurrentIter(out Current))
             {
                 int Id = (Store.GetValue(Current, IdColumn) as int?).Value;
-                Console.WriteLine("Id: "+Id);
                 EditRow(Id);
             }
         }

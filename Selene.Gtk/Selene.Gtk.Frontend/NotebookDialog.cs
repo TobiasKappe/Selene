@@ -1,12 +1,11 @@
 using System;
-using System.Collections.Generic;
 using Selene.Gtk.Midend;
 using Selene.Backend;
 using Gtk;
 
 namespace Selene.Gtk.Frontend
 {
-    public class NotebookDialog<T> : ModalPresenterBase<T>, IEmbeddable<T, Widget> where T : class
+    public class NotebookDialog<T> : ModalPresenterBase<Widget, T>, IEmbeddable<T, Widget> where T : class
     {
         protected Notebook Book;
         protected Dialog Win;
@@ -14,32 +13,32 @@ namespace Selene.Gtk.Frontend
         protected HBox MainBox;
         protected bool HasRun = false;
         protected bool PerSubcat = false;
-        
+
         private bool HasButtons = false;
-        
-        public virtual Widget Content(T Present) 
+
+        public virtual Widget Content(T Present)
         {
-            return Embed(Present, Book);                
+            return Embed(Present, Book);
         }
-        
+
         public bool IsEmbedded {
             get { return mIsEmbedded; }
         }
-        
+
         protected Widget Embed(T Present, Widget Ret)
         {
             mIsEmbedded = true;
             Prepare(Present);
             return Ret;
         }
-        
+
         public NotebookDialog(string Title)  : base()
         {
             Book = new Notebook();
             Win = new Dialog(Title, null, DialogFlags.Modal);
             MainBox = new HBox();
             Win.HasSeparator = false;
-            Win.Response += HandleResponse; 
+            Win.Response += HandleResponse;
             Win.Resizable = false;
             Win.BorderWidth = 3;
             Win.Modal = true;
@@ -55,12 +54,12 @@ namespace Selene.Gtk.Frontend
         {
             base.Run (Present);
             if(!HasButtons) AddButtons();
-            
+
             bool Ret = Win.Run() == (int)ResponseType.Ok;
             HasRun = true;
             return Ret;
         }
-        
+
         public override void Hide ()
         {
             Win.Hide();
@@ -70,10 +69,9 @@ namespace Selene.Gtk.Frontend
         {
             Win.ShowAll();
         }
-        
+
         protected override void Build()
         {
-            List<Control> StateList = new List<Control>();
             foreach(ControlCategory Category in Manifest.Categories)
             {
                 if(!PerSubcat)
@@ -84,12 +82,12 @@ namespace Selene.Gtk.Frontend
                         if(Category.Subcategories.Length > 1) PageTable.AddSubcatHeading(Subcat);
                         foreach(Control Cont in Subcat.Controls)
                         {
-                            WidgetPair Add = ProcureState(Cont) as WidgetPair;
+                            IConverter<Widget> Converter = ProcureState(Cont);
 
-                            if(Add != null)
+                            if(Converter != null)
                             {
-                                PageTable.AddWidget(Add);
-                                StateList.Add(Add);
+                                PageTable.AddWidget(Cont, Converter.Construct(Cont));
+                                State.Add(Converter);
                             }
                         }
                     }
@@ -102,37 +100,35 @@ namespace Selene.Gtk.Frontend
                         CategoryTable PageTable = new CategoryTable(Subcat.Controls.Length);
                         foreach(Control Cont in Subcat.Controls)
                         {
-                            WidgetPair Add = ProcureState(Cont) as WidgetPair;
+                            IConverter<Widget> Converter = ProcureState(Cont);
 
-                            if(Add != null)
+                            if(Converter != null)
                             {
-                                PageTable.AddWidget(Add);
-                                StateList.Add(Add);
+                                PageTable.AddWidget(Cont, Converter.Construct(Cont));
+                                State.Add(Converter);
                             }
                         }
-                        
+
                         Book.AppendPage(PageTable, new Label(Subcat.Name));
                     }
                 }
-                
+
                 EachCategory(Category);
             }
-            
-            if(Manifest.Categories.Length == 1) 
+
+            if(Manifest.Categories.Length == 1)
             {
                 Book.ShowBorder = false;
                 Book.ShowTabs = false;
             }
-            
+
             if(!HasRun && !mIsEmbedded)
             {
                 Win.VBox.Add(MainBox);
                 MainBox.Add(Book);
             }
-
-            State = StateList.ToArray();
         }
-        
+
         protected virtual void EachCategory(ControlCategory Cat)
         {
             return;

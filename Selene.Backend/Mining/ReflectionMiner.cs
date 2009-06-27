@@ -63,7 +63,7 @@ namespace Selene.Backend
                 CurrentCat = Determine<TempCategory>(AddingCat, Manifest);
                 CurrentSubcat = Determine<TempSubcategory>(AddingSubcat, CurrentCat);
 
-                Control C = new Control(Info, BoundType, ControlFlags, ControlInfo);
+                Control C = new Control(Info, ControlFlags, ControlInfo);
                 CurrentSubcat.Add(C);
             }
 

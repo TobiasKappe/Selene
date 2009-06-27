@@ -3,13 +3,14 @@ using System;
 
 namespace Selene.Backend
 {
-    public interface IConverter
+    public interface IConverter<WidgetType>
     {
         Type Type { get; }
+        Control Primitive { get; }
 
-        Control ToWidget(Control Original);
-        object ToObject(Control Start);
-        void SetValue(Control Original, object Value);
-        void ConnectChange(Control Original, EventHandler OnChange);
+        WidgetType Construct(Control Original);
+
+        object Value { get; set; }
+        event EventHandler Changed;
     }
 }

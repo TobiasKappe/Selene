@@ -1,12 +1,11 @@
 using System;
 using Selene.Backend;
 using Selene.Gtk.Midend;
-using System.Collections.Generic;
 using Gtk;
 
 namespace Selene.Gtk.Frontend
 {
-    public class WizardDialog<T> : NonModalPresenterBase<T>, IValidatable<T> where T : class, ICloneable
+    public class WizardDialog<T> : NonModalPresenterBase<Widget, T>, IValidatable<T> where T : class, ICloneable
     {
         public Assistant Win;
         IValidator<T> mValidator;
@@ -30,7 +29,6 @@ namespace Selene.Gtk.Frontend
 
         void WinCancel (object sender, EventArgs e)
         {
-            Console.WriteLine(sender.GetType());
             Win.Hide();
             Success = false;
         }
@@ -46,10 +44,10 @@ namespace Selene.Gtk.Frontend
         {
             Win.Hide();
         }
-        
+
+        int counter = 0;
         protected override void Build()
         {
-            List<Control> StateList = new List<Control>();
             int i = 0;
             foreach(ControlCategory Cat in Manifest.Categories)
             {
@@ -63,10 +61,10 @@ namespace Selene.Gtk.Frontend
                     if(Cat.Subcategories.Length > 1) Table.AddSubcatHeading(Subcat);
                     foreach(Control Cont in Subcat.Controls)
                     {
-                        WidgetPair Add = ProcureState(Cont) as WidgetPair;
-                        Add.Converter.ConnectChange(Add, HandleChange);
-                        Table.AddWidget(Add);
-                        StateList.Add(Add);
+                        IConverter<Widget> Converter = ProcureState(Cont);
+                        Table.AddWidget(Cont, Converter.Construct(Cont));
+                        Converter.Changed += HandleChange;
+                        State.Add(Converter);
                     }
                 }
 
@@ -76,7 +74,6 @@ namespace Selene.Gtk.Frontend
                 Win.SetPageComplete(Table, false);
                 i++;
             }
-            State = StateList.ToArray();
         }
 
         void HandleChange(object o, EventArgs args)

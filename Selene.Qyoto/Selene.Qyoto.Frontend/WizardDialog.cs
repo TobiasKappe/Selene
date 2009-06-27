@@ -6,7 +6,7 @@ using Qyoto;
 
 namespace Selene.Qyoto.Frontend
 {
-    public class WizardDialog<T> : NonModalPresenterBase<T>, IValidatable<T> where T : class, ICloneable
+    public class WizardDialog<T> : NonModalPresenterBase<QObject, T>, IValidatable<T> where T : class, ICloneable
     {
         // This is actually surprisingly elegant
         class QValidatablePage : QWizardPage
@@ -43,7 +43,6 @@ namespace Selene.Qyoto.Frontend
 
         protected override void Build()
         {
-            List<Control> States = new List<Control>();
             foreach(ControlCategory Cat in Manifest.Categories)
             {
                 QWizardPage Page = new QValidatablePage();
@@ -54,18 +53,18 @@ namespace Selene.Qyoto.Frontend
                     if(Cat.Subcategories.Length > 1) Lay.AddHeading(Subcat);
                     foreach(Control Cont in Subcat.Controls)
                     {
-                        WidgetPair Add = ProcureState(Cont) as WidgetPair;
-                        Add.Converter.ConnectChange(Add, HandleChange);
-                        Lay.AddWidget(Add);
-                        States.Add(Add);
+                        IConverter<QObject> Converter = ProcureState(Cont);
+                        QObject Widget = Converter.Construct(Cont);
+                        Converter.Changed += HandleChange;
+                        Lay.AddWidget(Cont, Widget);
+
+                        State.Add(Converter);
                     }
                 }
 
                 Page.SetLayout(Lay);
                 Wiz.AddPage(Page);
             }
-
-            this.State = States.ToArray();
         }
 
         void HandleChange(object Sender, EventArgs Args)
@@ -76,7 +75,6 @@ namespace Selene.Qyoto.Frontend
                 Save(Dummy);
 
                 bool Valid = mValidator.CatIsValid(Dummy, Wiz.CurrentId);
-                Console.WriteLine(Valid);
                 (Wiz.CurrentPage() as QValidatablePage).Complete = Valid;
             }
         }

@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace Selene.Backend
 {
-    public abstract class ModalPresenterBase<T> : DisplayBase<T>, IModalPresenter<T> where T : class
+    public abstract class ModalPresenterBase<WidgetType, T> : DisplayBase<WidgetType, T>, IModalPresenter<T> where T : class
     {
         static ModalPresenterBase()
         {

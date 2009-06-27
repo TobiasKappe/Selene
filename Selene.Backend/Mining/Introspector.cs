@@ -23,43 +23,44 @@ namespace Selene.Backend
 
             return Miner.Mine(Root);
         }
-        
-        public static IConverter[] GetConverters(Assembly Calling, out ConstructorInfo ArrayConverter, out ConstructorInfo EnumConverter)
+
+        public static ConverterFactory<WidgetType> GetConverters<WidgetType>(Assembly Calling)
         {
-            var Ret = new List<IConverter>();
-            ArrayConverter = EnumConverter = null;
-            
+            var Factory = new ConverterFactory<WidgetType>();
+
             foreach(Type Browse in Calling.GetTypes())
             {
                 if(Browse.ContainsGenericParameters || Browse.IsAbstract) continue;
-                
-                if(Browse.BaseType == typeof(ListViewerBase))
+
+                if(Browse.BaseType == typeof(ListViewerBase<WidgetType>))
                 {
-                    ArrayConverter = Browse.GetConstructor(Type.EmptyTypes);
+                    Factory.AddType(typeof(Array), Browse);
                     continue;
                 }
 
-                if(Browse.BaseType == typeof(EnumBase))
+                if(Browse.BaseType == typeof(EnumBase<WidgetType>))
                 {
-                    EnumConverter = Browse.GetConstructor(Type.EmptyTypes);
+                    Factory.AddType(typeof(Enum), Browse);
                     continue;
                 }
 
                 foreach(Type Interface in Browse.GetInterfaces())
                 {
-                    if(Interface == typeof(IConverter))
+                    if(Interface == typeof(IConverter<WidgetType>))
                     {
                         ConstructorInfo Info = Browse.GetConstructor(Type.EmptyTypes);
                         if(Info == null)
                             throw new InspectionException(Browse, "Converters should contain an empty constructor, "+Browse+" does not");
 
-                        IConverter Add = (IConverter) Info.Invoke(null);
-                        Ret.Add(Add);
+                        // We need to instantiate to discover the type... may need to find a better way
+                        IConverter<WidgetType> Add = (IConverter<WidgetType>) Info.Invoke(null);
+
+                        Factory.AddType(Add.Type, Info);
                     }
                 }
             }
-            
-            return Ret.ToArray();
+
+            return Factory;
         }
     }
 }

@@ -3,50 +3,44 @@ using System.Collections.Generic;
 
 namespace Selene.Backend
 {
-    public abstract class EnumBase : IHasUnderlying
+    public abstract class EnumBase<WidgetType> : ConverterBase<WidgetType, Enum>, IHasUnderlying<WidgetType>
     {
-        private string[] Values;
-        private Type Actual;
-        
-        public Type Type { get { return typeof(Enum); } }
+        string[] Names;
+        int[] Values;
+        Type mUnderlying;
 
-        public void SetValue (Control Original, object Value)
-        {
-            int i;
-            for(i = 0; i < Values.Length; i++)
+        public Type Underlying {
+            set { mUnderlying = value; }
+        }
+
+        protected sealed override Enum ActualValue {
+            get
             {
-                if(Value.ToString() == Values[i]) break;
+                return Enum.Parse(mUnderlying, Names[CurrentIndex]) as Enum;
             }
-            
-            if(i != Values.Length) SetIndex(Original, i);
+            set
+            {
+                PrepareOptions();
+
+                for(int i = 0; i < Values.Length; i++)
+                {
+                    if(Values[i] == (int)value)
+                        CurrentIndex = i;
+                }
+            }
         }
 
-        public object ToObject (Control Start)
+        void PrepareOptions()
         {
-            return Enum.Parse(Actual, Values[GetIndex(Start)]);
+            if(Names != null) return;
+
+            Names = Enum.GetNames(mUnderlying);
+            Values = Enum.GetValues(mUnderlying) as int[];
+
+            foreach(string Name in Names) AddOption(Name);
         }
 
-        public void SetUnderlying(Type Given)
-        {
-            Values = Enum.GetNames(Actual = Given);
-        }
-        
-        public Control ToWidget(Control Start)
-        {
-            List<string> Labels = new List<string>();
-
-            for(int i = 0; i < Values.Length; i++)
-                Labels.Add(Values[i]);
-
-            Control obj = ToWidget(Start, Labels.ToArray());
-
-            return obj;
-        }
-
-
-        protected abstract void SetIndex(Control Original, int Index);
-        protected abstract int GetIndex(Control Original);
-        protected abstract Control ToWidget(Control Start, string[] Values);
-        public abstract void ConnectChange(Control Start, EventHandler OnChange);
+        protected abstract void AddOption(string Value);
+        protected abstract int CurrentIndex { get; set; }
     }
 }

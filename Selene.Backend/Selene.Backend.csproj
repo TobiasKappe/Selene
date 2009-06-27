@@ -59,6 +59,7 @@
     <Compile Include="Interfaces\INonModalPresenter.cs" />
     <Compile Include="Base classes\ModalPresenterBase.cs" />
     <Compile Include="Base classes\NonModalPresenterBase.cs" />
+    <Compile Include="Mining\ConverterFactory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
