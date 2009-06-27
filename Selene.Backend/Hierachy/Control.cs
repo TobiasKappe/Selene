@@ -6,13 +6,29 @@ namespace Selene.Backend
 {
     public class Control
     {
+        static Exception MemberInfoWrong;
+
+        static Control()
+        {
+            MemberInfoWrong = new Exception("MemberInfo not field or property. This should not happen");
+        }
+
         public string Label;
 
-        [XmlIgnore] public IConverter Converter;
-        [XmlIgnore] public MemberInfo Info;
+        [XmlIgnore]
+        public MemberInfo Info;
 
         [XmlIgnore]
-        public Type Type;
+        public Type Type {
+            get
+            {
+                if(Info.MemberType == MemberTypes.Field)
+                    return (Info as FieldInfo).FieldType;
+                else if(Info.MemberType == MemberTypes.Property)
+                    return (Info as PropertyInfo).PropertyType;
+                else throw MemberInfoWrong;
+            }
+        }
 
         // Loaded by XmlMiner
         public string WantedName;
@@ -33,15 +49,32 @@ namespace Selene.Backend
         {
         }
 
-        public Control(MemberInfo Info, Type BoundType, ControlFlagsAttribute FlagsAttr, ControlAttribute Attribute)
+        public Control(MemberInfo Info, ControlFlagsAttribute FlagsAttr, ControlAttribute Attribute)
         {
             this.Info = Info;
-            this.Type = BoundType;
             Flags = FlagsAttr == null ? null : FlagsAttr.Flags;
 
             // Use field name if no label is specified
             Label = Attribute == null || Attribute.Name == null ? Info.Name : Attribute.Name;
             SubType = Attribute == null ? ControlType.Default : Attribute.Override;
+        }
+
+        public void Save(object To, object Value)
+        {
+            if(Info.MemberType == MemberTypes.Field)
+                (Info as FieldInfo).SetValue(To, Value);
+            else if(Info.MemberType == MemberTypes.Property)
+                (Info as PropertyInfo).SetValue(To, Value, null);
+            else throw MemberInfoWrong;
+        }
+
+        public object Obtain(object From)
+        {
+            if(Info.MemberType == MemberTypes.Field)
+                return (Info as FieldInfo).GetValue(From);
+            else if(Info.MemberType == MemberTypes.Property)
+                return (Info as PropertyInfo).GetValue(From, null);
+            else throw MemberInfoWrong;
         }
 
         public T GetFlag<T>(int Num) where T : class
@@ -91,18 +124,6 @@ namespace Selene.Backend
         public bool GetFlag<T>(ref T Ret) where T : struct
         {
             return GetFlag<T>(0, ref Ret);
-        }
-
-        public T Subclassify<T>() where T : Control, new()
-        {
-            T Ret = new T();
-            Ret.Label = Label;
-            Ret.SubType = SubType;
-            Ret.Info = Info;
-            Ret.Flags = Flags;
-            Ret.Converter = Converter;
-            
-            return Ret;
         }
     }
 }

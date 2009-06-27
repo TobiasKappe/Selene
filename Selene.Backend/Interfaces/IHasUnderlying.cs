@@ -4,8 +4,8 @@ using System;
 namespace Selene.Backend
 {
     // Lolcats ahoy!
-    public interface IHasUnderlying : IConverter
+    public interface IHasUnderlying<WidgetType> : IConverter<WidgetType>
     {
-        void SetUnderlying(Type Given);
+        Type Underlying { set; }
     }
 }
