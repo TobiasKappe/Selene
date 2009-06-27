@@ -4,29 +4,29 @@ using Qyoto;
 
 namespace Selene.Qyoto.Midend
 {
-    public class BoolToggler : ConverterBase<WidgetPair, bool>
+    public class BoolToggler : QConverterProxy<bool>
     {
-        protected override void SetValue (WidgetPair Original, bool Value)
-        {
-            (Original.Widget as QCheckBox).Checked = Value;
+        protected override bool ActualValue {
+            get
+            {
+                return (Widget as QCheckBox).Checked;
+            }
+            set
+            {
+                (Widget as QCheckBox).Checked = value;
+            }
         }
 
-        protected override bool ToValue (WidgetPair Start)
+        protected override QObject Construct ()
         {
-            return (Start.Widget as QCheckBox).Checked;
+            Original.SubType = ControlType.Check;
+            return new QCheckBox(Original.Label);
         }
 
-        protected override WidgetPair ToWidget (WidgetPair Original)
+        protected override string SignalForType (ControlType Type)
         {
-            QCheckBox Box = new QCheckBox(Original.Label);
-            Original.Widget = Box;
-            Original.HasLabel = false;
-            return Original;
-        }
-
-        protected override void ConnectChange (WidgetPair Original, System.EventHandler OnChange)
-        {
-            QWidget.Connect((Original.Widget as QCheckBox), Qt.SIGNAL("toggled(bool)"), delegate { OnChange(null, default(EventArgs)); });
+            if(Type == ControlType.Default) return "toggled(bool)";
+            return null;
         }
     }
 }

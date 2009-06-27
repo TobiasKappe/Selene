@@ -26,21 +26,19 @@ namespace Selene.Qyoto.Frontend
             HasHeading = true;
         }
 
-        public void AddWidget(WidgetPair Add)
+        public void AddWidget(Control Orig, QObject Add)
         {
-            if(Add == null) return;
-
             QHBoxLayout Row = new QHBoxLayout();
 
-            if(Add.HasLabel)
+            if(Orig.SubType != ControlType.Check && Orig.SubType != ControlType.Toggle)
             {
-                Add.LabelWidget = new QLabel(Add.Label);
-                Row.InsertWidget(0, Add.LabelWidget);
-                Add.LabelWidget.Indent = HasHeading ? 20 : 0;
+                QLabel LabelWidget = new QLabel(Orig.Label);
+                Row.InsertWidget(0, LabelWidget);
+                LabelWidget.Indent = HasHeading ? 20 : 0;
             }
 
-            if(Add.Widget is QWidget) Row.InsertWidget(1, Add.Widget as QWidget);
-            if(Add.Widget is QLayout) Row.InsertLayout(1, Add.Widget as QLayout);
+            if(Add is QWidget) Row.InsertWidget(1, Add as QWidget);
+            if(Add is QLayout) Row.InsertLayout(1, Add as QLayout);
 
             InsertLayout(i++, Row, 0);
         }

@@ -6,15 +6,15 @@ using Qyoto;
 
 namespace Selene.Qyoto.Frontend
 {
-    public class NotebookDialog<T> : ModalPresenterBase<T> where T : class
+    public class NotebookDialog<T> : ModalPresenterBase<QObject, T> where T : class
     {
-        private QDialog Dialog;
-        private QTabWidget Tabs;
-        private QPushButton OkButton, CancelButton;
-        private QVBoxLayout Layout;
-        private QHBoxLayout Buttons;
-        private QWidget Page;
-        
+        QDialog Dialog;
+        QTabWidget Tabs;
+        QPushButton OkButton, CancelButton;
+        QVBoxLayout Layout;
+        QHBoxLayout Buttons;
+        QWidget Page;
+
         public NotebookDialog(string Title)
         {
             Dialog = new QDialog();
@@ -48,10 +48,9 @@ namespace Selene.Qyoto.Frontend
         {
             Dialog.Accept();
         }
-        
+
         protected override void Build ()
         {
-            List<Control> StateList = new List<Control>();
             if(Manifest.Categories.Length == 1)
             {
                 CategoryLay Lay = new CategoryLay(Page);
@@ -61,12 +60,12 @@ namespace Selene.Qyoto.Frontend
 
                     foreach(Control Cont in Subcategory.Controls)
                     {
-                        WidgetPair Add = ProcureState(Cont) as WidgetPair;
+                        IConverter<QObject> Converter = ProcureState(Cont);
 
-                        if(Add != null)
+                        if(Converter != null)
                         {
-                            Lay.AddWidget(Add);
-                            StateList.Add(Add);
+                            Lay.AddWidget(Cont, Converter.Construct(Cont));
+                            State.Add(Converter);
                         }
                     }
                 }
@@ -85,12 +84,12 @@ namespace Selene.Qyoto.Frontend
 
                         foreach(Control Cont in Subcategory.Controls)
                         {
-                            WidgetPair Add = ProcureState(Cont) as WidgetPair;
+                            IConverter<QObject> Converter = ProcureState(Cont);
 
-                            if(Add != null)
+                            if(Converter != null)
                             {
-                                Lay.AddWidget(Add);
-                                StateList.Add(Add);
+                                Lay.AddWidget(Cont, Converter.Construct(Cont));
+                                State.Add(Converter);
                             }
                         }
                     }
@@ -99,7 +98,6 @@ namespace Selene.Qyoto.Frontend
                 }
                 Tabs.Show();
             }
-            State = StateList.ToArray();
         }
 
         public override void Hide ()
