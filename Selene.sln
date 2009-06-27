@@ -36,16 +36,16 @@ Global
 		version = 0.1
 		StartupItem = Selene.Testing\Selene.Testing.csproj
 		Policies = $0
-		$0.TextStylePolicy = $1
-		$1.FileWidth = 120
-		$1.TabWidth = 4
-		$1.TabsToSpaces = True
-		$1.NoTabsAfterNonTabs = False
-		$1.RemoveTrailingWhitespace = True
-		$1.EolMarker = Native
-		$0.DotNetNamingPolicy = $2
-		$2.DirectoryNamespaceAssociation = Flat
-		$2.ResourceNamePolicy = FileFormatDefault
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = Flat
+		$1.ResourceNamePolicy = FileFormatDefault
+		$0.TextStylePolicy = $2
+		$2.FileWidth = 120
+		$2.TabWidth = 4
+		$2.TabsToSpaces = True
+		$2.NoTabsAfterNonTabs = False
+		$2.RemoveTrailingWhitespace = True
+		$2.EolMarker = Native
 		name = Selene
 	EndGlobalSection
 EndGlobal
