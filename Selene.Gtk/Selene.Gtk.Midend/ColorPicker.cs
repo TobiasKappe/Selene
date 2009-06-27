@@ -4,44 +4,47 @@ using Gtk;
 
 namespace Selene.Gtk.Midend
 {
-    public class ColorPicker : ConverterBase<WidgetPair, ushort[]>
+    public class ColorPicker : ConverterBase<Widget, ushort[]>
     {
-        protected override ushort[] ToValue (WidgetPair Start)
-        {
-            ColorButton Button = Start.Widget as ColorButton;
-            return new ushort[] { Button.Color.Red, Button.Color.Green, Button.Color.Blue };
+        protected override ushort[] ActualValue {
+            get
+            {
+                ColorButton Button = Widget as ColorButton;
+                return new ushort[] { Button.Color.Red, Button.Color.Green, Button.Color.Blue };
+            }
+            set
+            {
+                Gdk.Color C = GetColor(value);
+                (Widget as ColorButton).Color = C;
+            }
         }
-        
-        private Gdk.Color GetColor(ref ushort[] Value)
+
+        private Gdk.Color GetColor(ushort[] Value)
         {
             if(Value == null) Value = new ushort[] { 0, 0, 0 };
-            
+
             Gdk.Color Ret = new Gdk.Color();
             Ret.Red = Value[0];
             Ret.Green = Value[1];
             Ret.Blue = Value[2];
-            
+
             return Ret;
         }
-        
-        protected override void SetValue (WidgetPair Original, ushort[] Value)
+
+        protected override Widget Construct ()
         {
-            Gdk.Color C = GetColor(ref Value);
-            (Original.Widget as ColorButton).Color = C;
+            return new ColorButton();
         }
 
-        protected override WidgetPair ToWidget (WidgetPair Original)
-        {
-            ColorButton Button = new ColorButton();
-            Original.Widget = Button;
-            Original.Expands = false;
-
-            return Original;
-        }
-
-        protected override void ConnectChange (WidgetPair Original, EventHandler OnChange)
-        {
-            (Original.Widget as ColorButton).ColorSet += OnChange;
+        public override event EventHandler Changed {
+            add
+            {
+                (Widget as ColorButton).ColorSet += value;
+            }
+            remove
+            {
+                (Widget as ColorButton).ColorSet -= value;
+            }
         }
     }
 }

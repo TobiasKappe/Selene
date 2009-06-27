@@ -41,23 +41,24 @@ namespace Selene.Gtk.Frontend
         }
         
         protected override void Build ()
-        {       
+        {
             Counter = 0;
             PerSubcat = true;
-            
-            View = new TreeView(Store); 
-            
+
+            View = new TreeView(Store);
+
             if(!HasRun)
             {
                 Frame BorderMaker = new Frame();
                 BorderMaker.Add(View);
                 MainBox.PackStart(BorderMaker);
             }
+
             base.Build();
-            
+
             View.AppendColumn("Subcategory", new CellRendererText(), "text", 0);
             View.HeadersVisible = false;
-            View.CursorChanged += HandleCursorChanged; 
+            View.CursorChanged += HandleCursorChanged;
             View.CheckResize();
             MainBox.Spacing = 5;
             Book.ShowTabs = false;

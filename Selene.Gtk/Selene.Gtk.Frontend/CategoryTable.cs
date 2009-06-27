@@ -27,20 +27,20 @@ namespace Selene.Gtk.Frontend
             HasHeading = true;
         }
 
-        public void AddWidget(WidgetPair Add)
+        public void AddWidget(Control Cont, Widget Add)
         {
-            Add.Marker = new Label(Add.Label);
-            Add.Marker.SetAlignment(0, 0.5f);
+            Label Marker = new Label(Cont.Label);
+            Marker.SetAlignment(0, 0.5f);
             uint Indent = HasHeading ? 20u : 0u;
 
-            if(Add.HasLabel)
+            if(Cont.SubType != ControlType.Check && Cont.SubType != ControlType.Toggle)
             {
-                Attach(Add.Marker, 0, 1, CurrentRow, CurrentRow+1, AttachOptions.Expand | AttachOptions.Fill, AttachOptions.Shrink, Indent, 0);
-                Attach(Add.Widget, 1, 2, CurrentRow, CurrentRow+1, AttachOptions.Expand | AttachOptions.Fill, AttachOptions.Shrink, 0, 0);
+                Attach(Marker, 0, 1, CurrentRow, CurrentRow+1, AttachOptions.Expand | AttachOptions.Fill, AttachOptions.Shrink, Indent, 0);
+                Attach(Add, 1, 2, CurrentRow, CurrentRow+1, AttachOptions.Expand | AttachOptions.Fill, AttachOptions.Shrink, 0, 0);
             }
             else
             {
-                Attach(Add.Widget, 0, 2, CurrentRow, CurrentRow+1, AttachOptions.Expand | AttachOptions.Fill, AttachOptions.Shrink, Indent, 0);
+                Attach(Add, 0, 2, CurrentRow, CurrentRow+1, AttachOptions.Expand | AttachOptions.Fill, AttachOptions.Shrink, Indent, 0);
             }
             CurrentRow++;
         }

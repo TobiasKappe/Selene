@@ -1,103 +1,107 @@
 using System;
 using System.Reflection;
+using System.Collections.Generic;
 using Selene.Backend;
 using Gtk;
 
 namespace Selene.Gtk.Midend
-{   
-    public class EnumChooser : EnumBase
+{
+    public class EnumChooser : EnumBase<Widget>
     {
-        protected override int GetIndex (Control Start)
-        {
-            WidgetPair Original = Start as WidgetPair;
-            if(Original.SubType == ControlType.Radio)
+        RadioButton FirstBorn;
+
+        protected override int CurrentIndex {
+            get
             {
-                Box B = (Original.Widget as Box);
-                int i;
-                for(i = 0; i < B.Children.Length; i++)
+                if(Original.SubType == ControlType.Radio)
                 {
-                    if((B.Children[i] as RadioButton).Active) return i;
+                    Box B = (Widget as Box);
+                    int i;
+                    for(i = 0; i < B.Children.Length; i++)
+                    {
+                        if((B.Children[i] as RadioButton).Active) return i;
+                    }
+                }
+                else if(Original.SubType == ControlType.Dropdown || Original.SubType == ControlType.Default)
+                    return (Widget as ComboBox).Active;
+
+                return 0;
+            }
+            set
+            {
+                if(Original.SubType == ControlType.Radio)
+                {
+                    Box B = (Widget as Box);
+                    (B.Children[value] as RadioButton).Active = true;
+                }
+                else if(Original.SubType == ControlType.Dropdown || Original.SubType == ControlType.Default)
+                {
+                    (Widget as ComboBox).Active = value;
                 }
             }
-            else if(Original.SubType == ControlType.Dropdown || Original.SubType == ControlType.Default)
-                return (Original.Widget as ComboBox).Active;
-            
-            return 0;
         }
 
-        protected override void SetIndex (Control Start, int Index)
+        protected override ControlType[] Supported {
+            get {
+                return new ControlType[] { ControlType.Default, ControlType.Radio, ControlType.Dropdown };
+            }
+        }
+
+        protected override void AddOption (string Value)
         {
-            WidgetPair Original = Start as WidgetPair;
             if(Original.SubType == ControlType.Radio)
             {
-                Box B = (Original.Widget as Box);
-                (B.Children[Index] as RadioButton).Active = true;
+                RadioButton Button;
+
+                if(FirstBorn == null)
+                    Button = FirstBorn = new RadioButton(Value);
+                else Button = new RadioButton(FirstBorn, Value);
+
+                (Widget as Box).Add(Button);
             }
-            else if(Original.SubType == ControlType.Dropdown || Original.SubType == ControlType.Default)
-            {
-                (Original.Widget as ComboBox).Active = Index;
-            }
+            else (Widget as ComboBox).AppendText(Value);
         }
 
-        protected override Control ToWidget (Control Start, string[] Values)
+        protected override Widget Construct ()
         {
-            Widget Ret = null;
-            WidgetPair Original = new WidgetPair(Start);
-
             if(Original.SubType == ControlType.Radio)
             {
                 bool Vertical = false;
-                Start.GetFlag<bool>(ref Vertical);
-                
+                Original.GetFlag<bool>(ref Vertical);
+
                 Box Box;
                 if(Vertical) Box = new VBox();
                 else Box = new HBox();
-                
-                RadioButton FirstBorn = null;
-                
-                foreach(string Str in Values)
-                {
-                    if(FirstBorn == null)
-                    {
-                        FirstBorn = new RadioButton(Str);
-                        Box.Add(FirstBorn);
-                    }
-                    else
-                    {
-                        RadioButton Button = new RadioButton(FirstBorn, Str);
-                        Box.Add(Button);
-                    }   
-                }
-                Ret = Box;
+
+                return Box;
             }
             else if(Original.SubType == ControlType.Dropdown || Original.SubType == ControlType.Default)
             {
-                ComboBox Box = ComboBox.NewText();
-                foreach(string Str in Values)
-                {
-                    Box.AppendText(Str);
-                }
-                Box.Active = 0;
-                Ret = Box;
+                return ComboBox.NewText();
             }
             else throw new OverrideException(typeof(Enum), Original.SubType, ControlType.Dropdown, ControlType.Radio);
-            
-            Original.Widget = Ret;
-            return Original;
         }
 
-        public override void ConnectChange (Control Start, EventHandler OnChange)
+        void EventChange(EventHandler Subject, bool Add)
         {
-            WidgetPair WP;
-
-            WP = Start as WidgetPair;
-            if(Start.SubType == ControlType.Default || Start.SubType == ControlType.Dropdown)
-                (WP.Widget as ComboBox).Changed += OnChange;
-            else if(Start.SubType == ControlType.Radio)
+            if(Original.SubType == ControlType.Default || Original.SubType == ControlType.Dropdown)
             {
-                foreach(RadioButton B in (WP.Widget as Box).Children)
-                    B.Clicked += OnChange;
+                if(Add) (Widget as ComboBox).Changed += Subject;
+                else (Widget as ComboBox).Changed -= Subject;
             }
+            else if(Original.SubType == ControlType.Radio)
+            {
+                foreach(RadioButton B in (Widget as Box).Children)
+                {
+                    if(Add) B.Clicked += Subject;
+                    else B.Clicked -= Subject;
+                }
+            }
+        }
+
+        public override event EventHandler Changed {
+            add { EventChange(value, true); }
+            remove { EventChange(value, false); }
         }
     }
 }

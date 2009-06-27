@@ -47,8 +47,6 @@ namespace Selene.Gtk.Midend
 
         void EventChange(EventHandler Subject, bool Add)
         {
-            Console.WriteLine("asd");
-
             if(Original.SubType == ControlType.Entry || Original.SubType == ControlType.Default)
             {
                 if(Add) (Widget as Entry).Changed += Subject;

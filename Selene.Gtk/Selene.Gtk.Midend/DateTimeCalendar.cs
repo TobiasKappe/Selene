@@ -3,30 +3,34 @@ using Selene.Backend;
 using Gtk;
 
 namespace Selene.Gtk.Midend
-{   
-    public class DateTimeCalendar : ConverterBase<WidgetPair, DateTime>
+{
+    public class DateTimeCalendar : ConverterBase<Widget, DateTime>
     {
-        protected override DateTime ToValue (WidgetPair Start)
-        {
-            return (Start.Widget as Calendar).Date;
-        }
-        
-        protected override void SetValue (WidgetPair Original, DateTime Value)
-        {
-            (Original.Widget as Calendar).Date = Value;
-        }
-
-        protected override WidgetPair ToWidget (WidgetPair Original)
-        {
-            Calendar Cal = new Calendar();
-            Original.Widget = Cal;
-
-            return Original;
+        protected override DateTime ActualValue {
+            get
+            {
+                return (Widget as Calendar).Date;
+            }
+            set
+            {
+                (Widget as Calendar).Date = value;
+            }
         }
 
-        protected override void ConnectChange (WidgetPair Original, EventHandler OnChange)
+        protected override Widget Construct ()
         {
-            (Original.Widget as Calendar).DaySelected += OnChange;
+            return new Calendar();
+        }
+
+        public override event EventHandler Changed {
+            add
+            {
+                (Widget as Calendar).DaySelected += value;
+            }
+            remove
+            {
+                (Widget as Calendar).DaySelected -= value;
+            }
         }
     }
 }
