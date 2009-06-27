@@ -16,12 +16,11 @@ namespace Selene.Testing
     {
         class PropertyTest
         {
-            bool mCheckMe = false;
-
             public bool CheckMe {
-                get { return mCheckMe; }
-                set { mCheckMe = value; }
+                get { return !Asd; }
+                set { Asd = !value; }
             }
+            internal bool Asd;
 
             public bool FieldChecker;
         }
@@ -30,13 +29,14 @@ namespace Selene.Testing
         [Test]
         public void Property()
         {
-            var Dialog = new NotebookDialog<PropertyTest>("Selene");
+            var Dialog = new NotebookDialog<PropertyTest>("Check both");
             var Test = new PropertyTest();
 
             Dialog.Run(Test);
 
-            Console.WriteLine(Test.CheckMe);
-            Console.WriteLine(Test.FieldChecker);
+            Assert.IsTrue(Test.FieldChecker);
+            Assert.IsTrue(Test.CheckMe);
+            Assert.IsFalse(Test.Asd);
         }
     }
 }
