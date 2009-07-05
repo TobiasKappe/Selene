@@ -38,6 +38,8 @@ namespace Selene.Backend
             Values = Enum.GetValues(mUnderlying) as int[];
 
             foreach(string Name in Names) AddOption(Name);
+
+            CurrentIndex = 0;
         }
 
         protected abstract void AddOption(string Value);
