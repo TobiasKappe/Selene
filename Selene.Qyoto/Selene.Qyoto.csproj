@@ -42,6 +42,7 @@
     <Compile Include="Selene.Qyoto.Midend\DateTimeEdit.cs" />
     <Compile Include="Selene.Qyoto.Frontend\WizardDialog.cs" />
     <Compile Include="Selene.Qyoto.Midend\QConverterProxy.cs" />
+    <Compile Include="Selene.Qyoto.Frontend\QModalDialog.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Selene.Qyoto.Midend\" />
