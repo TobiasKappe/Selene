@@ -37,19 +37,20 @@ namespace Selene.Testing
         {
             GroupingTest Save = new GroupingTest();
 
-            var Present = new NotebookDialog<GroupingTest>("OK if categories fit");
+            IModalPresenter<GroupingTest> Present = new NotebookDialog<GroupingTest>("OK if categories fit");
             Assert.IsTrue(Present.Run(Save));
-            
-#if GTK
+
             Present = new ListStoreDialog<GroupingTest>("OK if categories fit");
             Assert.IsTrue(Present.Run(Save));
             
             Present = new TreeStoreDialog<GroupingTest>("OK if categories fit");
             Assert.IsTrue(Present.Run(Save));
-            
-            /* Since WizardDialog is not modal, we need to come up with 
+
+#if GTK
+
+            /* Since WizardDialog is not modal, we need to come up with
                another way to signal that the dialog has run. */
-            
+
             // Present = new WizardDialog<GroupingTest>("OK if categories fit");
             // Assert.IsTrue(Present.Run(Save));
 #endif
