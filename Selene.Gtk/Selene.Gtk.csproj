@@ -44,7 +44,6 @@
     <Compile Include="Selene.Gtk.Midend\DateTimeCalendar.cs" />
     <Compile Include="Selene.Gtk.Midend\EnumChooser.cs" />
     <Compile Include="Selene.Gtk.Midend\StringEntry.cs" />
-    <Compile Include="Selene.Gtk.Midend\WidgetPair.cs" />
     <Compile Include="Selene.Gtk.Frontend\ListStoreDialog.cs" />
     <Compile Include="Selene.Gtk.Frontend\NotebookDialog.cs" />
     <Compile Include="Selene.Gtk.Frontend\TreeStoreDialog.cs" />

@@ -35,7 +35,6 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Selene.Qyoto.Midend\StringEntry.cs" />
-    <Compile Include="Selene.Qyoto.Midend\WidgetPair.cs" />
     <Compile Include="Selene.Qyoto.Frontend\NotebookDialog.cs" />
     <Compile Include="Selene.Qyoto.Frontend\SubcatLay.cs" />
     <Compile Include="Selene.Qyoto.Midend\BoolToggler.cs" />
