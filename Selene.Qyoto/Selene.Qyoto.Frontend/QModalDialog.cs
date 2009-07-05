@@ -76,17 +76,31 @@ namespace Selene.Qyoto.Frontend
             {
                 if(Cat.Subcategories.Length > 1) Lay.AddHeading(Subcat);
 
-                foreach(Control Cont in Subcat.Controls)
-                {
-                    IConverter<QObject> Converter = ProcureState(Cont);
+                AddSubcategory(Lay, Subcat, false);
+            }
 
-                    if(Converter != null)
-                    {
-                        Lay.AddWidget(Cont, Converter.Construct(Cont));
-                        State.Add(Converter);
-                    }
+            Lay.AddStretch(1);
+        }
+
+        internal void AddSubcategory(CategoryLay Lay, ControlSubcategory Subcat)
+        {
+            AddSubcategory(Lay, Subcat, true);
+        }
+
+        void AddSubcategory(CategoryLay Lay, ControlSubcategory Subcat, bool Stretch)
+        {
+            foreach(Control Cont in Subcat.Controls)
+            {
+                IConverter<QObject> Converter = ProcureState(Cont);
+
+                if(Converter != null)
+                {
+                    Lay.AddWidget(Cont, Converter.Construct(Cont));
+                    State.Add(Converter);
                 }
             }
+
+            if(Stretch) Lay.AddStretch(1);
         }
     }
 }
