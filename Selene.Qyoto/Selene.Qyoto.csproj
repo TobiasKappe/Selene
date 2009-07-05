@@ -43,6 +43,7 @@
     <Compile Include="Selene.Qyoto.Frontend\WizardDialog.cs" />
     <Compile Include="Selene.Qyoto.Midend\QConverterProxy.cs" />
     <Compile Include="Selene.Qyoto.Frontend\QModalDialog.cs" />
+    <Compile Include="Selene.Qyoto.Frontend\ListStoreDialog.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Selene.Qyoto.Midend\" />
