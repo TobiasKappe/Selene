@@ -24,7 +24,7 @@ namespace Selene.Backend
 
                 for(int i = 0; i < Values.Length; i++)
                 {
-                    if(Values[i] == (int)value)
+                    if(Values[i] == Convert.ToInt32(value))
                         CurrentIndex = i;
                 }
             }
