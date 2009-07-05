@@ -17,6 +17,12 @@ namespace Selene.Qyoto.Midend
             }
         }
 
+        protected override ControlType[] Supported {
+            get {
+                return new ControlType[] { ControlType.Default, ControlType.Check };
+            }
+        }
+
         protected override QObject Construct ()
         {
             Original.SubType = ControlType.Check;
@@ -25,8 +31,7 @@ namespace Selene.Qyoto.Midend
 
         protected override string SignalForType (ControlType Type)
         {
-            if(Type == ControlType.Default) return "toggled(bool)";
-            return null;
+            return "toggled(bool)";
         }
     }
 }
