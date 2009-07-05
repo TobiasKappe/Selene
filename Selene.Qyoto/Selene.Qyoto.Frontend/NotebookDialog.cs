@@ -41,7 +41,6 @@ namespace Selene.Qyoto.Frontend
 
                     AddCategory(Lay, Category);
 
-                    Lay.AddSpacerItem(new QSpacerItem(0, 0, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding));
                     Tabs.AddTab(Page, Category.Name);
                 }
                 Tabs.Show();
