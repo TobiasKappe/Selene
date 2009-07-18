@@ -29,7 +29,7 @@ namespace Selene.Qyoto.Frontend
             Stack.SetCurrentIndex(int.Parse(Current.Text(1)));
         }
 
-        protected override void Build ()
+        protected override void Build (ControlManifest Manifest)
         {
             int i = 0;
             foreach(ControlCategory Cat in Manifest.Categories)

@@ -21,7 +21,7 @@ namespace Selene.Qyoto.Frontend
             InnerLayout.AddWidget(Tabs);
         }
 
-        protected override void Build ()
+        protected override void Build (ControlManifest Manifest)
         {
             if(Manifest.Categories.Length == 1)
             {

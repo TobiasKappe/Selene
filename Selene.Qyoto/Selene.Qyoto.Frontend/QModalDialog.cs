@@ -4,7 +4,7 @@ using Qyoto;
 
 namespace Selene.Qyoto.Frontend
 {
-    public abstract class QModalDialog<T> : ModalPresenterBase<QObject, T> where T : class
+    public abstract class QModalDialog<T> : ModalPresenterBase<QObject> where T : class
     {
         protected QDialog Dialog;
         protected QHBoxLayout InnerLayout;
@@ -53,10 +53,8 @@ namespace Selene.Qyoto.Frontend
             Dialog.Hide();
         }
 
-        public override bool Run (T Present)
+        protected override bool Run()
         {
-            base.Run (Present);
-
             if(Dialog.Exec() == 1)
             {
                 Save();
