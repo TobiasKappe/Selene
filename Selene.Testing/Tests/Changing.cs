@@ -39,7 +39,7 @@ namespace Selene.Testing
         public void Changing()
         {
             var Dialog = new NotebookDialog<Change>("Selene");
-            Dialog.SubscribeAllChange(HandleChange);
+            Dialog.SubscribeAllChange<Change>(HandleChange);
             Dialog.Run(new Change());
 
             // We stuplidly assume every widget is changed once

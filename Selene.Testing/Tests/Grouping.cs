@@ -37,7 +37,7 @@ namespace Selene.Testing
         {
             GroupingTest Save = new GroupingTest();
 
-            IModalPresenter<GroupingTest> Present = new NotebookDialog<GroupingTest>("OK if categories fit");
+            IModalPresenter Present = new NotebookDialog<GroupingTest>("OK if categories fit");
             Assert.IsTrue(Present.Run(Save));
 
             Present = new ListStoreDialog<GroupingTest>("OK if categories fit");
