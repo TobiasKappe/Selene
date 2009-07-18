@@ -12,6 +12,7 @@ namespace Selene.Gtk.Frontend
 
         public IValidator<T> Validator {
             set { mValidator = value; }
+            get { return mValidator; }
         }
 
         T Dummy;

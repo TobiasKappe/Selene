@@ -28,6 +28,7 @@ namespace Selene.Backend
                 mUnderlying = value;
                 Manifest = ManifestCache.Retreive(value);
             }
+            get { return mUnderlying; }
         }
 
         #region Manipulation functions

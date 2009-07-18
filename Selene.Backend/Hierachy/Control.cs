@@ -84,9 +84,10 @@ namespace Selene.Backend
             int Current = 0;
             foreach(object Flag in Flags)
             {
-                if(Flag is T)
+                T Ret = Flag as T;
+                if(Ret != null)
                 {
-                    if(Current == Num) return Flag as T;
+                    if(Current == Num) return Ret;
                     Current++;
                 }
             }

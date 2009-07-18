@@ -3,18 +3,19 @@ using System;
 
 namespace Selene.Backend
 {
-    public class ControlAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+    public sealed class ControlAttribute : Attribute
     {
-        internal string mCategory = null;
-        internal string mSubcategory = null;
-        internal string mName = null;
-        internal ControlType mOverride = ControlType.Default;
+        string mCategory = null;
+        string mSubcategory = null;
+        string mName = null;
+        ControlType mOverride = ControlType.Default;
         
         public string Category {
             get { return mCategory; }
             set { mCategory = value; }
         }
-        
+
         public string Subcategory {
             get { return mSubcategory; }
             set { mSubcategory = value; }

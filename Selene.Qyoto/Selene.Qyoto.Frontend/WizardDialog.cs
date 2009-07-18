@@ -19,6 +19,7 @@ namespace Selene.Qyoto.Frontend
                     mComplete = value;
                     base.Emit.CompleteChanged();
                 }
+                get { return IsComplete(); }
             }
 
             public override bool IsComplete ()
@@ -33,6 +34,7 @@ namespace Selene.Qyoto.Frontend
 
         public IValidator<T> Validator {
             set { mValidator = value; }
+            get { return mValidator; }
         }
 
         public WizardDialog(string Title)

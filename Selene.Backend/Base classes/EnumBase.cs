@@ -11,6 +11,7 @@ namespace Selene.Backend
 
         public Type Underlying {
             set { mUnderlying = value; }
+            get { return mUnderlying; }
         }
 
         protected sealed override Enum ActualValue {

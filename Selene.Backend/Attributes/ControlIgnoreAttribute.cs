@@ -1,9 +1,9 @@
 using System;
 
 namespace Selene.Backend
-{   
-    [AttributeUsage(AttributeTargets.Field)]
-    public class ControlIgnoreAttribute : Attribute
+{
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+    public sealed class ControlIgnoreAttribute : Attribute
     {
         public ControlIgnoreAttribute()
         {

@@ -3,13 +3,18 @@ using System;
 
 namespace Selene.Backend
 {
-    public class ControlFlagsAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+    public sealed class ControlFlagsAttribute : Attribute
     {
-        public object[] Flags;
-        
+        object[] mFlags;
+
+        public object[] Flags {
+            get { return mFlags; }
+        }
+
         public ControlFlagsAttribute(params object[] Flags)
         {
-            this.Flags = Flags;
+            mFlags = Flags;
         }
     }
 }

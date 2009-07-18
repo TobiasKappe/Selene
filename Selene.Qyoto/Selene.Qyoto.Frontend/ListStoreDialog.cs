@@ -39,7 +39,7 @@ namespace Selene.Qyoto.Frontend
                 Widg.SetLayout(Lay);
                 Stack.AddWidget(Widg);
 
-                var Item = new QListWidgetItem(Cat.Name, List);
+                new QListWidgetItem(Cat.Name, List);
             }
 
             if(Manifest.Categories.Length == 1) List.Hide();

@@ -3,13 +3,17 @@ using System;
 namespace Selene.Backend
 {   
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
-    public class ControlManifestAttribute : Attribute
+    public sealed class ControlManifestAttribute : Attribute
     {
-        public string ManifestFile;
-        
+        string mManifestFile;
+
+        public string ManifestFile {
+            get { return mManifestFile; }
+        }
+
         public ControlManifestAttribute(string ManifestFile)
         {
-            this.ManifestFile = ManifestFile;
+            this.mManifestFile = ManifestFile;
         }
     }
 }

@@ -5,6 +5,6 @@ namespace Selene.Backend
 {
     public interface IValidatable<T> 
     {
-        IValidator<T> Validator { set; }
+        IValidator<T> Validator { set; get; }
     }
 }

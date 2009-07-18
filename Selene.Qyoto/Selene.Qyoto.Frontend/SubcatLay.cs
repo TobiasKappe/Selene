@@ -37,8 +37,11 @@ namespace Selene.Qyoto.Frontend
                 LabelWidget.Indent = HasHeading ? 20 : 0;
             }
 
-            if(Add is QWidget) Row.InsertWidget(1, Add as QWidget, 0, (uint) AlignmentFlag.AlignLeft);
-            if(Add is QLayout) Row.InsertLayout(1, Add as QLayout, 0);
+            QWidget Widg = Add as QWidget;
+            QLayout Lay = Add as QLayout;
+
+            if(Widg != null) Row.InsertWidget(1, Widg, 0, (uint) AlignmentFlag.AlignLeft);
+            if(Lay != null) Row.InsertLayout(1, Lay, 0);
 
             InsertLayout(i++, Row, 0);
         }
