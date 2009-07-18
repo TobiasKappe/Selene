@@ -3,23 +3,25 @@ using System.Reflection;
 
 namespace Selene.Backend
 {
-    public abstract class ModalPresenterBase<WidgetType, T> : DisplayBase<WidgetType, T>, IModalPresenter<T> where T : class
+    public abstract class ModalPresenterBase<WidgetType> : DisplayBase<WidgetType>, IModalPresenter
     {
         static ModalPresenterBase()
         {
             CacheConverters(Assembly.GetCallingAssembly());
         }
 
-        protected ModalPresenterBase()
+        public bool Run<T>(T Present)
         {
+            return Run(typeof(T), Present);
         }
 
-        public virtual bool Run(T Present)
+        // Used by ListViewerBase
+        internal bool Run(Type T, object Present)
         {
-            Prepare(Present);
-            Show();
-
-            return true;
+            Prepare(T, Present);
+            return Run();
         }
+
+        protected abstract bool Run();
     }
 }

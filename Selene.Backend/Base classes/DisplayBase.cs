@@ -4,40 +4,26 @@ using System.Collections.Generic;
 
 namespace Selene.Backend
 {
-    public abstract class DisplayBase <WidgetType, SaveType> : IPresenter<SaveType> where SaveType : class
+    public abstract class DisplayBase <WidgetType> : IPresenter
     {
-        protected static ControlManifest Manifest;
         protected static ConverterFactory<WidgetType> Factory;
 
-        protected SaveType Present;
         protected List<IConverter<WidgetType>> State;
+        protected Type LastType;
+        protected object Present;
 
         bool HasBuilt {
             get { return State.Count > 0; }
         }
 
-        protected static void CacheConverters(Assembly Caller)
+        internal static void CacheConverters(Assembly Calling)
         {
-            Factory = Introspector.GetConverters<WidgetType>(Caller);
-
-            if(typeof(SaveType) != typeof(object))
-                Manifest = Introspector.Inspect(typeof(SaveType));
+            Factory = Introspector.GetConverters<WidgetType>(Calling);
         }
 
-        internal static void ForceInspect(Type Inspect)
+        public static void StubManifest<T>(string Filename)
         {
-            Manifest = Introspector.Inspect(Inspect);
-        }
-
-        public static void StubManifest(string Filename)
-        {
-            ForceInspect(typeof(SaveType));
-            Manifest.Save(Filename);
-        }
-
-        protected DisplayBase()
-        {
-            State = new List<IConverter<WidgetType>>();
+            ManifestCache.Retreive(typeof(T)).Save(Filename);
         }
 
         protected IConverter<WidgetType> ProcureState(Control Original)
@@ -56,6 +42,7 @@ namespace Selene.Backend
             if(Original.Type.IsEnum)
             {
                 var Viewer = (IHasUnderlying<WidgetType>) Factory.Construct(typeof(Enum));
+
                 Viewer.Underlying = Original.Type;
 
                 return Viewer;
@@ -70,44 +57,54 @@ namespace Selene.Backend
             Save(Present);
         }
 
-        public void Save(SaveType To)
+        public void Save(object To)
         {
-            ConstructState();
             foreach(IConverter<WidgetType> Converter in State)
                 Converter.Primitive.Save(To, Converter.Value);
         }
         #endregion
 
-        public void SubscribeAllChange(EventHandler Handler)
+        public void SubscribeAllChange<T>(EventHandler Handler)
         {
-            ConstructState();
+            Prepare(typeof(T), null, false);
             foreach(IConverter<WidgetType> Converter in State)
                 Converter.Changed += Handler;
         }
 
-        private void SetFields()
+        internal void SetFields()
         {
-            ConstructState();
             foreach(IConverter<WidgetType> Converter in State)
                 Converter.Value = Converter.Primitive.Obtain(Present);
         }
 
-        protected void Prepare(SaveType Present)
+        protected void Prepare(Type For, object Present, bool DoShow)
         {
+            if(LastType == null)
+            {
+                LastType = For;
+                State = new List<IConverter<WidgetType>>();
+                Build(ManifestCache.Retreive(For));
+            }
+            else if(For != LastType)
+            {
+                throw new Exception("This type already settled for "+LastType);
+            }
+
             this.Present = Present;
 
-            ConstructState();
-            SetFields();
+            if(Present != null) SetFields();
+
+            if(DoShow) Show();
         }
 
-        void ConstructState()
+        protected void Prepare(Type For, object Present)
         {
-            if(HasBuilt) return;
-            Build();
+            Prepare(For, Present, true);
         }
 
         #region Abstract members
-        protected abstract void Build();
+        protected abstract void Build(ControlManifest Manifest);
+
         public abstract void Hide();
         public abstract void Show();
         #endregion

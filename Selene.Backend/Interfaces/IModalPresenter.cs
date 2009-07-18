@@ -3,8 +3,8 @@ using System;
 
 namespace Selene.Backend
 {
-    public interface IModalPresenter<T> : IPresenter<T>
+    public interface IModalPresenter : IPresenter
     {
-        bool Run(T Presented);
+        bool Run<T>(T Presented);
     }
 }

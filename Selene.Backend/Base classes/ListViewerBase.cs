@@ -7,7 +7,8 @@ namespace Selene.Backend
     public abstract class ListViewerBase<WidgetType> : ConverterBase<WidgetType, object[]>, IHasUnderlying<WidgetType>
     {
         protected int Counter = 0;
-        protected ModalPresenterBase<WidgetType, object> Dialog;
+        protected ModalPresenterBase<WidgetType> Dialog;
+        protected ControlManifest Manifest;
 
         protected bool AllowsEdit = true, AllowsRemove = true,
             AllowsAdd = true, GreyButtons = false;
@@ -22,9 +23,10 @@ namespace Selene.Backend
             set
             {
                 if((Constructor = value.GetConstructor(Type.EmptyTypes)) == null)
-                    throw new InspectionException(value, "Type for list view should contain paramaterless constructor");
+                    throw new InspectionException(value, "Type for list view should contain parameterless constructor");
 
                 mUnderlying = value;
+                Manifest = ManifestCache.Retreive(value);
             }
         }
 
@@ -38,43 +40,32 @@ namespace Selene.Backend
         protected void AddRow()
         {
             object Fill = Constructor.Invoke(null);
-
-            if(!Inspected)
-            {
-                DisplayBase<WidgetType, object>.ForceInspect(mUnderlying);
-                Inspected = true;
-            }
-            bool Ret = Dialog.Run(Fill);
+            bool Ret = Dialog.Run(mUnderlying, Fill);
 
             if(!Ret) return;
             Content.Add(Fill);
             RowAdded(i++, BreakItDown(Fill));
         }
-        
+
         protected void EditRow(int Id)
         {
-            Dialog.Run(Content[Id]);
+            Dialog.Run(mUnderlying, Content[Id]);
             RowEdited(Id, BreakItDown(Content[Id]));
         }
         #endregion
-        
+
         #region Auxiliary functions
         private object[] BreakItDown(object Begin)
         {
-            return BreakItDown(Begin, Begin.GetType().GetFields());
-        }
-        
-        private object[] BreakItDown(object Begin, FieldInfo[] Infos)
-        {
-            List<object> Ret = new List<object>();
             if(Begin == null) return null;
-            
-            foreach(FieldInfo Info in Infos)
-            {
-                if(!IsViewable(Info.FieldType)) continue;
-                Ret.Add(Info.GetValue(Begin));
-            }
-                        
+
+            List<object> Ret = new List<object>();
+
+            Manifest.EachControl(delegate(ref Control Cont) {
+                if(IsViewable(Cont.Type))
+                    Ret.Add(Cont.Obtain(Begin));
+            });
+
             return Ret.ToArray();
         }
         #endregion
@@ -83,6 +74,10 @@ namespace Selene.Backend
         protected sealed override object[] ActualValue {
             set
             {
+                if(value == null) return;
+
+                Clear();
+                Content.Clear();
                 foreach(object Item in (object[])value)
                 {
                     object[] Columns = BreakItDown(Item);
@@ -108,7 +103,7 @@ namespace Selene.Backend
                 return GoodType;
             }
         }
-        
+
         protected sealed override WidgetType Construct()
         {
             Original.GetFlag<bool>(0, ref AllowsEdit);
@@ -116,25 +111,22 @@ namespace Selene.Backend
             Original.GetFlag<bool>(2, ref AllowsAdd);
             Original.GetFlag<bool>(3, ref GreyButtons);
 
-            Content = new List<object>();
-            FieldInfo[] Infos = mUnderlying.GetFields();
-            
             List<Type> Primitives = new List<Type>();
-            
-            foreach(FieldInfo Info in Infos)
-            {
-                if(IsViewable(Info.FieldType))
-                    Primitives.Add(Info.FieldType);
-            }
+            Content = new List<object>();
+
+            Manifest.EachControl(delegate(ref Control Cont) {
+                if(IsViewable(Cont.Type))
+                    Primitives.Add(Cont.Type);
+            });
+
             Primitives.Add(typeof(int));
-            
+
             WidgetType Widget = Construct(Primitives.ToArray());
 
-            foreach(FieldInfo Info in Infos)
-            {
-                if(IsViewable(Info.FieldType))
-                    AddColumn(Info.Name, Info.FieldType);
-            }
+            Manifest.EachControl(delegate(ref Control Cont) {
+                if(IsViewable(Cont.Type))
+                    AddColumn(Cont.Label, Cont.Type);
+            });
 
             Dialog = MakeDialog();
 
@@ -149,7 +141,8 @@ namespace Selene.Backend
         protected abstract void RowAdded(int Id, object[] Items);
         protected abstract void RowEdited(int Id, object[] Items);
         protected abstract bool IsViewable(Type T);
-        protected abstract ModalPresenterBase<WidgetType, object> MakeDialog();
+        protected abstract ModalPresenterBase<WidgetType> MakeDialog();
+        protected abstract void Clear();
         #endregion
     }
 }

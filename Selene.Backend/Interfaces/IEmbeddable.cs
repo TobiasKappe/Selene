@@ -3,9 +3,9 @@ using System;
 
 namespace Selene.Backend
 {   
-    public interface IEmbeddable<P, T>
+    public interface IEmbeddable<TWidget, TSave>
     {
-        T Content(P Present);
+        TWidget Content(TSave Present);
         bool IsEmbedded { get; }
     }
 }

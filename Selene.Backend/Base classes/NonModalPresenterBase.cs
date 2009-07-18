@@ -3,14 +3,14 @@ using System.Reflection;
 
 namespace Selene.Backend
 {
-    public abstract class NonModalPresenterBase<WidgetType, T> : DisplayBase<WidgetType, T>, INonModalPresenter<T> where T : class
+    public abstract class NonModalPresenterBase<WidgetType> : DisplayBase<WidgetType>, INonModalPresenter
     {
         static NonModalPresenterBase()
         {
             CacheConverters(Assembly.GetCallingAssembly());
         }
 
-        public event Done OnDone;
+        public event Done Finished;
 
         public bool Success {
             get {
@@ -21,20 +21,19 @@ namespace Selene.Backend
             }
             protected set {
                 Done = value;
-                if(OnDone != null) OnDone(Done.Value);
+                if(Finished != null) Finished(Done.Value);
             }
         }
 
         protected bool? Done = null;
 
-        protected NonModalPresenterBase()
+        public void Run<T>(T Present)
         {
+            Prepare(typeof(T), Present);
+
+            Run();
         }
 
-        public virtual void Run(T Present)
-        {
-            Prepare(Present);
-            Show();
-        }
+        protected abstract void Run();
     }
 }

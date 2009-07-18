@@ -3,7 +3,7 @@ using System;
 
 namespace Selene.Backend
 {   
-    public interface IPresenter<T>
+    public interface IPresenter
     {
         void Save();
         void Show();
