@@ -15,7 +15,7 @@ namespace Selene.Gtk.Midend
         int CurrentColumn = 0;
         EventHandler OnChange;
 
-        protected override ModalPresenterBase<Widget, object> MakeDialog()
+        protected override ModalPresenterBase<Widget> MakeDialog()
         {
             return new NotebookDialog<object>(Original.GetFlag<string>());
         }
@@ -172,6 +172,11 @@ namespace Selene.Gtk.Midend
             if(T == typeof(Boolean)) return true;
 
             return false;
+        }
+
+        protected override void Clear ()
+        {
+            Store.Clear();
         }
 
         public override event EventHandler Changed {

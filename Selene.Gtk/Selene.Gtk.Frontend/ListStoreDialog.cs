@@ -22,20 +22,20 @@ namespace Selene.Gtk.Frontend
             Store = new ListStore(typeof(string), typeof(int));
         }
         
-        protected override void Build ()
+        protected override void Build (ControlManifest Manifest)
         {
             View = new TreeView(Store);
             View.AppendColumn("Category", new CellRendererText(), "text", 0);
             View.HeadersVisible = false;
             Frame BorderMaker = new Frame();
-            
+
             if(!HasRun)
             {
                 BorderMaker.Add(View);
                 MainBox.Add(BorderMaker);
             }
-            
-            base.Build();
+
+            base.Build(Manifest);
 
             Book.ShowTabs = false;
             Book.ShowBorder = false;

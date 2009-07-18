@@ -40,7 +40,7 @@ namespace Selene.Gtk.Frontend
             Switch(Path);
         }
         
-        protected override void Build ()
+        protected override void Build (ControlManifest Manifest)
         {
             Counter = 0;
             PerSubcat = true;
@@ -54,7 +54,7 @@ namespace Selene.Gtk.Frontend
                 MainBox.PackStart(BorderMaker);
             }
 
-            base.Build();
+            base.Build(Manifest);
 
             View.AppendColumn("Subcategory", new CellRendererText(), "text", 0);
             View.HeadersVisible = false;

@@ -5,7 +5,7 @@ using Gtk;
 
 namespace Selene.Gtk.Frontend
 {
-    public class NotebookDialog<T> : ModalPresenterBase<Widget, T>, IEmbeddable<T, Widget> where T : class
+    public class NotebookDialog<T> : ModalPresenterBase<Widget>, IEmbeddable<Widget, T> where T : class
     {
         protected Notebook Book;
         protected Dialog Win;
@@ -25,10 +25,10 @@ namespace Selene.Gtk.Frontend
             get { return mIsEmbedded; }
         }
 
-        protected Widget Embed(T Present, Widget Ret)
+        protected Widget Embed(object Present, Widget Ret)
         {
             mIsEmbedded = true;
-            Prepare(Present);
+            Prepare(typeof(T), Present, false);
             return Ret;
         }
 
@@ -50,14 +50,9 @@ namespace Selene.Gtk.Frontend
             Win.Hide();
         }
 
-        public override bool Run (T Present)
+        protected override bool Run ()
         {
-            base.Run (Present);
-            if(!HasButtons) AddButtons();
-
-            bool Ret = Win.Run() == (int)ResponseType.Ok;
-            HasRun = true;
-            return Ret;
+            return Win.Run() == (int)ResponseType.Ok;
         }
 
         public override void Hide ()
@@ -70,7 +65,7 @@ namespace Selene.Gtk.Frontend
             Win.ShowAll();
         }
 
-        protected override void Build()
+        protected override void Build(ControlManifest Manifest)
         {
             foreach(ControlCategory Category in Manifest.Categories)
             {
@@ -127,6 +122,8 @@ namespace Selene.Gtk.Frontend
                 Win.VBox.Add(MainBox);
                 MainBox.Add(Book);
             }
+
+            if(!HasButtons) AddButtons();
         }
 
         protected virtual void EachCategory(ControlCategory Cat)

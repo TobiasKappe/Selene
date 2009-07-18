@@ -5,7 +5,7 @@ using Gtk;
 
 namespace Selene.Gtk.Frontend
 {
-    public class WizardDialog<T> : NonModalPresenterBase<Widget, T>, IValidatable<T> where T : class, ICloneable
+    public class WizardDialog<T> : NonModalPresenterBase<Widget>, IValidatable<T> where T : class, ICloneable
     {
         public Assistant Win;
         IValidator<T> mValidator;
@@ -45,8 +45,7 @@ namespace Selene.Gtk.Frontend
             Win.Hide();
         }
 
-        int counter = 0;
-        protected override void Build()
+        protected override void Build(ControlManifest Manifest)
         {
             int i = 0;
             foreach(ControlCategory Cat in Manifest.Categories)
@@ -80,7 +79,7 @@ namespace Selene.Gtk.Frontend
         {
             if(mValidator != null && Win.CurrentPage >= 0)
             {
-                if(Dummy == null) Dummy = Present.Clone() as T;
+                if(Dummy == null) Dummy = (Present as T).Clone() as T;
                 Save(Dummy);
 
                 bool IsValid = mValidator.CatIsValid(Dummy, Win.CurrentPage);
@@ -88,10 +87,8 @@ namespace Selene.Gtk.Frontend
             }
         }
 
-        public override void Run(T Present)
+        protected override void Run()
         {
-            Prepare(Present);
-            Show();
             HandleChange(default(object), default(EventArgs));
         }
         
