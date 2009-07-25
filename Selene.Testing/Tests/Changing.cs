@@ -28,7 +28,7 @@ namespace Selene.Testing
 
             public DateTime Calendar;
 
-            public ushort[] Color;
+            public ushort[] Color = new ushort[] { ushort.MaxValue, 0, 0 };
 
             public Enclosed[] List = new Enclosed[] {};
         }
@@ -45,16 +45,18 @@ namespace Selene.Testing
             // We stuplidly assume every widget is changed once
 
 #if QYOTO
-            Assert.GreaterOrEqual(TimesChanged, 5);
+            Assert.GreaterOrEqual(TimesChanged, 8);
 #endif
 #if GTK
-            Assert.GreaterOrEqual(TimesChanged, 8);
+            Assert.GreaterOrEqual(TimesChanged, 13);
 #endif
         }
 
         void HandleChange(object Sender, EventArgs Args)
         {
+#if QYOTO
             TimesChanged++;
+#endif
         }
     }
 }
