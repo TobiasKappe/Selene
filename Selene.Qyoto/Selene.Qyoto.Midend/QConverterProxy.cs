@@ -42,7 +42,7 @@ namespace Selene.Qyoto.Midend
         protected virtual string SignalForType(ControlType Type)
         {
             if(Resolve != null) return Resolve(Type);
-            return string.Empty;
+            return null;
         }
 
         public QConverterProxy(Control Orig, QObject Widg) : this()
@@ -58,10 +58,18 @@ namespace Selene.Qyoto.Midend
 
         ~QConverterProxy()
         {
-            Widg.Disconnect(Qt.SIGNAL(SignalForType(Orig.SubType)));
+            string signal = SignalForType(Orig.SubType);
+
+            if(signal != null)
+                Widg.Disconnect(Qt.SIGNAL(signal));
         }
 
         void HandleWidgetEvent()
+        {
+            FireChanged();
+        }
+
+        protected void FireChanged()
         {
             if(CachedHandlers != null) CachedHandlers(null, null);
         }
@@ -69,7 +77,11 @@ namespace Selene.Qyoto.Midend
         public sealed override event EventHandler Changed {
             add
             {
-                if(!Connected) QWidget.Connect(Widg, Qt.SIGNAL(SignalForType(Orig.SubType)), HandleWidgetEvent);
+                string signal = SignalForType(Orig.SubType);
+
+                if(signal != null && !Connected)
+                    QWidget.Connect(Widg, Qt.SIGNAL(signal), HandleWidgetEvent);
+
                 CachedHandlers += value;
             }
             remove { CachedHandlers -= value; }
