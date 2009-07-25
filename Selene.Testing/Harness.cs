@@ -19,5 +19,11 @@ namespace Selene.Testing
             new QApplication(new string[] { } );
 #endif
         }
+
+        [TestFixtureTearDown]
+        public void Teardown()
+        {
+            QApplication.Exec();
+        }
     }
 }
