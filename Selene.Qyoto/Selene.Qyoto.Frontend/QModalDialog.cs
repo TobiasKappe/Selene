@@ -77,7 +77,7 @@ namespace Selene.Qyoto.Frontend
                 AddSubcategory(Lay, Subcat, false);
             }
 
-            Lay.AddStretch(1);
+            Lay.AddStretch();
         }
 
         internal void AddSubcategory(CategoryLay Lay, ControlSubcategory Subcat)
@@ -98,7 +98,7 @@ namespace Selene.Qyoto.Frontend
                 }
             }
 
-            if(Stretch) Lay.AddStretch(1);
+            if(Stretch) Lay.AddStretch();
         }
     }
 }

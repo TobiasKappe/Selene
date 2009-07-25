@@ -6,7 +6,7 @@ using Qyoto;
 
 namespace Selene.Qyoto.Frontend
 {
-    internal class CategoryLay : QVBoxLayout
+    internal class CategoryLay : QGridLayout
     {
         int i = 0;
         QFont NewFont;
@@ -22,28 +22,52 @@ namespace Selene.Qyoto.Frontend
         {
             QLabel SubcatLabel = new QLabel(Subcat.Name);
             SubcatLabel.Font = NewFont;
-            InsertWidget(i++, SubcatLabel);
+            AddWidget(SubcatLabel, i++, 0);
             HasHeading = true;
         }
 
         public void AddWidget(Control Orig, QObject Add)
         {
-            QHBoxLayout Row = new QHBoxLayout();
+            int Col = 0;
 
             if(Orig.SubType != ControlType.Check && Orig.SubType != ControlType.Toggle)
             {
                 QLabel LabelWidget = new QLabel(Orig.Label);
-                Row.InsertWidget(0, LabelWidget, 0, (uint) AlignmentFlag.AlignLeft);
                 LabelWidget.Indent = HasHeading ? 20 : 0;
+
+                AddWidget(LabelWidget, i, 0);
+                Col++;
             }
 
             QWidget Widg = Add as QWidget;
             QLayout Lay = Add as QLayout;
 
-            if(Widg != null) Row.InsertWidget(1, Widg, 0, (uint) AlignmentFlag.AlignLeft);
-            if(Lay != null) Row.InsertLayout(1, Lay, 0);
+            if(Widg != null)
+            {
+                if(Col == 0 && HasHeading)
+                {
+                    QHBoxLayout Shift = new QHBoxLayout();
+                    QLabel Pusher = new QLabel(" ");
+                    Pusher.Indent = 10;
+                    Shift.AddWidget(Pusher);
+                    Shift.AddWidget(Widg);
 
-            InsertLayout(i++, Row, 0);
+                    AddLayout(Shift, i, 0);
+                }
+                else
+                {
+                    AddWidget(Widg, i, Col);
+                }
+            }
+            if(Lay != null)
+                AddLayout(Lay, i, Col);
+
+            i++;
+        }
+
+        public void AddStretch()
+        {
+            SetRowStretch(i++, 10);
         }
     }
 }
