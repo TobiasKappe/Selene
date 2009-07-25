@@ -8,6 +8,7 @@ namespace Selene.Gtk.Midend
 {
     public class EnumChooser : EnumBase<Widget>
     {
+        bool FirstUsed = false;
         RadioButton FirstBorn;
 
         protected override int CurrentIndex {
@@ -53,8 +54,12 @@ namespace Selene.Gtk.Midend
             {
                 RadioButton Button;
 
-                if(FirstBorn == null)
-                    Button = FirstBorn = new RadioButton(Value);
+                if(!FirstUsed)
+                {
+                    Button = FirstBorn;
+                    Button.Label = Value;
+                    FirstUsed = true;
+                }
                 else Button = new RadioButton(FirstBorn, Value);
 
                 (Widget as Box).Add(Button);
@@ -72,6 +77,8 @@ namespace Selene.Gtk.Midend
                 Box Box;
                 if(Vertical) Box = new VBox();
                 else Box = new HBox();
+
+                FirstBorn = new RadioButton("");
 
                 return Box;
             }
@@ -91,11 +98,8 @@ namespace Selene.Gtk.Midend
             }
             else if(Original.SubType == ControlType.Radio)
             {
-                foreach(RadioButton B in (Widget as Box).Children)
-                {
-                    if(Add) B.Clicked += Subject;
-                    else B.Clicked -= Subject;
-                }
+                if(Add) FirstBorn.Clicked += Subject;
+                else FirstBorn.Clicked -= Subject;
             }
         }
 
