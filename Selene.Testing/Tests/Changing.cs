@@ -54,9 +54,7 @@ namespace Selene.Testing
 
         void HandleChange(object Sender, EventArgs Args)
         {
-#if QYOTO
             TimesChanged++;
-#endif
         }
     }
 }
