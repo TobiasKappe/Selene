@@ -90,7 +90,8 @@ namespace Selene.Gtk.Frontend
 
         protected override void Run()
         {
-            HandleChange(default(object), default(EventArgs));
+            for(int i = 0; i < Win.NPages; i++)
+                Win.SetPageComplete(Win.Children[i], mValidator == null);
         }
         
         public override void Show()

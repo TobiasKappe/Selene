@@ -31,6 +31,7 @@ namespace Selene.Qyoto.Frontend
         QWizard Wiz;
         T Dummy;
         IValidator<T> mValidator;
+        int PageCount = 0;
 
         public IValidator<T> Validator {
             set { mValidator = value; }
@@ -65,6 +66,7 @@ namespace Selene.Qyoto.Frontend
                     }
                 }
 
+                PageCount++;
                 Page.SetLayout(Lay);
                 Wiz.AddPage(Page);
             }
@@ -99,6 +101,12 @@ namespace Selene.Qyoto.Frontend
 
         protected override void Run ()
         {
+            if(mValidator == null)
+            {
+                for(int i = 0; i < PageCount; i++)
+                    (Wiz.Page(i) as QValidatablePage).Complete = true;
+            }
+
             Show();
         }
 
