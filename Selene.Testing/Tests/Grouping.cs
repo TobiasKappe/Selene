@@ -17,7 +17,7 @@ namespace Selene.Testing
 {
     public partial class Harness
     {
-        class GroupingTest
+        class GroupingTest : ICloneable
         {
             [Control(Category = "Spare time", Subcategory = "Sports")]
             public string Sport;
@@ -30,30 +30,33 @@ namespace Selene.Testing
             [Control(Category = "Employment")]
             public string Employer;
             public DateTime Paycheck;
+
+            public object Clone ()
+            {
+                return MemberwiseClone();
+            }
         }
+
+        const string Title = "OK if categories fit";
 
         [Test]
         public void Grouping()
         {
             GroupingTest Save = new GroupingTest();
 
-            IModalPresenter Present = new NotebookDialog<GroupingTest>("OK if categories fit");
+            IModalPresenter Present = new NotebookDialog<GroupingTest>(Title);
             Assert.IsTrue(Present.Run(Save));
 
-            Present = new ListStoreDialog<GroupingTest>("OK if categories fit");
-            Assert.IsTrue(Present.Run(Save));
-            
-            Present = new TreeStoreDialog<GroupingTest>("OK if categories fit");
+            Present = new ListStoreDialog<GroupingTest>(Title);
             Assert.IsTrue(Present.Run(Save));
 
-#if GTK
+            Present = new TreeStoreDialog<GroupingTest>(Title);
+            Assert.IsTrue(Present.Run(Save));
 
-            /* Since WizardDialog is not modal, we need to come up with
-               another way to signal that the dialog has run. */
-
-            // Present = new WizardDialog<GroupingTest>("OK if categories fit");
-            // Assert.IsTrue(Present.Run(Save));
-#endif
+            var NonModal = new WizardDialog<GroupingTest>(Title);
+            NonModal.Run(Save);
+            NonModal.Block();
+            Assert.IsTrue(NonModal.Success);
         }
     }
 }
