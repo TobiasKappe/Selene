@@ -75,6 +75,8 @@ namespace Selene.Testing
             };
             Disp.Validator = new Validator();
             Disp.Run(Test);
+            Disp.Block();
+            Assert.IsTrue(Disp.Success);
         }
     }
 }
