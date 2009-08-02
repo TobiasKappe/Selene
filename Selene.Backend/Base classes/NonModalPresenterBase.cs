@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Threading;
 
 namespace Selene.Backend
 {
@@ -11,6 +12,7 @@ namespace Selene.Backend
         }
 
         public event Done Finished;
+        protected bool? Done = null;
 
         public bool Success {
             get {
@@ -25,8 +27,6 @@ namespace Selene.Backend
             }
         }
 
-        protected bool? Done = null;
-
         public void Run<T>(T Present)
         {
             Prepare(typeof(T), Present);
@@ -35,5 +35,6 @@ namespace Selene.Backend
         }
 
         protected abstract void Run();
+        public abstract void Block();
     }
 }

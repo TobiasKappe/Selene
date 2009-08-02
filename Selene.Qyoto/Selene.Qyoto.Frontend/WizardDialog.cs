@@ -41,6 +41,7 @@ namespace Selene.Qyoto.Frontend
         {
             Wiz = new QWizard();
             Wiz.SetWindowTitle(Title);
+            QWidget.Connect(Wiz, Qt.SIGNAL("finished(int)"), new OneArgDelegate<int>(Completed));
         }
 
         protected override void Build(ControlManifest Manifest)
@@ -69,6 +70,11 @@ namespace Selene.Qyoto.Frontend
             }
         }
 
+        void Completed(int Arg)
+        {
+            Success = Arg == 1;
+        }
+
         void HandleChange(object Sender, EventArgs Args)
         {
             if(mValidator != null)
@@ -94,6 +100,16 @@ namespace Selene.Qyoto.Frontend
         protected override void Run ()
         {
             Show();
+        }
+
+        public override void Block ()
+        {
+            while(true)
+            {
+                if(Done != null && Done.Value) break;
+                while(QApplication.HasPendingEvents())
+                    QApplication.ProcessEvents();
+            }
         }
     }
 }

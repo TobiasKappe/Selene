@@ -97,5 +97,15 @@ namespace Selene.Gtk.Frontend
         {
             Win.ShowAll();
         }
+
+        public override void Block ()
+        {
+            while(true)
+            {
+                if(Done != null && Done.Value) break;
+                while(Application.EventsPending())
+                    Application.RunIteration();
+            }
+        }
     }
 }
