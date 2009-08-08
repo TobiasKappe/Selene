@@ -38,9 +38,9 @@ namespace Selene.Backend
                     continue;
                 }
 
-                if(Browse.BaseType == typeof(EnumBase<WidgetType>))
+                if(Browse.BaseType == typeof(EnumBase<WidgetType>) || Browse.BaseType == typeof(FlagsBase<WidgetType>))
                 {
-                    Factory.AddType(typeof(Enum), Browse);
+                    Factory.AddType(Browse.BaseType, Browse);
                     continue;
                 }
 

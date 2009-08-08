@@ -61,6 +61,7 @@
     <Compile Include="Base classes\NonModalPresenterBase.cs" />
     <Compile Include="Mining\ConverterFactory.cs" />
     <Compile Include="ManifestCache.cs" />
+    <Compile Include="Base classes\FlagsBase.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

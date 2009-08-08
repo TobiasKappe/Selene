@@ -32,6 +32,23 @@ namespace Selene.Backend
 
         public IConverter<WidgetType> Construct(Type T)
         {
+            if(T == typeof(Enum))
+                throw new InspectionException(T, "ConstructEnum should be used for enum types");
+
+            return Make(T);
+        }
+
+        public IConverter<WidgetType> ConstructEnum(bool Flags)
+        {
+            Type T;
+            if(Flags) T = typeof(FlagsBase<WidgetType>);
+            else T = typeof(EnumBase<WidgetType>);
+
+            return Make(T);
+        }
+
+        IConverter<WidgetType> Make(Type T)
+        {
             if(!Constructors.ContainsKey(T)) return null;
             else return (IConverter<WidgetType>) Constructors[T].Invoke(null);
         }

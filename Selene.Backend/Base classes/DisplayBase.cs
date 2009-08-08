@@ -41,7 +41,8 @@ namespace Selene.Backend
 
             if(Original.Type.IsEnum)
             {
-                var Viewer = (IHasUnderlying<WidgetType>) Factory.Construct(typeof(Enum));
+                var Viewer = (IHasUnderlying<WidgetType>)
+                    Factory.ConstructEnum(AttributeHelper.GetAttribute<FlagsAttribute>(Original.Type) != null);
 
                 Viewer.Underlying = Original.Type;
 

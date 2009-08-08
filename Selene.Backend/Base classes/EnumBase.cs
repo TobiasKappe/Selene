@@ -5,29 +5,38 @@ namespace Selene.Backend
 {
     public abstract class EnumBase<WidgetType> : ConverterBase<WidgetType, Enum>, IHasUnderlying<WidgetType>
     {
-        string[] Names;
-        int[] Values;
-        Type mUnderlying;
+        protected internal string[] Names;
+        protected internal int[] Values;
+        protected internal Type mUnderlying;
 
         public Type Underlying {
             set { mUnderlying = value; }
             get { return mUnderlying; }
         }
 
+        protected internal virtual string CurrentName
+        {
+            get { return Names[CurrentIndex]; }
+        }
+
+        protected internal virtual void DetermineIndex(Enum Intermediate)
+        {
+            for(int i = 0; i < Values.Length; i++)
+            {
+                if(Values[i] == Convert.ToInt32(Intermediate))
+                    CurrentIndex = i;
+            }
+        }
+
         protected sealed override Enum ActualValue {
             get
             {
-                return Enum.Parse(mUnderlying, Names[CurrentIndex]) as Enum;
+                return Enum.Parse(mUnderlying, CurrentName) as Enum;
             }
             set
             {
                 PrepareOptions();
-
-                for(int i = 0; i < Values.Length; i++)
-                {
-                    if(Values[i] == Convert.ToInt32(value))
-                        CurrentIndex = i;
-                }
+                DetermineIndex(value);
             }
         }
 
