@@ -14,22 +14,27 @@ namespace Selene.Testing
 {
     public partial class Harness
     {
+        [Flags]
+        enum Fruit { Apple = 1, Orange = 2, Banana = 4 }
+        enum Direction { Left, Right, Back }
+
         class Change
         {
+            // Simple widgets
+            public bool Check;
             public string Enter;
             [Control(Override = ControlType.FileSelect)]
             public string File;
 
-            public bool Check;
+            // Enum-based widgets
+            public Fruit Bowl = Fruit.Orange | Fruit.Apple;
+            [Control(Override = ControlType.Radio)]
+            public Direction Choose;
+            public Direction Choose2;
 
-            public AttributeTargets Toggle;
-            [Control(Override = ControlType.Radio), ControlFlags(true)]
-            public Base64FormattingOptions Choose;
-
+            // Compound widgets
             public DateTime Calendar;
-
             public ushort[] Color = new ushort[] { ushort.MaxValue, 0, 0 };
-
             public Enclosed[] List = new Enclosed[] {};
         }
 
@@ -45,10 +50,10 @@ namespace Selene.Testing
             // We stuplidly assume every widget is changed once
 
 #if QYOTO
-            Assert.GreaterOrEqual(TimesChanged, 8);
+            Assert.GreaterOrEqual(TimesChanged, 9);
 #endif
 #if GTK
-            Assert.GreaterOrEqual(TimesChanged, 13);
+            Assert.GreaterOrEqual(TimesChanged, 15);
 #endif
         }
 
