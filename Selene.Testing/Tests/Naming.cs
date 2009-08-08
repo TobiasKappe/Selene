@@ -19,6 +19,8 @@ namespace Selene.Testing
     {
         class NamingPickingTest
         {
+            #pragma warning disable 0649
+
             [Control(Name = "Given name")]
             public string Name;
             

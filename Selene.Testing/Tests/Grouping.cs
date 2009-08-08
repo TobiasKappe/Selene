@@ -19,6 +19,8 @@ namespace Selene.Testing
     {
         class GroupingTest : ICloneable
         {
+            #pragma warning disable 0649
+            
             [Control(Category = "Spare time", Subcategory = "Sports")]
             public string Sport;
             public bool Enjoys;

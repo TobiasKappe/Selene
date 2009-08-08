@@ -18,6 +18,8 @@ namespace Selene.Testing
 {
     public class ValidTest : ICloneable
     {
+        #pragma warning disable 0649
+        
         [Control(Category = "Getting started")]
         public string Surname;
 

@@ -16,6 +16,8 @@ namespace Selene.Testing
     {
         class PropertyTest
         {
+            #pragma warning disable 0649
+
             public bool CheckMe {
                 get { return !Asd; }
                 set { Asd = !value; }

@@ -13,6 +13,8 @@ namespace Selene.Testing
     {
         class EmbeddingTest
         {
+            #pragma warning disable 0649
+            
             [Control("Optimus")]
             public string Alpha;
             public bool Bravo;

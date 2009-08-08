@@ -21,6 +21,8 @@ namespace Selene.Testing
 
         class OverrideTest
         {
+            #pragma warning disable 0649
+
             [Control(Override = ControlType.Radio), ControlFlags(true)]
             public Cat Status;
         }

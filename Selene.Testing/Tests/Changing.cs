@@ -20,6 +20,8 @@ namespace Selene.Testing
 
         class Change
         {
+            #pragma warning disable 0649
+
             // Simple widgets
             public bool Check;
             public string Enter;

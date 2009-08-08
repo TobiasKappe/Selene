@@ -16,6 +16,8 @@ namespace Selene.Testing
     {
         class RepeatTest
         {
+            #pragma warning disable 0649
+            
             public bool Hey;
             public string Hoi;
         }

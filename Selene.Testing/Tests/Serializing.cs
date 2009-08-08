@@ -15,6 +15,8 @@ namespace Selene.Testing
     {
         public class Person
         {
+            #pragma warning disable 0649
+            
             static XmlSerializer Serializer;
             
             public string Name;

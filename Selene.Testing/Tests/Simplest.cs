@@ -21,6 +21,8 @@ namespace Selene.Testing
 
         class Test
         {
+            #pragma warning disable 0649
+            
             public string Surname;
             public Sex Gender;
             public bool Newsletter;

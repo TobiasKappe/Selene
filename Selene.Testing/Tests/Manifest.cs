@@ -18,12 +18,15 @@ namespace Selene.Testing
 {
     public partial class Harness
     {
+
         enum Bananas { Good, Yellow, Square }
         const string ManifestFile = "../../manifest.xml";
 
         [ControlManifest(ManifestFile)]
         class ManifestTest
         {
+            #pragma warning disable 0649
+            
             public Bananas KudosIf;
             public bool YouGetThis;
         }

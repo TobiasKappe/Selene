@@ -16,6 +16,8 @@ namespace Selene.Testing
     {
         class FlagsTest
         {
+            #pragma warning disable 0649
+            
             public Fruit Choose;
         }
 
