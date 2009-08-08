@@ -12,10 +12,6 @@ namespace Selene.Backend
         protected Type LastType;
         protected object Present;
 
-        bool HasBuilt {
-            get { return State.Count > 0; }
-        }
-
         internal static void CacheConverters(Assembly Calling)
         {
             Factory = Introspector.GetConverters<WidgetType>(Calling);

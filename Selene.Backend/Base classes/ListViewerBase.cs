@@ -16,7 +16,6 @@ namespace Selene.Backend
         int i = 0;
         List<object> Content;
         ConstructorInfo Constructor;
-        bool Inspected = false;
         Type mUnderlying;
 
         public Type Underlying {
