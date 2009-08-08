@@ -11,5 +11,6 @@ namespace Selene.Backend
         void Run<T>(T Present);
 
         bool Success { get; }
+        void Block();
     }
 }
