@@ -52,6 +52,11 @@ namespace Selene.Backend
             Dialog.Run(mUnderlying, Content[Id]);
             RowEdited(Id, BreakItDown(Content[Id]));
         }
+
+        protected void RowChanged(int Id, object[] Values)
+        {
+            Content[Id] = BreakItBack(Values);
+        }
         #endregion
 
         #region Auxiliary functions
@@ -67,6 +72,22 @@ namespace Selene.Backend
             });
 
             return Ret.ToArray();
+        }
+
+        private object BreakItBack(object[] Original)
+        {
+            object Back = Constructor.Invoke(null);
+
+            int i = 0;
+            Manifest.EachControl(delegate(ref Control Cont) {
+                if(IsViewable(Cont.Type))
+                {
+                    Cont.Save(Back, Original[i]);
+                    i++;
+                }
+            });
+
+            return Back;
         }
         #endregion
 
@@ -133,7 +154,6 @@ namespace Selene.Backend
 
             return Widget;
         }
-
         #endregion
 
         #region Abstract members
