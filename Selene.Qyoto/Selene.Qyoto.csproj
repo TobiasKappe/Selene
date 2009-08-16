@@ -47,6 +47,7 @@
     <Compile Include="Selene.Qyoto.Frontend\TreeStoreDialog.cs" />
     <Compile Include="Selene.Qyoto.Midend\ColorPicker.cs" />
     <Compile Include="Selene.Qyoto.Midend\FlagsChooser.cs" />
+    <Compile Include="Selene.Qyoto.Midend\ListViewer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Selene.Qyoto.Midend\" />
