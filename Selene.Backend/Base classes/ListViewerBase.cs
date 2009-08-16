@@ -9,6 +9,7 @@ namespace Selene.Backend
         protected int Counter = 0;
         protected ModalPresenterBase<WidgetType> Dialog;
         protected ControlManifest Manifest;
+        protected EventHandler OnChange;
 
         protected bool AllowsEdit = true, AllowsRemove = true,
             AllowsAdd = true, GreyButtons = false;
@@ -35,6 +36,7 @@ namespace Selene.Backend
         {
             Content.RemoveAt(Id);
             i--;
+            FireOnChange();
         }
 
         protected void AddRow()
@@ -45,17 +47,25 @@ namespace Selene.Backend
             if(!Ret) return;
             Content.Add(Fill);
             RowAdded(i++, BreakItDown(Fill));
+            FireOnChange();
         }
 
         protected void EditRow(int Id)
         {
             Dialog.Run(mUnderlying, Content[Id]);
             RowEdited(Id, BreakItDown(Content[Id]));
+            FireOnChange();
         }
 
         protected void RowChanged(int Id, object[] Values)
         {
             Content[Id] = BreakItBack(Values);
+            FireOnChange();
+        }
+
+        void FireOnChange()
+        {
+            if(OnChange != null) OnChange(this, default(EventArgs));
         }
         #endregion
 
@@ -154,6 +164,12 @@ namespace Selene.Backend
 
             return Widget;
         }
+
+        public override event EventHandler Changed {
+            add { OnChange += value; }
+            remove { OnChange -= value; }
+        }
+
         #endregion
 
         #region Abstract members

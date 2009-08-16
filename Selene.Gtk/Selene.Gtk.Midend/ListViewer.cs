@@ -13,7 +13,6 @@ namespace Selene.Gtk.Midend
         ListStore Store;
         int IdColumn;
         int CurrentColumn = 0;
-        EventHandler OnChange;
 
         protected override ModalPresenterBase<Widget> MakeDialog()
         {
@@ -107,8 +106,6 @@ namespace Selene.Gtk.Midend
                 if(Store.IterNChildren() > 0)
                     UpdateIds(Id);
             }
-
-            if(OnChange != null) OnChange(View, default(EventArgs));
         }
 
         void HandleAddClicked(object sender, EventArgs e)
@@ -136,8 +133,6 @@ namespace Selene.Gtk.Midend
         {
             TreeIter Iter = Store.AppendValues(Items);
             Store.SetValue(Iter, IdColumn, Id);
-
-            if(OnChange != null) OnChange(View, default(EventArgs));
         }
 
         protected override void RowEdited (int Id, object[] Items)
@@ -159,8 +154,6 @@ namespace Selene.Gtk.Midend
             {
                 Store.SetValue(Iter, j, Items[j]);
             }
-
-            if(OnChange != null) OnChange(View, default(EventArgs));
         }
         
         protected override bool IsViewable(Type T)
@@ -177,11 +170,6 @@ namespace Selene.Gtk.Midend
         protected override void Clear ()
         {
             Store.Clear();
-        }
-
-        public override event EventHandler Changed {
-            add { OnChange += value; }
-            remove { OnChange -= value; }
         }
     }
 }
