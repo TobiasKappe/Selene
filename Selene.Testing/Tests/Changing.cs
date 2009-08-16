@@ -52,7 +52,7 @@ namespace Selene.Testing
             // We stuplidly assume every widget is changed once
 
 #if QYOTO
-            Assert.GreaterOrEqual(TimesChanged, 9);
+            Assert.GreaterOrEqual(TimesChanged, 10);
 #endif
 #if GTK
             Assert.GreaterOrEqual(TimesChanged, 15);
