@@ -135,9 +135,10 @@ namespace Selene.Qyoto.Midend
 
         void AddButton(QBoxLayout Lay, bool Depends, string Title, NoArgDelegate Clicked)
         {
-            if(Depends)
+            if(Depends || GreyButtons)
             {
                 QPushButton Add = new QPushButton(Title);
+                if(GreyButtons && !Depends) Add.SetEnabled(false);
                 QObject.Connect(Add, Qt.SIGNAL("clicked()"), Clicked);
                 Lay.AddWidget(Add);
             }
