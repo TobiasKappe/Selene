@@ -77,6 +77,7 @@ namespace Selene.Backend
                 if(value == null) return;
 
                 Clear();
+                i = 0;
                 Content.Clear();
                 foreach(object Item in (object[])value)
                 {
