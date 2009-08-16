@@ -2,9 +2,16 @@ using NUnit.Framework;
 using Selene.Backend;
 
 using System;
+using Qyoto;
 using Gtk;
 
+#if QYOTO
+using Selene.Qyoto.Frontend;
+#endif
+
+#if GTK
 using Selene.Gtk.Frontend;
+#endif
 
 namespace Selene.Testing
 {
@@ -37,13 +44,12 @@ namespace Selene.Testing
             public string Name;
             public bool Single;
         }
-#if GTK
+
         [Test]
         public void ListView()
         {
             var Disp = new NotebookDialog<Container>("Add one person");
             var Test = new Container();
-
             Assert.IsTrue(Disp.Run(Test));
             Assert.AreEqual(Test.People.Length, 2);
 
@@ -55,6 +61,5 @@ namespace Selene.Testing
             var Test3 = new EditListInv();
             Assert.IsTrue(Disp3.Run(Test3));
         }
-#endif
     }
 }
