@@ -31,6 +31,8 @@ namespace Selene.Qyoto.Frontend
 
         protected override void Build (ControlManifest Manifest)
         {
+            base.Build(Manifest);
+
             int i = 0;
             foreach(ControlCategory Cat in Manifest.Categories)
             {

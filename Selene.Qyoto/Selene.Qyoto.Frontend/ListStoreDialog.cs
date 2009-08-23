@@ -29,6 +29,8 @@ namespace Selene.Qyoto.Frontend
 
         protected override void Build (ControlManifest Manifest)
         {
+            base.Build(Manifest);
+
             foreach(ControlCategory Cat in Manifest.Categories)
             {
                 CategoryLay Lay = new CategoryLay(null);

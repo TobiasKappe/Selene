@@ -4,14 +4,16 @@ using Qyoto;
 
 namespace Selene.Qyoto.Frontend
 {
-    public abstract class QModalDialog<T> : ModalPresenterBase<QObject> where T : class
+    public abstract class QModalDialog<T> : ModalPresenterBase<QObject>, IEmbeddable<QObject, T> where T : class
     {
         protected QDialog Dialog;
         protected QHBoxLayout InnerLayout;
+        protected bool mIsEmbedded = false;
 
         QVBoxLayout Layout;
         QPushButton OkButton, CancelButton;
         QHBoxLayout Buttons;
+        string Title;
 
         public QModalDialog(string Title)
         {
@@ -23,19 +25,18 @@ namespace Selene.Qyoto.Frontend
             Buttons = new QHBoxLayout();
             InnerLayout = new QHBoxLayout();
 
-            Buttons.AddWidget(CancelButton);
-            Buttons.AddStretch(1);
-            Buttons.AddWidget(OkButton);
-            Layout.AddLayout(InnerLayout);
-            Layout.AddLayout(Buttons);
-            Layout.sizeConstraint = QLayout.SizeConstraint.SetFixedSize;
+            this.Title = Title;
+        }
 
-            Dialog.SetWindowTitle(Title);
+        public QObject Content(T Present)
+        {
+            mIsEmbedded = true;
+            Prepare(typeof(T), Present, false);
+            return InnerLayout;
+        }
 
-            QWidget.Connect(OkButton, Qt.SIGNAL("clicked()"), ClickOk);
-            QWidget.Connect(CancelButton, Qt.SIGNAL("clicked()"), ClickCancel);
-
-            OkButton.SetFocus();
+        public bool IsEmbedded {
+            get { return mIsEmbedded; }
         }
 
         void ClickCancel()
@@ -46,6 +47,26 @@ namespace Selene.Qyoto.Frontend
         void ClickOk()
         {
             Dialog.Accept();
+        }
+
+        protected override void Build(ControlManifest Manifest)
+        {
+            Buttons.AddWidget(CancelButton);
+            Buttons.AddStretch(1);
+            Buttons.AddWidget(OkButton);
+
+            if(InnerLayout.Parent() == null && !mIsEmbedded)
+                Layout.AddLayout(InnerLayout);
+
+            Layout.AddLayout(Buttons);
+            Layout.sizeConstraint = QLayout.SizeConstraint.SetFixedSize;
+
+            Dialog.SetWindowTitle(Title);
+
+            QWidget.Connect(OkButton, Qt.SIGNAL("clicked()"), ClickOk);
+            QWidget.Connect(CancelButton, Qt.SIGNAL("clicked()"), ClickCancel);
+
+            OkButton.SetFocus();
         }
 
         public override void Hide ()

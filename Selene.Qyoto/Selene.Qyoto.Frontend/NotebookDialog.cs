@@ -10,6 +10,7 @@ namespace Selene.Qyoto.Frontend
     {
         QTabWidget Tabs;
         QWidget Page;
+        bool HasTabs = false;
 
         public NotebookDialog(string Title) : base(Title)
         {
@@ -23,17 +24,18 @@ namespace Selene.Qyoto.Frontend
 
         protected override void Build (ControlManifest Manifest)
         {
+            base.Build(Manifest);
+
             if(Manifest.Categories.Length == 1)
             {
                 CategoryLay Lay = new CategoryLay(Page);
 
                 AddCategory(Lay, Manifest.Categories[0]);
-
-                Tabs.Hide();
                 Page.Show();
             }
             else
             {
+                HasTabs = true;
                 foreach(ControlCategory Category in Manifest.Categories)
                 {
                     Page = new QWidget();
@@ -43,8 +45,16 @@ namespace Selene.Qyoto.Frontend
 
                     Tabs.AddTab(Page, Category.Name);
                 }
-                Tabs.Show();
             }
         }
+
+        protected override bool Run()
+        {
+            if(HasTabs) Tabs.Show();
+            else Tabs.Hide();
+
+            return base.Run();
+        }
+
     }
 }
