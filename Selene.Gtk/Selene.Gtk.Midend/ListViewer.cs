@@ -13,6 +13,7 @@ namespace Selene.Gtk.Midend
         ListStore Store;
         int IdColumn;
         int CurrentColumn = 0;
+        CellRenderer[] Renderers;
 
         protected override ModalPresenterBase<Widget> MakeDialog()
         {
@@ -22,6 +23,7 @@ namespace Selene.Gtk.Midend
         protected override Widget Construct (Type[] Types)
         {
             IdColumn = Types.Length-1;
+            Renderers = new CellRenderer[Types.Length-1];
 
             View = new TreeView();
             Store = new ListStore(Types);
@@ -120,13 +122,19 @@ namespace Selene.Gtk.Midend
             if(Type == typeof(bool))
             {
                 Renderer = new CellRendererToggle();
+                (Renderer as CellRendererToggle).Activatable = true;
+                (Renderer as CellRendererToggle).Toggled += CellToggled;
                 View.AppendColumn(Name, Renderer, "active", CurrentColumn++);
             }
             else
             {
                 Renderer = new CellRendererText();
+                (Renderer as CellRendererText).Editable = true;
+                (Renderer as CellRendererText).Edited += CellEdited;
                 View.AppendColumn(Name, Renderer, "text", CurrentColumn++);
             }
+
+            Renderers[CurrentColumn-1] = Renderer;
         }
 
         protected override void RowAdded (int Id, object[] Items)
@@ -171,5 +179,59 @@ namespace Selene.Gtk.Midend
         {
             Store.Clear();
         }
+
+        #region Row changing
+        TreeIter GetIter(string Path)
+        {
+            TreeIter Iter;
+            Store.GetIter(out Iter, new TreePath(Path));
+            return Iter;
+        }
+
+        int LookupColumn(object Sender)
+        {
+            for(int i = 0; i < Renderers.Length; i++)
+            {
+                if(Sender.Equals(Renderers[i]))
+                    return i;
+            }
+
+            throw new Exception("Could not look up column");
+        }
+
+        void CellToggled(object o, ToggledArgs args)
+        {
+            int Column = LookupColumn(o);
+            TreeIter Iter = GetIter(args.Path);
+
+            bool Value = (Store.GetValue(Iter, Column) as bool?).Value;
+            Store.SetValue(Iter, Column, !Value);
+
+            ChangeRow(Iter);
+        }
+
+        void CellEdited(object o, EditedArgs args)
+        {
+            int Column = LookupColumn(o);
+            TreeIter Iter = GetIter(args.Path);
+
+            Store.SetValue(Iter, Column, args.NewText);
+
+            ChangeRow(Iter);
+        }
+
+        void ChangeRow(TreeIter Changed)
+        {
+            // IdColumn happens to be the same number as the number of columns
+            object[] Items = new object[IdColumn];
+
+            for(int i = 0; i < Renderers.Length; i++)
+                Items[i] = Store.GetValue(Changed, i);
+
+            int Id = (Store.GetValue(Changed, IdColumn) as int?).Value;
+
+            RowChanged(Id, Items);
+        }
+        #endregion
     }
 }
