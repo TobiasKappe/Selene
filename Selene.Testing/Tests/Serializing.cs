@@ -1,13 +1,20 @@
-#if GTK
-using NUnit.Framework;
+using System;
 using Selene.Backend;
+using NUnit.Framework;
+
+#if GTK
+using Selene.Gtk.Frontend;
+#endif
+
+#if QYOTO
+using Selene.Qyoto.Frontend;
+#endif
 
 using System.Xml.Serialization;
 using System.IO;
-using System;
-using Gtk;
 
-using Selene.Gtk.Frontend;
+using Gtk;
+using Qyoto;
 
 namespace Selene.Testing
 {
@@ -71,4 +78,3 @@ namespace Selene.Testing
         }
     }
 }
-#endif
