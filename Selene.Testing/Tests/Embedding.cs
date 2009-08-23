@@ -1,11 +1,17 @@
-#if GTK
-using NUnit.Framework;
-using Selene.Backend;
-
 using System;
-using Gtk;
+using Selene.Backend;
+using NUnit.Framework;
 
+#if GTK
 using Selene.Gtk.Frontend;
+#endif
+
+#if QYOTO
+using Selene.Qyoto.Frontend;
+#endif
+
+using Qyoto;
+using Gtk;
 
 namespace Selene.Testing
 {
@@ -25,12 +31,14 @@ namespace Selene.Testing
 
         public void Embedding()
         {
+            var Embed = new NotebookDialog<EmbeddingTest>("Selene");
+            var Test = new EmbeddingTest();
+
+#if GTK
             Window Container = new Window("Selene");
             Label Extra = new Label("This label is not part of the notebook");
             Button Click = new Button("Neither is this button");
-            var Test = new EmbeddingTest();
             VBox Box = new VBox();
-            var Embed = new NotebookDialog<EmbeddingTest>("Selene");
 
             Click.Clicked += delegate {
                 Embed.Save();
@@ -43,7 +51,27 @@ namespace Selene.Testing
             Box.Spacing = 5;
             Container.Add(Box);
             Container.ShowAll();
+#endif
+#if QYOTO
+            QDialog Dialog = new QDialog();
+            QVBoxLayout MainLay = new QVBoxLayout();
+            QHBoxLayout Lay = (QHBoxLayout) Embed.Content(Test);
+            MainLay.AddLayout(Lay);
+            Dialog.SetLayout(MainLay);
+            Dialog.SetWindowTitle("Selene");
+
+            QLabel Label = new QLabel("This label is not part of the notebook");
+            QPushButton Button = new QPushButton("Neither is this button");
+            MainLay.AddWidget(Label);
+            MainLay.AddWidget(Button);
+
+            QWidget.Connect(Button, Qt.SIGNAL("clicked()"), delegate {
+                Embed.Save();
+                Console.WriteLine(Test.Alpha);
+            });
+
+            Dialog.Exec();
+#endif
         }
     }
 }
-#endif
