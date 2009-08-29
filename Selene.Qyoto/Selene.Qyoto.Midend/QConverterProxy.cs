@@ -71,7 +71,7 @@ namespace Selene.Qyoto.Midend
 
         protected void FireChanged()
         {
-            if(CachedHandlers != null) CachedHandlers(null, null);
+            if(CachedHandlers != null) CachedHandlers(Widg, null);
         }
 
         public sealed override event EventHandler Changed {

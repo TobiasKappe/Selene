@@ -64,6 +64,11 @@ namespace Selene.Backend
         public void SubscribeAllChange<T>(EventHandler Handler)
         {
             Prepare(typeof(T), null, false);
+            SubscribeAllChange(Handler);
+        }
+
+        protected void SubscribeAllChange(EventHandler Handler)
+        {
             foreach(IConverter<WidgetType> Converter in State)
                 Converter.Changed += Handler;
         }
@@ -83,9 +88,7 @@ namespace Selene.Backend
                 Build(ManifestCache.Retreive(For));
             }
             else if(For != LastType)
-            {
-                throw new Exception("This type already settled for "+LastType);
-            }
+                throw new Exception("This instance already settled for "+LastType);
 
             this.Present = Present;
 

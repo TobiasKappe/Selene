@@ -16,6 +16,7 @@ namespace Selene.Gtk.Frontend
         }
 
         T Dummy;
+        bool Connected = false;
 
         public WizardDialog(string Title)
         {
@@ -63,7 +64,6 @@ namespace Selene.Gtk.Frontend
                     {
                         IConverter<Widget> Converter = ProcureState(Cont);
                         Table.AddWidget(Cont, Converter.Construct(Cont));
-                        Converter.Changed += HandleChange;
                         State.Add(Converter);
                     }
                 }
@@ -90,6 +90,17 @@ namespace Selene.Gtk.Frontend
 
         protected override void Run()
         {
+            // Prevent unnecessary reflection
+            if(mValidator != null && !Connected)
+            {
+                // Clear any events that might trigger premature saving
+                while(Application.EventsPending())
+                    Application.RunIteration();
+
+                SubscribeAllChange(HandleChange);
+                Connected = true;
+            }
+
             for(int i = 0; i < Win.NPages; i++)
                 Win.SetPageComplete(Win.Children[i], mValidator == null);
         }
