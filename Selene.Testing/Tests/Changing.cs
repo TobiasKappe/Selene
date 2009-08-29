@@ -27,6 +27,7 @@ namespace Selene.Testing
             public string Enter;
             [Control(Override = ControlType.FileSelect)]
             public string File;
+            public int Number;
 
             // Enum-based widgets
             public Fruit Bowl = Fruit.Orange | Fruit.Apple;
@@ -50,12 +51,13 @@ namespace Selene.Testing
             Dialog.Run(new Change());
 
             // We stuplidly assume every widget is changed once
+            Console.WriteLine(TimesChanged);
 
 #if QYOTO
-            Assert.GreaterOrEqual(TimesChanged, 10);
+            Assert.GreaterOrEqual(TimesChanged, 12);
 #endif
 #if GTK
-            Assert.GreaterOrEqual(TimesChanged, 15);
+            Assert.GreaterOrEqual(TimesChanged, 18);
 #endif
         }
 
