@@ -50,6 +50,8 @@ namespace Selene.Qyoto.Midend
             MainLay.AddWidget(Table);
             MainLay.AddLayout(Buttons);
 
+            Table.HorizontalHeader().HighlightSections = false;
+
             return MainLay;
         }
 
@@ -126,6 +128,7 @@ namespace Selene.Qyoto.Midend
                 Table.SetItem(Id, i, Item);
                 Item.SetTextAlignment((int)Qt.AlignmentFlag.AlignCenter);
             }
+            Table.SelectionModel().Clear();
         }
 
         protected override void RowEdited (int Id, object[] Items)
