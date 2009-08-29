@@ -51,6 +51,7 @@
     <Compile Include="Selene.Gtk.Midend\ListViewer.cs" />
     <Compile Include="gtk-gui\generated.cs" />
     <Compile Include="Selene.Gtk.Midend\FlagsChooser.cs" />
+    <Compile Include="Selene.Gtk.Midend\NumberEntry.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Selene.Backend\Selene.Backend.csproj">
