@@ -5,7 +5,7 @@ using Gtk;
 
 namespace Selene.Gtk.Frontend
 {
-    public class NotebookDialog<T> : ModalPresenterBase<Widget>, IEmbeddable<Widget, T> where T : class
+    public class NotebookDialog<T> : ModalPresenterBase<Widget>, IEmbeddable<Widget, T>, IDisposable where T : class
     {
         protected Notebook Book;
         protected Dialog Win;
@@ -136,6 +136,11 @@ namespace Selene.Gtk.Frontend
             Win.AddButton(Stock.Cancel, ResponseType.Cancel);
             Win.AddButton(Stock.Ok, ResponseType.Ok);
             HasButtons = true;
+        }
+
+        public void Dispose()
+        {
+            Win.Dispose();
         }
     }
 }

@@ -5,7 +5,7 @@ using Gtk;
 
 namespace Selene.Gtk.Frontend
 {
-    public class WizardDialog<T> : NonModalPresenterBase<Widget>, IValidatable<T> where T : class, ICloneable
+    public class WizardDialog<T> : NonModalPresenterBase<Widget>, IValidatable<T>, IDisposable where T : class, ICloneable
     {
         public Assistant Win;
         IValidator<T> mValidator;
@@ -118,6 +118,11 @@ namespace Selene.Gtk.Frontend
                 while(Application.EventsPending())
                     Application.RunIteration();
             }
+        }
+
+        public void Dispose()
+        {
+            Win.Dispose();
         }
     }
 }
