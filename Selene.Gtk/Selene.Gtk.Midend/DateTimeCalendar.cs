@@ -19,7 +19,26 @@ namespace Selene.Gtk.Midend
 
         protected override Widget Construct ()
         {
-            return new Calendar();
+            var Ret = new Calendar();
+
+            // Attempt to interfere as little as possible with the i18n
+            CheckFlag(Ret, 0, CalendarDisplayOptions.ShowHeading);
+            CheckFlag(Ret, 1, CalendarDisplayOptions.ShowDayNames);
+            CheckFlag(Ret, 2, CalendarDisplayOptions.NoMonthChange);
+            CheckFlag(Ret, 3, CalendarDisplayOptions.ShowWeekNumbers);
+            CheckFlag(Ret, 4, CalendarDisplayOptions.WeekStartMonday);
+
+            return Ret;
+        }
+
+        void CheckFlag(Calendar Cal, int Index, CalendarDisplayOptions Option)
+        {
+            bool Value = false;
+            if(Original.GetFlag<bool>(Index, ref Value))
+            {
+                if(Value) Cal.DisplayOptions |= Option;
+                else Cal.DisplayOptions &= ~Option;
+            }
         }
 
         public override event EventHandler Changed {
