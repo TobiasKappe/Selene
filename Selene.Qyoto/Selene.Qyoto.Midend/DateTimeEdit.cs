@@ -23,7 +23,14 @@ namespace Selene.Qyoto.Midend
 
         protected override QObject Construct ()
         {
-            return new QDateTimeEdit();
+            var Ret = new QDateTimeEdit();
+
+            string Format = Original.GetFlag<string>();
+
+            if(Format != null)
+                Ret.DisplayFormat = Format;
+
+            return Ret;
         }
 
         protected override string SignalForType (ControlType Type)
