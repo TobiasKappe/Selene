@@ -55,6 +55,7 @@
     <Compile Include="Tests\Repeating.cs" />
     <Compile Include="Tests\Flags.cs" />
     <Compile Include="Tests\Number.cs" />
+    <Compile Include="Tests\DateTime.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
