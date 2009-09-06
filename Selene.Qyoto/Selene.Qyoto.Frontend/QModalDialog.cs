@@ -4,7 +4,7 @@ using Qyoto;
 
 namespace Selene.Qyoto.Frontend
 {
-    public abstract class QModalDialog<T> : ModalPresenterBase<QObject>, IEmbeddable<QObject, T> where T : class
+    public abstract class QModalDialog<T> : ModalPresenterBase<QObject>, IEmbeddable<QObject, T>, IDisposable where T : class
     {
         protected QDialog Dialog;
         protected QHBoxLayout InnerLayout;
@@ -120,6 +120,11 @@ namespace Selene.Qyoto.Frontend
             }
 
             if(Stretch) Lay.AddStretch();
+        }
+
+        public void Dispose()
+        {
+            Dialog.Dispose();
         }
     }
 }

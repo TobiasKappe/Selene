@@ -6,7 +6,7 @@ using Qyoto;
 
 namespace Selene.Qyoto.Frontend
 {
-    public class WizardDialog<T> : NonModalPresenterBase<QObject>, IValidatable<T> where T : class, ICloneable
+    public class WizardDialog<T> : NonModalPresenterBase<QObject>, IValidatable<T>, IDisposable where T : class, ICloneable
     {
         // This is actually surprisingly elegant
         class QValidatablePage : QWizardPage
@@ -118,6 +118,11 @@ namespace Selene.Qyoto.Frontend
                 while(QApplication.HasPendingEvents())
                     QApplication.ProcessEvents();
             }
+        }
+
+        public void Dispose()
+        {
+            Wiz.Dispose();
         }
     }
 }
