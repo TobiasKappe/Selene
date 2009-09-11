@@ -31,6 +31,11 @@ namespace Selene.Backend
         protected sealed override Enum ActualValue {
             get
             {
+                string Name = CurrentName;
+
+                if(Name == string.Empty)
+                    return null;
+
                 return Enum.Parse(mUnderlying, CurrentName) as Enum;
             }
             set
