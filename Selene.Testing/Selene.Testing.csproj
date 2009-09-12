@@ -57,6 +57,7 @@
     <Compile Include="Tests\Number.cs" />
     <Compile Include="Tests\DateTime.cs" />
     <Compile Include="Tests\Saving.cs" />
+    <Compile Include="Tests\Filling.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

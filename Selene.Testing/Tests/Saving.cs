@@ -14,7 +14,8 @@ namespace Selene.Testing
 {
     public partial class Harness
     {
-        class SaveTest
+        // Used in filling test too
+        class MultiTest
         {
             #pragma warning disable 0649
 
@@ -36,9 +37,9 @@ namespace Selene.Testing
         [Test]
         public void Saving()
         {
-            NotebookDialog<SaveTest> Saver = new NotebookDialog<SaveTest>("Do comply");
+            NotebookDialog<MultiTest> Saver = new NotebookDialog<MultiTest>("Do comply");
 
-            var Test = new SaveTest();
+            var Test = new MultiTest();
 
             Saver.Run(Test);
 
