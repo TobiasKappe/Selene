@@ -32,8 +32,8 @@ using System.Runtime.CompilerServices;
 // Information about this assembly is defined by the following attributes. 
 // Change them to the values specific to your project.
 
-[assembly: AssemblyTitle("Selene.Testing")]
-[assembly: AssemblyDescription("Unit tests for Selene")]
+[assembly: AssemblyTitle("Selene.Gtk")]
+[assembly: AssemblyDescription("Gtk frontend for Selene")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("")]
