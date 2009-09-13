@@ -27,8 +27,6 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
-using System.Collections.Generic;
-using System.Reflection;
 using Selene.Backend;
 using Selene.Gtk.Frontend;
 using Gtk;

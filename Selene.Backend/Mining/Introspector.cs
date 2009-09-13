@@ -28,10 +28,6 @@
 
 using System;
 using System.Reflection;
-using System.Collections.Generic;
-using System.Xml.Serialization;
-using System.Resources;
-using System.IO;
 
 namespace Selene.Backend
 {

@@ -28,8 +28,6 @@
 
 using System;
 using Selene.Backend;
-using Selene.Qyoto.Midend;
-using System.Collections.Generic;
 using Qyoto;
 
 namespace Selene.Qyoto.Frontend

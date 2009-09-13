@@ -31,7 +31,6 @@ using Selene.Backend;
 
 using System.Text.RegularExpressions;
 using System;
-using Gtk;
 
 #if GTK
 using Selene.Gtk.Frontend;

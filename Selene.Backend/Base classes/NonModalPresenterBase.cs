@@ -28,7 +28,6 @@
 
 using System;
 using System.Reflection;
-using System.Threading;
 
 namespace Selene.Backend
 {

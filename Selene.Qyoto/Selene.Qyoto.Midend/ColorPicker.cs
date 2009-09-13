@@ -26,7 +26,6 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
-using System;
 using Qyoto;
 using Selene.Backend;
 
@@ -105,7 +104,7 @@ namespace Selene.Qyoto.Midend
             (Widget as QPushButton).Text = ColorHelper.HtmlName(Color);
         }
 
-        protected override Selene.Backend.ControlType[] Supported {
+        protected override ControlType[] Supported {
             get {
                 return new ControlType[] { ControlType.Default, ControlType.Color } ;
             }

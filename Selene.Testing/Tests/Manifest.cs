@@ -27,19 +27,19 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 
 using NUnit.Framework;
-using Selene.Backend;
+using SB = Selene.Backend;
 
 using System.IO;
 using System;
-using Qyoto;
-using Gtk;
 
 #if QYOTO
 using Selene.Qyoto.Frontend;
+using TK = Qyoto;
 #endif
 
 #if GTK
 using Selene.Gtk.Frontend;
+using TK = Gtk;
 #endif
 
 namespace Selene.Testing
@@ -50,7 +50,7 @@ namespace Selene.Testing
         enum Bananas { Good, Yellow, Square }
         const string ManifestFile = "../../manifest.xml";
 
-        [ControlManifest(ManifestFile)]
+        [SB.ControlManifest(ManifestFile)]
         class ManifestTest
         {
             #pragma warning disable 0649
@@ -63,7 +63,12 @@ namespace Selene.Testing
         {
             if(!File.Exists(ManifestFile))
             {
-                ModalPresenterBase<Widget>.StubManifest<ManifestTest>(ManifestFile);
+#if GTK
+                SB.ModalPresenterBase<TK.Widget>.StubManifest<ManifestTest>(ManifestFile);
+#endif
+#if QYOTO
+                SB.ModalPresenterBase<TK.QObject>.StubManifest<ManifestTest>(ManifestFile);
+#endif
                 return true;
             }
             return false;

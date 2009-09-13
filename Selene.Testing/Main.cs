@@ -26,18 +26,8 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
-using System;
-using Selene.Backend;
-
-#if QYOTO
 using Qyoto;
-using Selene.Qyoto.Frontend;
-#endif
-
-#if GTK
 using Gtk;
-using Selene.Gtk.Frontend;
-#endif
 
 namespace Selene.Testing
 {  

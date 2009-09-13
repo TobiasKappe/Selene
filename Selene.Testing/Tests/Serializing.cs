@@ -26,8 +26,6 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
-using System;
-using Selene.Backend;
 using NUnit.Framework;
 
 #if GTK
@@ -40,9 +38,6 @@ using Selene.Qyoto.Frontend;
 
 using System.Xml.Serialization;
 using System.IO;
-
-using Gtk;
-using Qyoto;
 
 namespace Selene.Testing
 {

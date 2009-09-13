@@ -42,7 +42,7 @@ namespace Selene.Backend
         {
             ManifestFile = Read;
         }
-        
+
         public ControlManifest Mine(Type Root)
         {
             this.Root = Root;

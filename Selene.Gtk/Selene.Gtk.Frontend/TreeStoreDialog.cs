@@ -27,7 +27,6 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
-using Selene.Gtk.Midend;
 using Selene.Backend;
 using Gtk;
 

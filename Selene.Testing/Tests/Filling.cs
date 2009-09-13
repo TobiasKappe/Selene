@@ -27,7 +27,6 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
-using Selene.Backend;
 using NUnit.Framework;
 
 #if GTK

@@ -28,7 +28,6 @@
 
 using System;
 using Selene.Backend;
-using Selene.Gtk.Midend;
 using Gtk;
 
 namespace Selene.Gtk.Frontend

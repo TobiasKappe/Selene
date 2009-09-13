@@ -29,10 +29,6 @@
 using NUnit.Framework;
 using Selene.Backend;
 
-using System;
-using Qyoto;
-using Gtk;
-
 #if QYOTO
 using Selene.Qyoto.Frontend;
 #endif
