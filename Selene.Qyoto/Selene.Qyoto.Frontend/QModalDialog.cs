@@ -93,8 +93,6 @@ namespace Selene.Qyoto.Frontend
 
             QWidget.Connect(OkButton, Qt.SIGNAL("clicked()"), ClickOk);
             QWidget.Connect(CancelButton, Qt.SIGNAL("clicked()"), ClickCancel);
-
-            OkButton.SetFocus();
         }
 
         public override void Hide ()
