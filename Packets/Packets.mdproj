@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <ItemType>PackagingProject</ItemType>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B4A5A800-7AF4-41DE-879F-59752E0BE15C}</ProjectGuid>
+    <Packages>
+      <Packages>
+        <Package name="Debug">
+          <Builder targetFile="Selene-binary-debug.tar.gz" platform="Linux" configuration="Debug" ctype="BinariesZipPackageBuilder">
+            <ChildEntries>
+              <SolutionItemReference path="..\Selene.Gtk\Selene.Gtk.csproj" />
+              <SolutionItemReference path="..\Selene.Backend\Selene.Backend.csproj" />
+              <SolutionItemReference path="..\Selene.Qyoto\Selene.Qyoto.csproj" />
+              <SolutionItemReference path="..\Selene.Testing\Selene.Testing.csproj" />
+            </ChildEntries>
+            <RootEntry path="..\Selene.sln" id=":root:" />
+          </Builder>
+        </Package>
+        <Package name="Release">
+          <Builder targetFile="Selene-binary-release.tar.gz" platform="Linux" configuration="Release" ctype="BinariesZipPackageBuilder">
+            <ChildEntries>
+              <SolutionItemReference path="..\Selene.Gtk\Selene.Gtk.csproj" />
+              <SolutionItemReference path="..\Selene.Backend\Selene.Backend.csproj" />
+              <SolutionItemReference path="..\Selene.Qyoto\Selene.Qyoto.csproj" />
+              <SolutionItemReference path="..\Selene.Testing\Selene.Testing.csproj" />
+            </ChildEntries>
+            <RootEntry path="..\Selene.sln" id=":root:" />
+          </Builder>
+        </Package>
+        <Package name="Source / VS2008">
+          <Builder targetFile="Selene-source-vs2008.tar.gz" format="MonoDevelop.Projects.FileFormat" ctype="SourcesZipPackageBuilder">
+            <ChildEntries>
+              <SolutionItemReference path="..\Selene.Gtk\Selene.Gtk.csproj" />
+              <SolutionItemReference path="..\Selene.Backend\Selene.Backend.csproj" />
+              <SolutionItemReference path="..\Selene.Qyoto\Selene.Qyoto.csproj" />
+              <SolutionItemReference path="..\Selene.Testing\Selene.Testing.csproj" />
+            </ChildEntries>
+            <RootEntry path="..\Selene.sln" id=":root:" />
+          </Builder>
+        </Package>
+        <Package name="Source / VS2005">
+          <Builder targetFile="Selene-source-vs2005.tar.gz" format="MonoDevelop.Projects.FileFormat" ctype="SourcesZipPackageBuilder">
+            <ChildEntries>
+              <SolutionItemReference path="..\Selene.Gtk\Selene.Gtk.csproj" />
+              <SolutionItemReference path="..\Selene.Backend\Selene.Backend.csproj" />
+              <SolutionItemReference path="..\Selene.Qyoto\Selene.Qyoto.csproj" />
+              <SolutionItemReference path="..\Selene.Testing\Selene.Testing.csproj" />
+            </ChildEntries>
+            <RootEntry path="..\Selene.sln" id=":root:" />
+          </Builder>
+        </Package>
+        <Package name="Source / VS2010">
+          <Builder targetFile="Selene-source-vs2010.tar.gz" format="MonoDevelop.Projects.FileFormat" ctype="SourcesZipPackageBuilder">
+            <ChildEntries>
+              <SolutionItemReference path="..\Selene.Gtk\Selene.Gtk.csproj" />
+              <SolutionItemReference path="..\Selene.Backend\Selene.Backend.csproj" />
+              <SolutionItemReference path="..\Selene.Qyoto\Selene.Qyoto.csproj" />
+              <SolutionItemReference path="..\Selene.Testing\Selene.Testing.csproj" />
+            </ChildEntries>
+            <RootEntry path="..\Selene.sln" id=":root:" />
+          </Builder>
+        </Package>
+        <Package name="Source / MD 1.0">
+          <Builder targetFile="Selene-source-md1.tar.gz" format="MonoDevelop.Projects.FileFormat" ctype="SourcesZipPackageBuilder">
+            <ChildEntries>
+              <SolutionItemReference path="..\Selene.Gtk\Selene.Gtk.csproj" />
+              <SolutionItemReference path="..\Selene.Backend\Selene.Backend.csproj" />
+              <SolutionItemReference path="..\Selene.Qyoto\Selene.Qyoto.csproj" />
+              <SolutionItemReference path="..\Selene.Testing\Selene.Testing.csproj" />
+            </ChildEntries>
+            <RootEntry path="..\Selene.sln" id=":root:" />
+          </Builder>
+        </Package>
+      </Packages>
+    </Packages>
+  </PropertyGroup>
+</Project>
