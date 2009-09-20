@@ -51,7 +51,7 @@ namespace Selene.Testing
         public void Teardown()
         {
 #if QYOTO
-            QApplication.Exec();
+            QApplication.Quit();
 #endif
 #if WINDOWS
             System.Windows.Forms.Application.Exit();
