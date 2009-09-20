@@ -38,6 +38,10 @@ using Selene.Gtk.Frontend;
 using Selene.Qyoto.Frontend;
 #endif
 
+#if WINDOWS
+using Selene.Winforms.Frontend;
+#endif
+
 namespace Selene.Testing
 {
     public partial class Harness

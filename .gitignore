@@ -2,6 +2,7 @@ Selene.Backend/bin/
 Selene.Gtk/bin/
 Selene.Qyoto/bin/
 Selene.Testing/bin/
+Selene.Winforms/bin/
 Selene.Backend/Selene.Backend.pidb
 Selene.Gtk/Selene.Gtk.pidb
 Selene.Qyoto/Selene.Qyoto.pidb

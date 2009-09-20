@@ -42,6 +42,10 @@ using Selene.Gtk.Frontend;
 using TK = Gtk;
 #endif
 
+#if WINDOWS
+using Selene.Winforms.Frontend;
+#endif
+
 namespace Selene.Testing
 {
     public partial class Harness
@@ -68,6 +72,9 @@ namespace Selene.Testing
 #endif
 #if QYOTO
                 SB.ModalPresenterBase<TK.QObject>.StubManifest<ManifestTest>(ManifestFile);
+#endif
+#if WINDOWS
+                SB.ModalPresenterBase<System.Windows.Forms.Control>.StubManifest<ManifestTest>(ManifestFile);
 #endif
                 return true;
             }

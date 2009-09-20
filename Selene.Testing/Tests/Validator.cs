@@ -91,6 +91,7 @@ namespace Selene.Testing
 
     public partial class Harness
     {
+#if !WINDOWS
         [Test]
         public void Validating()
         {
@@ -107,5 +108,6 @@ namespace Selene.Testing
             Disp.Block();
             Assert.IsTrue(Disp.Success);
         }
+#endif
     }
 }

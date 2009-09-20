@@ -50,7 +50,12 @@ namespace Selene.Testing
         [TestFixtureTearDown]
         public void Teardown()
         {
+#if QYOTO
             QApplication.Exec();
+#endif
+#if WINDOWS
+            System.Windows.Forms.Application.Exit();
+#endif
         }
     }
 }

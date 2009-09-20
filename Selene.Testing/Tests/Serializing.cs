@@ -36,6 +36,10 @@ using Selene.Gtk.Frontend;
 using Selene.Qyoto.Frontend;
 #endif
 
+#if WINDOWS
+using Selene.Winforms.Frontend;
+#endif
+
 using System.Xml.Serialization;
 using System.IO;
 

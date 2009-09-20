@@ -39,6 +39,10 @@ using Selene.Qyoto.Frontend;
 using Selene.Gtk.Frontend;
 #endif
 
+#if WINDOWS
+using Selene.Winforms.Frontend;
+#endif
+
 namespace Selene.Testing
 {
     public partial class Harness
@@ -75,6 +79,7 @@ namespace Selene.Testing
             IModalPresenter Present = new NotebookDialog<GroupingTest>(Title);
             Assert.IsTrue(Present.Run(Save));
 
+#if !WINDOWS
             Present = new ListStoreDialog<GroupingTest>(Title);
             Assert.IsTrue(Present.Run(Save));
 
@@ -85,6 +90,7 @@ namespace Selene.Testing
             NonModal.Run(Save);
             NonModal.Block();
             Assert.IsTrue(NonModal.Success);
+#endif
         }
     }
 }

@@ -57,6 +57,7 @@ namespace Selene.Testing
             public ushort[] Color = new ushort[3] { 65535, 0, 0 };
         }
 
+#if !WINDOWS
         public void Embedding()
         {
             var Embed = new NotebookDialog<EmbeddingTest>("Selene");
@@ -101,5 +102,6 @@ namespace Selene.Testing
             Dialog.Exec();
 #endif
         }
+#endif
     }
 }

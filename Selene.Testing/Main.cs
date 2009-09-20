@@ -28,9 +28,10 @@
 
 using Qyoto;
 using Gtk;
+using Forms = System.Windows.Forms;
 
 namespace Selene.Testing
-{  
+{
     public class Demo
     {
         public delegate void Show();
@@ -38,7 +39,12 @@ namespace Selene.Testing
         public static void Main(string[] Args)
         {
             Harness Testing = new Harness();
-            Show Execute = Testing.Validating;
+            Show Execute = Testing.Simplest;
+#if WINDOWS
+            Execute();
+            Forms.Application.Run();
+#endif
+
 #if QYOTO
             new QApplication(Args);
             Execute();
