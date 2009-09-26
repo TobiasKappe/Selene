@@ -36,6 +36,7 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Selene.Winforms.Frontend\NotebookDialog.cs" />
     <Compile Include="Selene.Winforms.Midend\StringEntry.cs" />
+    <Compile Include="Selene.Winforms.Midend\BoolToggler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Selene.Backend\Selene.Backend.csproj">
