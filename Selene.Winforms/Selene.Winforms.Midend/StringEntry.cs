@@ -45,7 +45,7 @@ namespace Selene.Winforms.Midend
             return new TextBox();
         }
 
-        public event EventHandler Changed {
+        public override event EventHandler Changed {
             add { (Widget as TextBox).TextChanged += value; }
             remove { (Widget as TextBox).TextChanged -= value; }
         }

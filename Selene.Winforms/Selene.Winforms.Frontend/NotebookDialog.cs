@@ -44,6 +44,8 @@ namespace Selene.Winforms.Frontend
             Win = new Form();
 
             Win.Name = Title;
+            Win.MaximizeBox = false;
+            Win.FormBorderStyle = FormBorderStyle.FixedDialog;
         }
 
         protected override void Build (ControlManifest Manifest)
@@ -77,16 +79,13 @@ namespace Selene.Winforms.Frontend
                 {
                     Forms.Control Parent;
 
-                    if(Subcat.Controls.Length == 1)
-                    {
-                        Parent = CatParent;
-                    }
+                    if(Cat.Subcategories.Length == 1) Parent = CatParent;
                     else
                     {
                         GroupBox Box = new GroupBox();
                         Box.Text = Subcat.Name;
                         Box.Parent = CatParent;
-                        Box.Anchor = AnchorStyles.Left;
+                        Box.Anchor = AnchorStyles.Top;
                         Box.Dock = DockStyle.Fill;
                         Parent = Box;
                     }
@@ -97,23 +96,33 @@ namespace Selene.Winforms.Frontend
 
                         if(Converter != null)
                         {
-                            Label Label = new Label();
-                            Label.Parent = Parent;
-                            Label.Dock = DockStyle.Fill;
-                            Label.Text = Cont.Name;
+                            Forms.Control ControlParent;
 
                             Forms.Control Add = Converter.Construct(Cont);
-                            Add.Parent = Parent;
-                            Add.Dock = DockStyle.Right;
                             State.Add(Converter);
+
+                            Console.WriteLine(Cont.SubType);
+                            if(Cont.SubType != ControlType.Check && Cont.SubType != ControlType.Toggle)
+                            {
+                                Label Label = new Label();
+                                Label.Parent = Parent;
+                                Label.Dock = DockStyle.Top;
+                                Label.Text = Cont.Label;
+
+                                Add.Parent = Label;
+                                Add.Dock = DockStyle.Right;
+                            }
+                            else
+                            {
+                                Add.Parent = Parent;
+                                Add.Dock = DockStyle.Top;
+                            }
                         }
                     }
                 }
 
                 if(Manifest.Categories.Length > 1)
-                {
                     Tabbed.Controls.Add(Page);
-                }
             }
         }
 
