@@ -32,7 +32,9 @@ using Qyoto;
 #if GTK
 using Gtk;
 #endif
+#if WINDOWS
 using Forms = System.Windows.Forms;
+#endif
 
 namespace Selene.Testing
 {
