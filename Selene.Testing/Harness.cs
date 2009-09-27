@@ -45,6 +45,9 @@ namespace Selene.Testing
 #if QYOTO
             new QApplication(new string[] { } );
 #endif
+#if WINDOWS
+            System.Windows.Forms.Application.EnableVisualStyles();
+#endif
         }
 
         [TestFixtureTearDown]
