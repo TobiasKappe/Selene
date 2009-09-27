@@ -43,7 +43,7 @@ namespace Selene.Winforms.Frontend
         {
             Win = new Form();
 
-            Win.Name = Title;
+            Win.Text = Title;
             Win.MaximizeBox = false;
             Win.FormBorderStyle = FormBorderStyle.FixedDialog;
         }
@@ -57,9 +57,10 @@ namespace Selene.Winforms.Frontend
             {
                 Tabbed = new TabControl();
                 Tabbed.Parent = Win;
-                Tabbed.Dock = DockStyle.Fill;
                 Root = Tabbed;
             }
+
+            Root.Dock = DockStyle.Bottom;
 
             foreach(ControlCategory Cat in Manifest.Categories)
             {
@@ -101,7 +102,6 @@ namespace Selene.Winforms.Frontend
                             Forms.Control Add = Converter.Construct(Cont);
                             State.Add(Converter);
 
-                            Console.WriteLine(Cont.SubType);
                             if(Cont.SubType != ControlType.Check && Cont.SubType != ControlType.Toggle)
                             {
                                 Label Label = new Label();
@@ -124,6 +124,33 @@ namespace Selene.Winforms.Frontend
                 if(Manifest.Categories.Length > 1)
                     Tabbed.Controls.Add(Page);
             }
+
+            Button OK = new Button();
+            OK.Parent = Win;
+            OK.Text = "OK";
+            OK.Location = new System.Drawing.Point(Win.Width-108, Win.Height-50);
+            OK.Size = new System.Drawing.Size(100, 25);
+
+            Button Cancel = new Button();
+            Cancel.Text = "Cancel";
+            Cancel.Parent = Win;
+            Cancel.Anchor = AnchorStyles.Left;
+            Cancel.Location = new System.Drawing.Point(Win.Width-216, Win.Height-50);
+            Cancel.Size = new System.Drawing.Size(100, 25);
+
+            Cancel.Click += CancelClick;
+            OK.Click += OKClick;
+        }
+
+        void OKClick (object sender, EventArgs e)
+        {
+            Save();
+            Win.DialogResult = DialogResult.OK;
+        }
+
+        void CancelClick (object sender, EventArgs e)
+        {
+            Win.DialogResult = DialogResult.Cancel;
         }
 
         protected override bool Run ()
