@@ -15,7 +15,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;GTK</DefineConstants>
+    <DefineConstants>DEBUG;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -29,15 +29,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="qt-dotnet, Version=4.4.0.0, Culture=neutral, PublicKeyToken=194a23ba31c08164">
-      <Package>qyoto</Package>
-    </Reference>
-    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <Reference Include="System.Xml" />
     <Reference Include="nunit.framework, Version=2.4.7.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
       <Package>nunit-2.4</Package>
     </Reference>
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="gtk-dotnet, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="qt-dotnet, Version=4.4.0.0, Culture=neutral, PublicKeyToken=194a23ba31c08164">
+      <Package>qyoto</Package>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -67,6 +67,10 @@
       <Project>{F9B6A6D6-FEBD-4413-8049-899981B556C8}</Project>
       <Name>Selene.Backend</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Selene.Winforms\Selene.Winforms.csproj">
+      <Project>{46F6C3A7-0CEC-4DBC-BF54-9F1C699E8366}</Project>
+      <Name>Selene.Winforms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Selene.Gtk\Selene.Gtk.csproj">
       <Project>{EF3F5A62-C8BC-47ED-A22E-2FF18CA8DDAD}</Project>
       <Name>Selene.Gtk</Name>
@@ -74,10 +78,6 @@
     <ProjectReference Include="..\Selene.Qyoto\Selene.Qyoto.csproj">
       <Project>{0AF12417-C0DF-495B-B439-B68191DF358E}</Project>
       <Name>Selene.Qyoto</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Selene.Winforms\Selene.Winforms.csproj">
-      <Project>{46F6C3A7-0CEC-4DBC-BF54-9F1C699E8366}</Project>
-      <Name>Selene.Winforms</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

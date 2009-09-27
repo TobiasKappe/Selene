@@ -32,14 +32,14 @@ using NUnit.Framework;
 
 #if GTK
 using Selene.Gtk.Frontend;
+using Gtk;
 #endif
 
 #if QYOTO
 using Selene.Qyoto.Frontend;
+using Qyoto;
 #endif
 
-using Qyoto;
-using Gtk;
 
 namespace Selene.Testing
 {

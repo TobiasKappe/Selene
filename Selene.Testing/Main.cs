@@ -26,8 +26,12 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
+#if QYOTO
 using Qyoto;
+#endif
+#if GTK
 using Gtk;
+#endif
 using Forms = System.Windows.Forms;
 
 namespace Selene.Testing

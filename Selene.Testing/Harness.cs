@@ -27,8 +27,12 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 
 using NUnit.Framework;
+#if GTK
 using Gtk;
+#endif
+#if QYOTO
 using Qyoto;
+#endif
 
 namespace Selene.Testing
 {
