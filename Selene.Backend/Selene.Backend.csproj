@@ -63,7 +63,7 @@
     <Compile Include="Mining\ConverterFactory.cs" />
     <Compile Include="ManifestCache.cs" />
     <Compile Include="Base classes\FlagsBase.cs" />
-    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
