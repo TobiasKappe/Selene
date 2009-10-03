@@ -35,26 +35,88 @@ namespace Selene.Winforms
 {
     public class EnumChooser : EnumBase<Forms.Control>
     {
+        EventHandler RadioProxy;
+        int i = 0;
+
+        protected override ControlType[] Supported {
+            get
+            {
+                return new ControlType[] { ControlType.Default, ControlType.Radio };
+            }
+        }
+
         protected override int CurrentIndex {
-            get { return (Widget as ComboBox).SelectedIndex; }
-            set { (Widget as ComboBox).SelectedIndex = value; }
+            get
+            {
+                if(Original.SubType == ControlType.Radio)
+                {
+                    int i = 0;
+                    foreach(RadioButton B in Widget.Controls)
+                    {
+                        if(B.Checked) return i;
+                        i++;
+                    }
+
+                    return 0;
+                }
+                else return (Widget as ComboBox).SelectedIndex;
+            }
+            set
+            {
+                if(Original.SubType == ControlType.Radio)
+                    (Widget.Controls[value] as RadioButton).Checked = true;
+                else (Widget as ComboBox).SelectedIndex = value;
+            }
         }
 
         protected override Forms.Control Construct ()
         {
-            ComboBox Ret = new ComboBox();
-            Ret.DropDownStyle = ComboBoxStyle.DropDownList;
-            return Ret;
+            if(Original.SubType == ControlType.Radio)
+            {
+                GroupBox Box = new GroupBox();
+                return Box;
+            }
+            else
+            {
+                ComboBox Ret = new ComboBox();
+                Ret.DropDownStyle = ComboBoxStyle.DropDownList;
+                return Ret;
+            }
         }
 
-        public event EventHandler Changed {
-            add { (Widget as ComboBox).SelectedIndexChanged += value; }
-            remove { (Widget as ComboBox).SelectedIndexChanged -= value; }
+        public override event EventHandler Changed {
+            add
+            {
+                if(Original.SubType == ControlType.Radio) RadioProxy += value;
+                else (Widget as ComboBox).SelectedIndexChanged += value;
+            }
+            remove
+            {
+                if(Original.SubType == ControlType.Radio) RadioProxy -= value;
+                else (Widget as ComboBox).SelectedIndexChanged -= value;
+            }
         }
 
         protected override void AddOption (string Value)
         {
-            (Widget as ComboBox).Items.Add(Value);
+            if(Original.SubType == ControlType.Radio)
+            {
+                RadioButton Add = new RadioButton();
+                Add.Text = Value;
+                Add.CheckedChanged += RadioCheckedChanged;
+                Add.Parent = Widget;
+                Add.Top = 7+20*(i++);
+                Add.Left = 5;
+                Add.Anchor = AnchorStyles.Top;
+                Console.WriteLine(Value);
+            }
+            else (Widget as ComboBox).Items.Add(Value);
+        }
+
+        void RadioCheckedChanged (object sender, EventArgs e)
+        {
+            if((sender as RadioButton).Checked && RadioProxy != null)
+                RadioProxy(sender, e);
         }
     }
 }
