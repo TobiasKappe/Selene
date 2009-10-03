@@ -108,6 +108,8 @@ namespace Selene.Winforms.Frontend
                                 Label.Parent = Parent;
                                 Label.Dock = DockStyle.Top;
                                 Label.Text = Cont.Label;
+                                Label.Height = Add.Height;
+                                Label.Top = 10;
 
                                 Add.Parent = Label;
                                 Add.Dock = DockStyle.Right;
