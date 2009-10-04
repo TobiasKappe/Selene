@@ -50,46 +50,30 @@ namespace Selene.Winforms.Frontend
 
         protected override void Build (ControlManifest Manifest)
         {
-            Forms.Control Root;
-
-            if(Manifest.Categories.Length == 1) Root = Win;
-            else
-            {
-                Tabbed = new TabControl();
-                Tabbed.Parent = Win;
-                Root = Tabbed;
-            }
-
-            Root.Dock = DockStyle.Bottom;
+            Tabbed = new TabControl();
+            Tabbed.Location = new System.Drawing.Point(5, 5);
 
             foreach(ControlCategory Cat in Manifest.Categories)
             {
-                Forms.Control CatParent;
-                TabPage Page = null;
+                TabPage Page = new TabPage();
+                Page.Text = Cat.Name;
+                Page.AutoSize = true;
+                Page.AutoSizeMode = AutoSizeMode.GrowAndShrink;
 
-                if(Manifest.Categories.Length == 1) CatParent = Root;
-                else
-                {
-                    Page = new TabPage(Cat.Name);
-                    Page.Parent = Root;
-                    Page.Dock = DockStyle.Fill;
-                    CatParent = Page;
-                }
+                TableLayoutPanel CatPanel = new TableLayoutPanel();
+                CatPanel.AutoSize = true;
+                CatPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+
+                Page.Controls.Add(CatPanel);
+
+                int CatIndex = 0;
 
                 foreach(ControlSubcategory Subcat in Cat.Subcategories)
                 {
-                    Forms.Control Parent;
-
-                    if(Cat.Subcategories.Length == 1) Parent = CatParent;
-                    else
-                    {
-                        GroupBox Box = new GroupBox();
-                        Box.Text = Subcat.Name;
-                        Box.Parent = CatParent;
-                        Box.Anchor = AnchorStyles.Top;
-                        Box.Dock = DockStyle.Fill;
-                        Parent = Box;
-                    }
+                    Label SubcatLabel = new Label();
+                    SubcatLabel.Text = Subcat.Name;
+                    SubcatLabel.Font = new System.Drawing.Font(SubcatLabel.Font, System.Drawing.FontStyle.Bold);
+                    CatPanel.Controls.Add(SubcatLabel, 1, CatIndex++);
 
                     foreach(SB.Control Cont in Subcat.Controls)
                     {
@@ -97,35 +81,20 @@ namespace Selene.Winforms.Frontend
 
                         if(Converter != null)
                         {
-                            Forms.Control ControlParent;
-
-                            Forms.Control Add = Converter.Construct(Cont);
+                            CatPanel.Controls.Add(Converter.Construct(Cont), 1, CatIndex++);
                             State.Add(Converter);
-
-                            if(Cont.SubType != ControlType.Check && Cont.SubType != ControlType.Toggle)
-                            {
-                                Label Label = new Label();
-                                Label.Parent = Parent;
-                                Label.Dock = DockStyle.Top;
-                                Label.Text = Cont.Label;
-                                Label.Height = Add.Height;
-                                Label.Top = 10;
-
-                                Add.Parent = Label;
-                                Add.Dock = DockStyle.Right;
-                            }
-                            else
-                            {
-                                Add.Parent = Parent;
-                                Add.Dock = DockStyle.Top;
-                            }
                         }
                     }
                 }
 
-                if(Manifest.Categories.Length > 1)
-                    Tabbed.Controls.Add(Page);
+                Tabbed.Controls.Add(Page);
             }
+
+            Tabbed.AutoSize = true;
+            var S = Tabbed.Size;
+            S.Height += 50;
+            Tabbed.Size = S;
+            Win.Controls.Add(Tabbed);
 
             Button OK = new Button();
             OK.Parent = Win;
@@ -142,6 +111,9 @@ namespace Selene.Winforms.Frontend
 
             Cancel.Click += CancelClick;
             OK.Click += OKClick;
+
+            Win.AutoSize = true;
+            Win.AutoSizeMode = AutoSizeMode.GrowAndShrink;
         }
 
         void OKClick (object sender, EventArgs e)
