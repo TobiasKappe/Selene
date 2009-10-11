@@ -57,6 +57,9 @@ namespace Selene.Testing
 
             [ControlFlags(0, 1, true)]
             public int Wrapped = 1;
+
+            [ControlFlags(0, 50, 5, true)]
+            public int Stepped = 2;
         }
 
         [Test]
