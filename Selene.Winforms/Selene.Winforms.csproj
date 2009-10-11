@@ -41,6 +41,7 @@
     <Compile Include="Selene.Winforms.Midend\BoolToggler.cs" />
     <Compile Include="Selene.Winforms.Midend\EnumChooser.cs" />
     <Compile Include="Selene.Winforms.Midend\NumberEntry.cs" />
+    <Compile Include="Selene.Winforms.Midend\DateTimeEdit.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Selene.Backend\Selene.Backend.csproj">
