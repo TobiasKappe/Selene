@@ -40,6 +40,7 @@
     <Compile Include="Selene.Winforms.Midend\StringEntry.cs" />
     <Compile Include="Selene.Winforms.Midend\BoolToggler.cs" />
     <Compile Include="Selene.Winforms.Midend\EnumChooser.cs" />
+    <Compile Include="Selene.Winforms.Midend\NumberEntry.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Selene.Backend\Selene.Backend.csproj">
