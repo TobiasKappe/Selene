@@ -48,10 +48,29 @@ namespace Selene.Winforms.Frontend
             Win.FormBorderStyle = FormBorderStyle.FixedDialog;
         }
 
+        void CatPanelSizeChanged(object Sender, EventArgs e)
+        {
+            var Set = new System.Drawing.Size();
+
+            foreach(Forms.Control Tab in Tabbed.Controls)
+            {
+                var Size = Tab.Controls[0].Size;
+
+                // Correct for the tab bar and padding
+                Size.Width += 10;
+                Size.Height += 30;
+
+                if(Size.Width > Set.Width) Set.Width = Size.Width;
+                if(Size.Height > Set.Height) Set.Height = Size.Height;
+            }
+
+            Tabbed.Size = Set;
+        }
+
         protected override void Build (ControlManifest Manifest)
         {
             Tabbed = new TabControl();
-            Tabbed.Location = new System.Drawing.Point(5, 5);
+            Tabbed.AutoSize = true;
 
             foreach(ControlCategory Cat in Manifest.Categories)
             {
@@ -59,21 +78,36 @@ namespace Selene.Winforms.Frontend
                 Page.Text = Cat.Name;
                 Page.AutoSize = true;
                 Page.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+                Tabbed.Controls.Add(Page);
 
                 TableLayoutPanel CatPanel = new TableLayoutPanel();
                 CatPanel.AutoSize = true;
                 CatPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-
+                CatPanel.Location = new System.Drawing.Point(3,3);
                 Page.Controls.Add(CatPanel);
+
+                // Somehow the tab control can not autosize
+                CatPanel.SizeChanged += CatPanelSizeChanged;
 
                 int CatIndex = 0;
 
                 foreach(ControlSubcategory Subcat in Cat.Subcategories)
                 {
-                    Label SubcatLabel = new Label();
-                    SubcatLabel.Text = Subcat.Name;
-                    SubcatLabel.Font = new System.Drawing.Font(SubcatLabel.Font, System.Drawing.FontStyle.Bold);
-                    CatPanel.Controls.Add(SubcatLabel, 1, CatIndex++);
+                    GroupBox SubcatBox = new GroupBox();
+                    SubcatBox.AutoSize = true;
+                    SubcatBox.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+
+                    TableLayoutPanel SubcatPanel = new TableLayoutPanel();
+                    SubcatPanel.AutoSize = true;
+                    SubcatPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+
+                    CatPanel.Controls.Add(SubcatBox, CatIndex, 1);
+                    SubcatBox.Controls.Add(SubcatPanel);
+
+                    SubcatPanel.Location = new System.Drawing.Point(5,20);
+                    SubcatBox.Text = Subcat.Name;
+
+                    int SubcatIndex = 0;
 
                     foreach(SB.Control Cont in Subcat.Controls)
                     {
@@ -81,19 +115,25 @@ namespace Selene.Winforms.Frontend
 
                         if(Converter != null)
                         {
-                            CatPanel.Controls.Add(Converter.Construct(Cont), 1, CatIndex++);
+                            Forms.Control Widget = Converter.Construct(Cont);
+
+                            if(Cont.SubType != ControlType.Check)
+                            {
+                                Label L = new Label();
+                                L.Text = Cont.Label;
+
+                                SubcatPanel.Controls.Add(L, 1, SubcatIndex);
+                                SubcatPanel.Controls.Add(Widget, 2, SubcatIndex++);
+                            }
+                            else SubcatPanel.Controls.Add(Widget, 1, SubcatIndex++);
+
                             State.Add(Converter);
                         }
                     }
                 }
 
-                Tabbed.Controls.Add(Page);
             }
 
-            Tabbed.AutoSize = true;
-            var S = Tabbed.Size;
-            S.Height += 50;
-            Tabbed.Size = S;
             Win.Controls.Add(Tabbed);
 
             Button OK = new Button();
