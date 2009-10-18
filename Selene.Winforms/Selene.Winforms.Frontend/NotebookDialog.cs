@@ -116,6 +116,8 @@ namespace Selene.Winforms.Frontend
                         if(Converter != null)
                         {
                             Forms.Control Widget = Converter.Construct(Cont);
+                            Widget.AutoSize = true;
+                            
 
                             if(Cont.SubType != ControlType.Check)
                             {

@@ -75,9 +75,7 @@ namespace Selene.Winforms.Midend
             if(Original.SubType == ControlType.Radio)
             {
                 var Ret = new TableLayoutPanel();
-                Ret.AutoSize = true;
                 Ret.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-                Ret.Margin = new Padding(2);
 
                 Original.GetFlag<bool>(ref Vertical);
                 return Ret;
@@ -108,6 +106,7 @@ namespace Selene.Winforms.Midend
             if(Original.SubType == ControlType.Radio)
             {
                 RadioButton Add = new RadioButton();
+                Add.AutoSize = true;
                 Add.Text = Value;
 
                 if(Vertical) (Widget as TableLayoutPanel).Controls.Add(Add, 1, Options++);
