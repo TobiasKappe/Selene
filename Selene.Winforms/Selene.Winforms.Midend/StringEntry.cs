@@ -35,19 +35,88 @@ namespace Selene.Winforms.Midend
 {
     public class StringEntry : ConverterBase<Forms.Control, string>
     {
+        string File;
+        EventHandler Proxy;
+
         protected override string ActualValue {
-            get { return (Widget as TextBox).Text; }
-            set { (Widget as TextBox).Text = value; }
+            get
+            {
+                if(Original.SubType == ControlType.Default)
+                    return (Widget as TextBox).Text;
+                else return File;
+            }
+            set
+            {
+                if(Original.SubType == ControlType.Default)
+                    (Widget as TextBox).Text = value;
+                else
+                {
+                    File = value;
+                    if(File != string.Empty && File != null)
+                        (Widget as Button).Text = System.IO.Path.GetFileName(value);
+                }
+            }
+        }
+
+        protected override ControlType[] Supported {
+            get
+            {
+                return new ControlType[] { ControlType.Default, ControlType.FileSelect, ControlType.DirectorySelect };
+            }
         }
 
         protected override Forms.Control Construct ()
         {
-            return new TextBox();
+            if(Original.SubType == ControlType.Default)
+                return new TextBox();
+            else
+            {
+                Button Ret = new Button();
+                Ret.Text = "Choose a " + (Original.SubType == ControlType.DirectorySelect ? "directory" : "file");
+                Ret.Click += ButtonClick;
+                return Ret;
+            }
+        }
+
+        void ButtonClick (object sender, EventArgs e)
+        {
+            if(Original.SubType == ControlType.FileSelect)
+            {
+                FileDialog Show = new OpenFileDialog();
+                Show.CheckFileExists = true;
+                Show.CheckPathExists = true;
+                Show.FileName = File;
+                if(Show.ShowDialog() == DialogResult.OK)
+                {
+                    ActualValue = Show.FileName;
+                    Proxy(Show, null);
+                }
+            }
+            else if(Original.SubType == ControlType.DirectorySelect)
+            {
+                FolderBrowserDialog Show = new FolderBrowserDialog();
+                Show.SelectedPath = File;
+                if(Show.ShowDialog() == DialogResult.OK);
+                {
+                    ActualValue = Show.SelectedPath;
+                    Proxy(Show, null);
+                }
+            }
         }
 
         public override event EventHandler Changed {
-            add { (Widget as TextBox).TextChanged += value; }
-            remove { (Widget as TextBox).TextChanged -= value; }
+            add
+            {
+                if(Original.SubType == ControlType.Default)
+                    (Widget as TextBox).TextChanged += value;
+                else Proxy += value;
+            }
+            remove
+            {
+                if(Original.SubType == ControlType.Default)
+                    (Widget as TextBox).TextChanged -= value;
+                else Proxy -= value;
+            }
         }
     }
 }
