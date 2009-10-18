@@ -45,26 +45,22 @@ namespace Selene.Testing
 {
     public partial class Harness
     {
-        class NamingPickingTest
+        enum Cat { Alive, Dead, Neither, Both }
+
+        class VerticalTest
         {
             #pragma warning disable 0649
 
-            [Control(Name = "Given name")]
-            public string Name;
-            
-            [Control(Name = "Home directory", Override = ControlType.DirectorySelect)]
-            public string HomeDir = "/home/"+System.Environment.UserName;
-            [Control(Name = "Favourite file", Override = ControlType.FileSelect)]
-            public string Favfile;
-            public string Hostname = System.Environment.UserDomainName;
+            [Control(Override = ControlType.Radio), ControlFlags(true)]
+            public Cat Status;
         }
 
         [Test]
-        public void NamingPicking()
+        public void Vertical()
         {
-            var Present = new NotebookDialog<NamingPickingTest>("OK if values match");
-            NamingPickingTest Save = new NamingPickingTest();
-            Assert.IsTrue(Present.Run(Save));
+            var Test = new NotebookDialog<VerticalTest>("Vertical radiobuttons?");
+            VerticalTest Val = new VerticalTest();
+            Assert.IsTrue(Test.Run(Val));
         }
     }
 }

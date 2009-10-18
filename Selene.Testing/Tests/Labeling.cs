@@ -45,22 +45,26 @@ namespace Selene.Testing
 {
     public partial class Harness
     {
-        enum Cat { Alive, Dead, Neither, Both }
-
-        class OverrideTest
+        class LabelingTest
         {
             #pragma warning disable 0649
 
-            [Control(Override = ControlType.Radio), ControlFlags(true)]
-            public Cat Status;
+            [Control(Name = "Given name")]
+            public string Name;
+
+            [Control(Name = "Home directory", Override = ControlType.DirectorySelect)]
+            public string HomeDir = "/home/"+System.Environment.UserName;
+            [Control(Name = "Favourite file", Override = ControlType.FileSelect)]
+            public string Favfile;
+            public string Hostname = System.Environment.UserDomainName;
         }
 
         [Test]
-        public void Override()
+        public void Labeling()
         {
-            var Test = new NotebookDialog<OverrideTest>("Vertical radiobuttons?");
-            OverrideTest Val = new OverrideTest();
-            Assert.IsTrue(Test.Run(Val));
+            var Present = new NotebookDialog<LabelingTest>("OK if values match");
+            LabelingTest Save = new LabelingTest();
+            Assert.IsTrue(Present.Run(Save));
         }
     }
 }

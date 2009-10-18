@@ -47,8 +47,8 @@
     <Compile Include="Tests\Grouping.cs" />
     <Compile Include="Tests\ListView.cs" />
     <Compile Include="Tests\Manifest.cs" />
-    <Compile Include="Tests\Naming.cs" />
-    <Compile Include="Tests\Override.cs" />
+    <Compile Include="Tests\Labeling.cs" />
+    <Compile Include="Tests\Vertical.cs" />
     <Compile Include="Tests\Serializing.cs" />
     <Compile Include="Tests\Simplest.cs" />
     <Compile Include="Tests\Validator.cs" />
