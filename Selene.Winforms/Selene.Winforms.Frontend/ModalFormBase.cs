@@ -46,6 +46,8 @@ namespace Selene.Winforms.Frontend
             Win.Text = Title;
             Win.MaximizeBox = false;
             Win.FormBorderStyle = FormBorderStyle.FixedDialog;
+            Win.AutoSize = true;
+            Win.AutoSizeMode = AutoSizeMode.GrowAndShrink;
         }
 
         protected void OKClick (object sender, EventArgs e)
