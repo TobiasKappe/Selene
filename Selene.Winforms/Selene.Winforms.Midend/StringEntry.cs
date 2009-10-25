@@ -89,7 +89,7 @@ namespace Selene.Winforms.Midend
                 if(Show.ShowDialog() == DialogResult.OK)
                 {
                     ActualValue = Show.FileName;
-                    Proxy(Show, null);
+                    if(Proxy != null) Proxy(Show, null);
                 }
             }
             else if(Original.SubType == ControlType.DirectorySelect)
@@ -99,7 +99,7 @@ namespace Selene.Winforms.Midend
                 if(Show.ShowDialog() == DialogResult.OK);
                 {
                     ActualValue = Show.SelectedPath;
-                    Proxy(Show, null);
+                    if(Proxy != null) Proxy(Show, null);
                 }
             }
         }
