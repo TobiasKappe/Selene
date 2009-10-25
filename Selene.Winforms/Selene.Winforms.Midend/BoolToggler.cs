@@ -40,6 +40,12 @@ namespace Selene.Winforms.Midend
             set { (Widget as CheckBox).Checked = value; }
         }
 
+        protected override ControlType[] Supported {
+            get {
+                return new ControlType[] { ControlType.Default, ControlType.Check };
+            }
+        }
+
         protected override Forms.Control Construct ()
         {
             Original.SubType = ControlType.Check;

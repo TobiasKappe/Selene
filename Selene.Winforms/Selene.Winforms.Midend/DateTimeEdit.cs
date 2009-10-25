@@ -37,7 +37,14 @@ namespace Selene.Winforms.Midend
     {
         protected override DateTime ActualValue {
             get { return (Widget as DateTimePicker).Value; }
-            set { (Widget as DateTimePicker).Value = value; }
+            set
+            {
+                if(value < DateTimePicker.MinDateTime)
+                    (Widget as DateTimePicker).Value = DateTimePicker.MinDateTime;
+                else if(value > DateTimePicker.MaxDateTime)
+                    (Widget as DateTimePicker).Value = DateTimePicker.MaxDateTime;
+                else (Widget as DateTimePicker).Value = value;
+            }
         }
 
         protected override Forms.Control Construct ()
