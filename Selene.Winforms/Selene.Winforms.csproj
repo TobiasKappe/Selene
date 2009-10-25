@@ -45,6 +45,7 @@
     <Compile Include="Selene.Winforms.Midend\FlagsChooser.cs" />
     <Compile Include="Selene.Winforms.Frontend\CatPanel.cs" />
     <Compile Include="Selene.Winforms.Frontend\ModalFormBase.cs" />
+    <Compile Include="Selene.Winforms.Frontend\ListStoreDialog.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Selene.Backend\Selene.Backend.csproj">
