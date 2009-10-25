@@ -79,10 +79,10 @@ namespace Selene.Testing
             IModalPresenter Present = new NotebookDialog<GroupingTest>(Title);
             Assert.IsTrue(Present.Run(Save));
 
-#if !WINDOWS
             Present = new ListStoreDialog<GroupingTest>(Title);
             Assert.IsTrue(Present.Run(Save));
 
+#if !WINDOWS
             Present = new TreeStoreDialog<GroupingTest>(Title);
             Assert.IsTrue(Present.Run(Save));
 
