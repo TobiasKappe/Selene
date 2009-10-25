@@ -48,7 +48,7 @@ namespace Selene.Winforms.Frontend
             Win.FormBorderStyle = FormBorderStyle.FixedDialog;
         }
 
-        void CatPanelSizeChanged(object Sender, EventArgs e)
+        void CatPanelResize(object Sender, EventArgs e)
         {
             var Set = new System.Drawing.Size();
 
@@ -80,60 +80,13 @@ namespace Selene.Winforms.Frontend
                 Page.AutoSizeMode = AutoSizeMode.GrowAndShrink;
                 Tabbed.Controls.Add(Page);
 
-                TableLayoutPanel CatPanel = new TableLayoutPanel();
-                CatPanel.AutoSize = true;
-                CatPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-                CatPanel.Location = new System.Drawing.Point(3,3);
-                Page.Controls.Add(CatPanel);
+                CatPanel Panel = new CatPanel(ProcureState);
 
                 // Somehow the tab control can not autosize
-                CatPanel.SizeChanged += CatPanelSizeChanged;
+                Panel.SizeChanged += CatPanelResize;
 
-                int CatIndex = 0;
-
-                foreach(ControlSubcategory Subcat in Cat.Subcategories)
-                {
-                    GroupBox SubcatBox = new GroupBox();
-                    SubcatBox.AutoSize = true;
-                    SubcatBox.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-
-                    TableLayoutPanel SubcatPanel = new TableLayoutPanel();
-                    SubcatPanel.AutoSize = true;
-                    SubcatPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-
-                    CatPanel.Controls.Add(SubcatBox, CatIndex, 1);
-                    SubcatBox.Controls.Add(SubcatPanel);
-
-                    SubcatPanel.Location = new System.Drawing.Point(5,20);
-                    SubcatBox.Text = Subcat.Name;
-
-                    int SubcatIndex = 0;
-
-                    foreach(SB.Control Cont in Subcat.Controls)
-                    {
-                        IConverter<Forms.Control> Converter = ProcureState(Cont);
-
-                        if(Converter != null)
-                        {
-                            Forms.Control Widget = Converter.Construct(Cont);
-                            Widget.AutoSize = true;
-                            
-
-                            if(Cont.SubType != ControlType.Check)
-                            {
-                                Label L = new Label();
-                                L.Text = Cont.Label;
-
-                                SubcatPanel.Controls.Add(L, 1, SubcatIndex);
-                                SubcatPanel.Controls.Add(Widget, 2, SubcatIndex++);
-                            }
-                            else SubcatPanel.Controls.Add(Widget, 1, SubcatIndex++);
-
-                            State.Add(Converter);
-                        }
-                    }
-                }
-
+                Panel.LayoutControls(State, Cat);
+                Page.Controls.Add(Panel);
             }
 
             Win.Controls.Add(Tabbed);

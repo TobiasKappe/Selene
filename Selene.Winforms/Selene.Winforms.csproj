@@ -43,6 +43,7 @@
     <Compile Include="Selene.Winforms.Midend\NumberEntry.cs" />
     <Compile Include="Selene.Winforms.Midend\DateTimeEdit.cs" />
     <Compile Include="Selene.Winforms.Midend\FlagsChooser.cs" />
+    <Compile Include="Selene.Winforms.Frontend\CatPanel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Selene.Backend\Selene.Backend.csproj">
