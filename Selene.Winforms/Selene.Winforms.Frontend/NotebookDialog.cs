@@ -34,18 +34,12 @@ using Forms = System.Windows.Forms;
 
 namespace Selene.Winforms.Frontend
 {
-    public class NotebookDialog<T> : ModalPresenterBase<Forms.Control>
+    public class NotebookDialog<T> : ModalFormBase
     {
-        Form Win;
         TabControl Tabbed;
 
-        public NotebookDialog(string Title)
+        public NotebookDialog(string Title) : base(Title)
         {
-            Win = new Form();
-
-            Win.Text = Title;
-            Win.MaximizeBox = false;
-            Win.FormBorderStyle = FormBorderStyle.FixedDialog;
         }
 
         void CatPanelResize(object Sender, EventArgs e)
@@ -109,33 +103,6 @@ namespace Selene.Winforms.Frontend
 
             Win.AutoSize = true;
             Win.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-        }
-
-        void OKClick (object sender, EventArgs e)
-        {
-            Save();
-            Win.DialogResult = DialogResult.OK;
-        }
-
-        void CancelClick (object sender, EventArgs e)
-        {
-            Win.DialogResult = DialogResult.Cancel;
-        }
-
-        protected override bool Run ()
-        {
-            Win.Visible = false;
-            return Win.ShowDialog() == DialogResult.OK;
-        }
-
-        public override void Show ()
-        {
-            Win.Show();
-        }
-
-        public override void Hide ()
-        {
-            Win.Hide();
         }
     }
 }
