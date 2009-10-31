@@ -67,13 +67,11 @@ namespace Selene.Winforms.Frontend
             }
             List.EndUpdate();
 
-            // TODO: Add buttons!
-
             List.SelectedIndexChanged += ListSelectedIndexChanged;
 
             // TODO: Autosizing is not done correctly here
             Panel.AutoSize = true;
-            Win.Controls.Add(Panel);
+            MainPanel.Controls.Add(Panel, 1,1);
         }
 
         void ListSelectedIndexChanged (object sender, EventArgs e)

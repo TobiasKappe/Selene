@@ -38,6 +38,7 @@ namespace Selene.Winforms.Frontend
     public abstract class ModalFormBase : ModalPresenterBase<Forms.Control>
     {
         protected Form Win;
+        protected TableLayoutPanel MainPanel;
 
         public ModalFormBase(string Title)
         {
@@ -48,6 +49,30 @@ namespace Selene.Winforms.Frontend
             Win.FormBorderStyle = FormBorderStyle.FixedDialog;
             Win.AutoSize = true;
             Win.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+
+            MainPanel = new TableLayoutPanel();
+            MainPanel.AutoSize = true;
+            MainPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+
+            // There's got to be some better way...
+            TableLayoutPanel ButtonPanel = new TableLayoutPanel();
+            ButtonPanel.AutoSize = true;
+
+            Button OK = new Button();
+            OK.Text = "OK";
+            OK.Anchor = AnchorStyles.Right;
+            ButtonPanel.Controls.Add(OK, 2, 1);
+
+            Button Cancel = new Button();
+            Cancel.Text = "Cancel";
+            ButtonPanel.Controls.Add(Cancel, 1, 1);
+
+            Cancel.Click += CancelClick;
+            OK.Click += OKClick;
+
+            MainPanel.Controls.Add(ButtonPanel, 1, 2);
+
+            Win.Controls.Add(MainPanel);
         }
 
         protected void OKClick (object sender, EventArgs e)
