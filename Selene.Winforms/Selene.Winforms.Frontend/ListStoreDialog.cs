@@ -38,6 +38,8 @@ namespace Selene.Winforms.Frontend
     {
         ListBox List;
         TableLayoutPanel Panel;
+        CatPanel ActivePanel;
+        int MaxWidth = 0, MaxHeight;
 
         public ListStoreDialog (string Title) : base(Title)
         {
@@ -54,30 +56,50 @@ namespace Selene.Winforms.Frontend
             Panel.Location = new System.Drawing.Point(3,3);
 
             List.BeginUpdate();
+
             foreach(ControlCategory Cat in Manifest.Categories)
             {
                 List.Items.Add(Cat.Name);
                 CatPanel SubPanel = new CatPanel(ProcureState);
+                SubPanel.SizeChanged += SubPanelAutoSizeChanged;
                 SubPanel.LayoutControls(State, Cat);
 
                 Panel.Controls.Add(SubPanel, Column++, 1);
 
-                if(Column != 2)
-                    SubPanel.Visible = false;
+                if(Column != 3) SubPanel.Visible = false;
+                else ActivePanel = SubPanel;
+
             }
             List.EndUpdate();
-
             List.SelectedIndexChanged += ListSelectedIndexChanged;
 
-            // TODO: Autosizing is not done correctly here
             Panel.AutoSize = true;
             MainPanel.Controls.Add(Panel, 1,1);
         }
 
+        void SubPanelAutoSizeChanged (object sender, EventArgs e)
+        {
+            Forms.Control Cont = sender as Forms.Control;
+
+            if(Cont.Width > MaxWidth)
+            {
+                Win.AutoSize = false;
+                MaxWidth = Cont.Width;
+                Win.Width = MaxWidth + List.Width + 20;
+            }
+
+            if(Cont.Height > MaxHeight)
+            {
+                MaxHeight = Cont.Height;
+                Win.Height = (Cont.Height > MaxHeight ? Cont.Height : MaxHeight) + 70;
+            }
+        }
+
         void ListSelectedIndexChanged (object sender, EventArgs e)
         {
-            for(int i = 1; i < Panel.Controls.Count; i++)
-                Panel.Controls[i].Visible = i-1 == List.SelectedIndex;
+            ActivePanel.Visible = false;
+            ActivePanel = Panel.Controls[List.SelectedIndex+1] as CatPanel;
+            ActivePanel.Visible = true;
         }
     }
 }
