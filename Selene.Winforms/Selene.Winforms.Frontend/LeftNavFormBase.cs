@@ -27,53 +27,59 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
-using Selene.Backend;
-using SB = Selene.Backend;
 using System.Windows.Forms;
-using Forms = System.Windows.Forms;
 
 namespace Selene.Winforms.Frontend
 {
-    public class ListStoreDialog<T> : LeftNavFormBase
+    // Base class for ListStoreDialog and TreeStoreDialog in the Windows frontend
+    public abstract class LeftNavFormBase : ModalFormBase
     {
-        ListBox List;
+        int MaxWidth = 0, MaxHeight;
+        protected TableLayoutPanel Panel;
+        protected Control ActivePanel;
 
-        public ListStoreDialog (string Title) : base(Title)
+        public LeftNavFormBase (string Title) : base(Title)
         {
         }
 
-        protected override Forms.Control Navigation {
-            get { return List; }
-        }
-
-        protected override void Build (ControlManifest Manifest, int Column)
+        protected void RightPanelResized (object sender, EventArgs e)
         {
-            List = new ListBox();
+            Control Cont = sender as Control;
 
-            List.BeginUpdate();
-            foreach(ControlCategory Cat in Manifest.Categories)
+            if(Cont.Width > MaxWidth)
             {
-                List.Items.Add(Cat.Name);
-                CatPanel SubPanel = new CatPanel(ProcureState);
-                SubPanel.SizeChanged += RightPanelResized;
-                SubPanel.LayoutControls(State, Cat);
-
-                Panel.Controls.Add(SubPanel, Column++, 1);
-
-                if(Column != 3) SubPanel.Visible = false;
-                else ActivePanel = SubPanel;
-
+                Win.AutoSize = false;
+                MaxWidth = Cont.Width;
+                Win.Width = MaxWidth + Navigation.Width + 20;
             }
-            List.EndUpdate();
 
-            List.SelectedIndexChanged += ListSelectedIndexChanged;
+            if(Cont.Height > MaxHeight)
+            {
+                // Maybe the navigation widget is bigger
+                MaxHeight = (Cont.Height > Navigation.Height ? Cont.Height : Navigation.Height);
+                Win.Height = MaxHeight + 70; // Take button height into account
+            }
         }
 
-        void ListSelectedIndexChanged (object sender, EventArgs e)
+        protected sealed override void Build (Selene.Backend.ControlManifest Manifest)
         {
-            ActivePanel.Visible = false;
-            ActivePanel = Panel.Controls[List.SelectedIndex];
-            ActivePanel.Visible = true;
+            int Column = 2;
+            Panel = new TableLayoutPanel();
+            Panel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+
+            Build(Manifest, Column);
+
+            Panel.Controls.Add(Navigation, 1, 1);
+            Panel.Location = new System.Drawing.Point(3,3);
+            Panel.AutoSize = true;
+            MainPanel.Controls.Add(Panel, 1,1);
+        }
+
+        protected abstract void Build(Selene.Backend.ControlManifest Manifest, int Column);
+
+        protected abstract Control Navigation
+        {
+            get;
         }
     }
 }
