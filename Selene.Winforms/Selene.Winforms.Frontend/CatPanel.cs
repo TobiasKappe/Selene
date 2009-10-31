@@ -46,7 +46,6 @@ namespace Selene.Winforms.Frontend
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             Location = new System.Drawing.Point(3,3);
 
-
             this.PState = State;
         }
 
@@ -59,44 +58,50 @@ namespace Selene.Winforms.Frontend
                 GroupBox SubcatBox = new GroupBox();
                 SubcatBox.AutoSize = true;
                 SubcatBox.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-
-                TableLayoutPanel SubcatPanel = new TableLayoutPanel();
-                SubcatPanel.AutoSize = true;
-                SubcatPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-
-                Controls.Add(SubcatBox, CatIndex, 1);
-                SubcatBox.Controls.Add(SubcatPanel);
-
-                SubcatPanel.Location = new System.Drawing.Point(5,20);
                 SubcatBox.Text = Subcat.Name;
 
-                int SubcatIndex = 0;
+                TableLayoutPanel SubcatPanel = LayoutSubcat(AddTo, Subcat);
 
-                foreach(SB.Control Cont in Subcat.Controls)
-                {
-                    IConverter<Forms.Control> Converter = PState(Cont);
-
-                    if(Converter != null)
-                    {
-                        Forms.Control Widget = Converter.Construct(Cont);
-                        Widget.AutoSize = true;
-
-
-                        if(Cont.SubType != ControlType.Check)
-                        {
-                            Label L = new Label();
-                            L.Text = Cont.Label;
-
-                            SubcatPanel.Controls.Add(L, 1, SubcatIndex);
-                            SubcatPanel.Controls.Add(Widget, 2, SubcatIndex++);
-                        }
-                        else SubcatPanel.Controls.Add(Widget, 1, SubcatIndex++);
-
-                        AddTo.Add(Converter);
-                    }
-                }
+                SubcatBox.Controls.Add(SubcatPanel);
+                Controls.Add(SubcatBox, 1, CatIndex);
+                CatIndex++;
             }
         }
 
+        public TableLayoutPanel LayoutSubcat(List<IConverter<Forms.Control>> AddTo, ControlSubcategory Subcat)
+        {
+            TableLayoutPanel SubcatPanel = new TableLayoutPanel();
+            SubcatPanel.AutoSize = true;
+            SubcatPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+
+            SubcatPanel.Location = new System.Drawing.Point(5,20);
+
+            int SubcatIndex = 0;
+
+            foreach(SB.Control Cont in Subcat.Controls)
+            {
+                IConverter<Forms.Control> Converter = PState(Cont);
+
+                if(Converter != null)
+                {
+                    Forms.Control Widget = Converter.Construct(Cont);
+                    Widget.AutoSize = true;
+
+                    if(Cont.SubType != ControlType.Check)
+                    {
+                        Label L = new Label();
+                        L.Text = Cont.Label;
+
+                        SubcatPanel.Controls.Add(L, 1, SubcatIndex);
+                        SubcatPanel.Controls.Add(Widget, 2, SubcatIndex++);
+                    }
+                    else SubcatPanel.Controls.Add(Widget, 1, SubcatIndex++);
+
+                    AddTo.Add(Converter);
+                }
+            }
+
+            return SubcatPanel;
+        }
     }
 }
