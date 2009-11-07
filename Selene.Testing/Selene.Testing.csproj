@@ -35,10 +35,10 @@
       <Package>nunit-2.4</Package>
     </Reference>
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="qt-dotnet, Version=4.4.0.0, Culture=neutral, PublicKeyToken=194a23ba31c08164">
+    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="qt-dotnet, Version=4.5.0.0, Culture=neutral, PublicKeyToken=194a23ba31c08164">
       <Package>qyoto</Package>
     </Reference>
-    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -75,10 +75,6 @@
     <ProjectReference Include="..\Selene.Gtk\Selene.Gtk.csproj">
       <Project>{EF3F5A62-C8BC-47ED-A22E-2FF18CA8DDAD}</Project>
       <Name>Selene.Gtk</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Selene.Qyoto\Selene.Qyoto.csproj">
-      <Project>{0AF12417-C0DF-495B-B439-B68191DF358E}</Project>
-      <Name>Selene.Qyoto</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
