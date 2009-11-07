@@ -96,7 +96,7 @@ namespace Selene.Winforms.Midend
             {
                 FolderBrowserDialog Show = new FolderBrowserDialog();
                 Show.SelectedPath = File;
-                if(Show.ShowDialog() == DialogResult.OK);
+                if(Show.ShowDialog() == DialogResult.OK)
                 {
                     ActualValue = Show.SelectedPath;
                     if(Proxy != null) Proxy(Show, null);
