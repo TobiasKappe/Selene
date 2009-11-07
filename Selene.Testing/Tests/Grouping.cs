@@ -85,12 +85,10 @@ namespace Selene.Testing
             Present = new TreeStoreDialog<GroupingTest>(Title);
             Assert.IsTrue(Present.Run(Save));
 
-#if !WINDOWS
             var NonModal = new WizardDialog<GroupingTest>(Title);
             NonModal.Run(Save);
             NonModal.Block();
             Assert.IsTrue(NonModal.Success);
-#endif
         }
     }
 }

@@ -40,6 +40,10 @@ using Selene.Gtk.Frontend;
 using Selene.Qyoto.Frontend;
 #endif
 
+#if WINDOWS
+using Selene.Winforms.Frontend;
+#endif
+
 
 namespace Selene.Testing
 {
@@ -91,7 +95,6 @@ namespace Selene.Testing
 
     public partial class Harness
     {
-#if !WINDOWS
         [Test]
         public void Validating()
         {
@@ -103,11 +106,10 @@ namespace Selene.Testing
                 Console.WriteLine(Test.Surname);
                 Console.WriteLine(Test.PhoneNumber);
             };
-            Disp.Validator = new Validator();
+            //Disp.Validator = new Validator();
             Disp.Run(Test);
             Disp.Block();
             Assert.IsTrue(Disp.Success);
         }
-#endif
     }
 }
