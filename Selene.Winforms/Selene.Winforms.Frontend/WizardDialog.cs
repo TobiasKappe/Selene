@@ -86,7 +86,9 @@ namespace Selene.Winforms.Frontend
         void SizeChanged (object sender, EventArgs e)
         {
             MainPanel.Width = ShiftingPanel.Width = CurrentPanel.Width + 10;
-            MainPanel.Height = CurrentPanel.Height + ButtonsPanel.Height + 20;
+
+            if(MainPanel.Height < CurrentPanel.Height + ButtonsPanel.Height + 20)
+                MainPanel.Height = CurrentPanel.Height + ButtonsPanel.Height + 20;
         }
 
         protected override void Build (ControlManifest Manifest)
@@ -125,6 +127,8 @@ namespace Selene.Winforms.Frontend
             Win.Controls.Add(MainPanel);
 
             CurrentIndex = 0;
+
+            MainPanel.Height = 0;
         }
 
         void PrevButtonClick (object sender, EventArgs e)
