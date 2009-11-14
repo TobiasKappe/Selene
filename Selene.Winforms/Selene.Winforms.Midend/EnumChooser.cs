@@ -106,6 +106,7 @@ namespace Selene.Winforms.Midend
             if(Original.SubType == ControlType.Radio)
             {
                 RadioButton Add = new RadioButton();
+                Add.CheckedChanged += RadioCheckedChanged;
                 Add.AutoSize = true;
                 Add.Text = Value;
 
