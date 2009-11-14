@@ -37,7 +37,7 @@ namespace Selene.Winforms.Frontend
     // Suboptimal implementation of a wizard in Windows.Forms
     // Why on earth does the toolkit not provide for this?
 
-    public class WizardDialog<T> : NonModalPresenterBase<Forms.Control>
+    public class WizardDialog<T> : NonModalPresenterBase<Forms.Control>, IValidatable<T> where T : class, ICloneable
     {
         // Localisation?
         static readonly string NextText = "Next >";
@@ -49,6 +49,22 @@ namespace Selene.Winforms.Frontend
         TableLayoutPanel ShiftingPanel, ButtonsPanel, MainPanel;
         Button NextButton, PrevButton;
 
+        IValidator<T> mValidator;
+        T Dummy;
+        bool Connected = false;
+
+        void HandleChange(object o, EventArgs args)
+        {
+            if(mValidator != null && mCurrentIndex >= 0)
+            {
+                Dummy = (Present as T).Clone() as T;
+
+                Save(Dummy);
+
+                NextButton.Enabled = mValidator.CatIsValid(Dummy, mCurrentIndex);
+            }
+        }
+
         int CurrentIndex {
             get { return mCurrentIndex; }
             set
@@ -59,11 +75,18 @@ namespace Selene.Winforms.Frontend
 
                 PrevButton.Enabled = value != 0;
                 NextButton.Text = value == MaxIndex ? CompleteText : NextText;
+
+                if(Present != null) HandleChange(null, null);
             }
         }
 
         Forms.Control CurrentPanel {
             get { return ShiftingPanel.Controls[mCurrentIndex]; }
+        }
+
+        public IValidator<T> Validator {
+            set { mValidator = value; }
+            get { return mValidator; }
         }
 
         public WizardDialog (string Title)
@@ -127,7 +150,6 @@ namespace Selene.Winforms.Frontend
             Win.Controls.Add(MainPanel);
 
             CurrentIndex = 0;
-
             MainPanel.Height = 0;
         }
 
@@ -154,6 +176,7 @@ namespace Selene.Winforms.Frontend
 
         public override void Show()
         {
+            HandleChange(null, null);
             Win.Show();
         }
 
@@ -164,6 +187,15 @@ namespace Selene.Winforms.Frontend
 
         protected override void Run()
         {
+            if(mValidator != null && !Connected)
+            {
+                // Clear any pending events, to prevent superfluous reflection
+                Application.DoEvents();
+
+                SubscribeAllChange(HandleChange);
+                Connected = true;
+            }
+
             Show();
         }
 

@@ -106,7 +106,7 @@ namespace Selene.Testing
                 Console.WriteLine(Test.Surname);
                 Console.WriteLine(Test.PhoneNumber);
             };
-            //Disp.Validator = new Validator();
+            Disp.Validator = new Validator();
             Disp.Run(Test);
             Disp.Block();
             Assert.IsTrue(Disp.Success);
