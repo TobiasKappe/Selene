@@ -52,7 +52,7 @@ namespace Selene.Qyoto.Midend
             Ret.Maximum = Max;
             Ret.Minimum = Min;
             Ret.Wrapping = Wrap;
-            Ret.StepBy(Step);
+            Ret.SingleStep = Step;
 
             return Ret;
         }
