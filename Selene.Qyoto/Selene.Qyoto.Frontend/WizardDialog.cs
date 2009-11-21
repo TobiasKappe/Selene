@@ -69,6 +69,7 @@ namespace Selene.Qyoto.Frontend
             Wiz = new QWizard();
             Wiz.SetWindowTitle(Title);
             QWidget.Connect<int>(Wiz, Qt.SIGNAL("finished(int)"), Completed);
+            QWidget.Connect(Wiz, Qt.SIGNAL("rejected()"), Rejected);
         }
 
         protected override void Build(ControlManifest Manifest)
@@ -101,6 +102,12 @@ namespace Selene.Qyoto.Frontend
         void Completed(int Arg)
         {
             Success = Arg == 1;
+        }
+
+        void Rejected()
+        {
+            Console.WriteLine("Rejected");
+            Success = false;
         }
 
         void HandleChange(object Sender, EventArgs Args)
@@ -140,7 +147,8 @@ namespace Selene.Qyoto.Frontend
         {
             while(true)
             {
-                if(Done != null && Done.Value) break;
+                if(Done != null) break;
+
                 while(QApplication.HasPendingEvents())
                     QApplication.ProcessEvents();
             }
