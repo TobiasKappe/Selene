@@ -47,8 +47,8 @@ namespace Selene.Qyoto.Frontend
 
             Tree.SetMaximumSize(150, 16777215);
 
-            QWidget.Connect(Tree, Qt.SIGNAL("currentItemChanged (QTreeWidgetItem*, QTreeWidgetItem*)"),
-                            new TwoArgDelegate<QTreeWidgetItem, QTreeWidgetItem>(HandleClick));
+            QWidget.Connect<QTreeWidgetItem, QTreeWidgetItem>(Tree,
+                Qt.SIGNAL("currentItemChanged (QTreeWidgetItem*, QTreeWidgetItem*)"), HandleClick);
         }
 
         void HandleClick(QTreeWidgetItem Current, QTreeWidgetItem Prev)

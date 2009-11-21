@@ -68,7 +68,7 @@ namespace Selene.Qyoto.Midend
             Table.SetShowGrid(false);
             Table.selectionBehavior = QTableWidget.SelectionBehavior.SelectRows;
             Table.selectionMode = QTableWidget.SelectionMode.SingleSelection;
-            QObject.Connect(Table, Qt.SIGNAL("itemChanged(QTableWidgetItem*)"), new OneArgDelegate<QTableWidgetItem>(HandleChange));
+            QObject.Connect<QTableWidgetItem>(Table, Qt.SIGNAL("itemChanged(QTableWidgetItem*)"), HandleChange);
 
             AddButton(Buttons, AllowsAdd, "Add", AddRow);
             AddButton(Buttons, AllowsRemove, "Remove", HandleRemove);
@@ -164,13 +164,13 @@ namespace Selene.Qyoto.Midend
             RowAdded(Id, Items);
         }
 
-        void AddButton(QBoxLayout Lay, bool Depends, string Title, NoArgDelegate Clicked)
+        void AddButton(QBoxLayout Lay, bool Depends, string Title, SlotFunc Slot)
         {
             if(Depends || GreyButtons)
             {
                 QPushButton Add = new QPushButton(Title);
                 if(GreyButtons && !Depends) Add.SetEnabled(false);
-                QObject.Connect(Add, Qt.SIGNAL("clicked()"), Clicked);
+                QObject.Connect(Add, Qt.SIGNAL("clicked()"), Slot);
                 Lay.AddWidget(Add);
             }
         }

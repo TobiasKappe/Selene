@@ -46,7 +46,7 @@ namespace Selene.Qyoto.Frontend
 
             List.SetMaximumSize(150, 16777215);
 
-            QWidget.Connect(List, Qt.SIGNAL("currentRowChanged(int)"), new OneArgDelegate<int>(HandleClick));
+            QWidget.Connect<int>(List, Qt.SIGNAL("currentRowChanged(int)"), HandleClick);
         }
 
         void HandleClick(int Row)

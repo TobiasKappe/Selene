@@ -68,7 +68,7 @@ namespace Selene.Qyoto.Frontend
         {
             Wiz = new QWizard();
             Wiz.SetWindowTitle(Title);
-            QWidget.Connect(Wiz, Qt.SIGNAL("finished(int)"), new OneArgDelegate<int>(Completed));
+            QWidget.Connect<int>(Wiz, Qt.SIGNAL("finished(int)"), Completed);
         }
 
         protected override void Build(ControlManifest Manifest)
