@@ -16,7 +16,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;WINDOWS</DefineConstants>
+    <DefineConstants>DEBUG;QYOTO;NUNIT_HACK</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -75,6 +75,10 @@
     <ProjectReference Include="..\Selene.Gtk\Selene.Gtk.csproj">
       <Project>{EF3F5A62-C8BC-47ED-A22E-2FF18CA8DDAD}</Project>
       <Name>Selene.Gtk</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Selene.Qyoto\Selene.Qyoto.csproj">
+      <Project>{0AF12417-C0DF-495B-B439-B68191DF358E}</Project>
+      <Name>Selene.Qyoto</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

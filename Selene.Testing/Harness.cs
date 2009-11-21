@@ -33,6 +33,7 @@ using Gtk;
 #if QYOTO
 using Qyoto;
 #endif
+using System.Reflection;
 
 namespace Selene.Testing
 {
@@ -46,9 +47,22 @@ namespace Selene.Testing
             string[] Dummy = new string[] { };
             Init.Check(ref Dummy);
 #endif
-#if QYOTO
-            new QApplication(new string[] { } );
+
+#if QYOTO && NUNIT_HACK
+            // HACK: The constructor for QApplication calls System.Reflection.Assembly.GetEntryAssembly(),
+            // which returns null when run through nunit (or probably any indirect running method),
+            // causing a NullReferenceException. To work around this, we use smoke directly to call
+            // the native QApplication constructor. Bug/patch: https://bugs.kde.org/show_bug.cgi?id=215551
+
+            var Interceptor = new SmokeInvocation(typeof(QApplication), new QObject());
+            string[] args = new string[] { "test" };
+
+            Interceptor.Invoke( "QApplication$?", "QApplication(int&, char**)",
+                                typeof(void), typeof(int), args.Length, typeof(string[]), args );
+#elif QYOTO
+            new QApplication(new string[] { });
 #endif
+
 #if WINDOWS
             System.Windows.Forms.Application.EnableVisualStyles();
 #endif
