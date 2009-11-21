@@ -37,7 +37,7 @@ namespace Selene.Winforms.Frontend
     // Suboptimal implementation of a wizard in Windows.Forms
     // Why on earth does the toolkit not provide for this?
 
-    public class WizardDialog<T> : NonModalPresenterBase<Forms.Control>, IValidatable<T> where T : class, ICloneable
+    public class WizardDialog<T> : NonModalPresenterBase<Forms.Control>, IValidatable<T>, IDisposable where T : class, ICloneable
     {
         // Localisation?
         static readonly string NextText = "Next >";
@@ -205,6 +205,11 @@ namespace Selene.Winforms.Frontend
             {
                 Application.DoEvents();
             }
+        }
+
+        public void Dispose ()
+        {
+            Win.Dispose();
         }
     }
 }

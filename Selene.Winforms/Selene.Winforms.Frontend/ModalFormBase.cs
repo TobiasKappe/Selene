@@ -35,7 +35,7 @@ using Forms = System.Windows.Forms;
 
 namespace Selene.Winforms.Frontend
 {
-    public abstract class ModalFormBase : ModalPresenterBase<Forms.Control>
+    public abstract class ModalFormBase : ModalPresenterBase<Forms.Control>, IDisposable
     {
         protected Form Win;
         protected TableLayoutPanel MainPanel;
@@ -100,6 +100,11 @@ namespace Selene.Winforms.Frontend
         public override void Hide ()
         {
             Win.Hide();
+        }
+
+        public void Dispose ()
+        {
+            Win.Dispose();
         }
     }
 }
