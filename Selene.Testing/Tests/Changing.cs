@@ -86,7 +86,7 @@ namespace Selene.Testing
             Console.WriteLine(TimesChanged);
 
 #if QYOTO
-            Assert.GreaterOrEqual(TimesChanged, 12);
+            Assert.GreaterOrEqual(TimesChanged, 11);
 #endif
 #if GTK
             Assert.GreaterOrEqual(TimesChanged, 18);
@@ -95,6 +95,7 @@ namespace Selene.Testing
 
         void HandleChange(object Sender, EventArgs Args)
         {
+            Console.WriteLine("Change");
             TimesChanged++;
         }
     }
