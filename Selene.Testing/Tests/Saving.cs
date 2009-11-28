@@ -82,7 +82,9 @@ namespace Selene.Testing
 
             Assert.AreEqual(Test.Hosts, "/etc/hosts");
             Assert.AreEqual(Test.Back, Direction.Back);
+#if !WINDOWS
             Assert.AreEqual(Test.Black, new ushort[] { 0, 0, 0 });
+#endif
             Assert.AreEqual(Test.Fr, Fruit.Apple | Fruit.Orange);
         }
     }
