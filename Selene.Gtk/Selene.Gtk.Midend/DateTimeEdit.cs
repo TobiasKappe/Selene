@@ -32,7 +32,7 @@ using Gtk;
 
 namespace Selene.Gtk.Midend
 {
-    public class DateTimeCalendar : ConverterBase<Widget, DateTime>
+    public class DateTimeEdit : ConverterBase<Widget, DateTime>
     {
         protected override DateTime ActualValue {
             get

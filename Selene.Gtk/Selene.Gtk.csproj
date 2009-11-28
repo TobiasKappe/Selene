@@ -43,7 +43,7 @@
     <Compile Include="Selene.Gtk.Frontend\CategoryTable.cs" />
     <Compile Include="Selene.Gtk.Midend\BoolToggler.cs" />
     <Compile Include="Selene.Gtk.Midend\ColorPicker.cs" />
-    <Compile Include="Selene.Gtk.Midend\DateTimeCalendar.cs" />
+    <Compile Include="Selene.Gtk.Midend\DateTimeEdit.cs" />
     <Compile Include="Selene.Gtk.Midend\EnumChooser.cs" />
     <Compile Include="Selene.Gtk.Midend\StringEntry.cs" />
     <Compile Include="Selene.Gtk.Frontend\ListStoreDialog.cs" />
