@@ -124,7 +124,7 @@ namespace Selene.Qyoto.Midend
 
         protected override ModalPresenterBase<QObject> MakeDialog ()
         {
-            return new NotebookDialog<QObject>(Original.GetFlag<string>());
+            return new NotebookDialog<QObject>(DialogTitle);
         }
 
         protected override void RowAdded (int Id, object[] Items)

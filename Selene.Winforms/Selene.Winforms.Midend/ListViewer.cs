@@ -71,7 +71,7 @@ namespace Selene.Winforms.Midend
 
         protected override ModalPresenterBase<Forms.Control> MakeDialog ()
         {
-            return new NotebookDialog<Forms.Control>(Original.GetFlag<string>());
+            return new NotebookDialog<Forms.Control>(DialogTitle);
         }
 
         protected override void RowAdded (int Id, object[] Items)

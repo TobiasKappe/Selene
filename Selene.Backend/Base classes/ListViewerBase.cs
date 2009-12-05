@@ -42,6 +42,10 @@ namespace Selene.Backend
         protected bool AllowsEdit = true, AllowsRemove = true,
             AllowsAdd = true, GreyButtons = false;
 
+        protected string DialogTitle {
+            get { return Original.GetFlag<string>(); }
+        }
+
         int i = 0;
         List<object> Content;
         ConstructorInfo Constructor;

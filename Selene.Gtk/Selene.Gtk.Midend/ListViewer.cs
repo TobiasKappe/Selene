@@ -43,7 +43,7 @@ namespace Selene.Gtk.Midend
 
         protected override ModalPresenterBase<Widget> MakeDialog()
         {
-            return new NotebookDialog<object>(Original.GetFlag<string>());
+            return new NotebookDialog<object>(DialogTitle);
         }
 
         protected override Widget Construct (Type[] Types)
