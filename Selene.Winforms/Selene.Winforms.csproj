@@ -49,6 +49,7 @@
     <Compile Include="Selene.Winforms.Frontend\LeftNavFormBase.cs" />
     <Compile Include="Selene.Winforms.Frontend\TreeStoreDialog.cs" />
     <Compile Include="Selene.Winforms.Frontend\WizardDialog.cs" />
+    <Compile Include="Selene.Winforms.Midend\ListViewer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Selene.Backend\Selene.Backend.csproj">
