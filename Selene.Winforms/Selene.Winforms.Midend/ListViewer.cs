@@ -38,10 +38,19 @@ namespace Selene.Winforms.Midend
     {
         ListView Viewer;
 
+        int CurrentSelection {
+            get
+            {
+                var Indices = Viewer.SelectedIndices;
+                if(Indices.Count == 0) return -1;
+
+                else return Indices[0];
+            }
+        }
+
         protected override void AddColumn (string Name, Type Type)
         {
             Viewer.Columns.Add(Name, Name, 20);
-            Viewer.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 
         protected override void Clear ()
@@ -53,12 +62,22 @@ namespace Selene.Winforms.Midend
         protected override Forms.Control Construct (Type[] Types)
         {
             TableLayoutPanel Panel = new TableLayoutPanel();
+            TableLayoutPanel ButtonsPanel = new TableLayoutPanel();
 
             Viewer = new Forms.ListView();
             Viewer.FullRowSelect = true;
             Viewer.AutoSize = true;
             Viewer.View = View.Details;
+            Viewer.AllowColumnReorder = false;
+            Viewer.HeaderStyle = ColumnHeaderStyle.Nonclickable;
+            Viewer.MultiSelect = false;
             Panel.Controls.Add(Viewer, 0, 0);
+
+            AddButton(ButtonsPanel, AllowsAdd, "Add", 0, AddClicked);
+            AddButton(ButtonsPanel, AllowsRemove,  "Remove", 1, RemoveClicked);
+            AddButton(ButtonsPanel, AllowsEdit, "Edit", 2, EditClicked);
+            ButtonsPanel.AutoSize = true;
+            Panel.Controls.Add(ButtonsPanel, 1, 0);
 
             return Panel;
         }
@@ -71,7 +90,12 @@ namespace Selene.Winforms.Midend
 
         protected override ModalPresenterBase<Forms.Control> MakeDialog ()
         {
-            return new NotebookDialog<Forms.Control>(DialogTitle);
+            var Dialog = new NotebookDialog<Forms.Control>(DialogTitle);
+
+            // HACK: Probably not semantically correct.
+            // Maybe we should expose the parent dialog to widgets?
+            Dialog.Owner = new Form();
+            return Dialog;
         }
 
         protected override void RowAdded (int Id, object[] Items)
@@ -80,14 +104,50 @@ namespace Selene.Winforms.Midend
             for(int i = 0; i < Values.Length; i++)
                 Values[i] = Items[i].ToString();
 
-            Viewer.Items.Add(new ListViewItem(Values));
+            Viewer.Items.Insert(Id, new ListViewItem(Values));
 
             Viewer.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            Viewer.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 
         protected override void RowEdited (int Id, object[] Items)
         {
-            throw new System.NotImplementedException();
+            Viewer.Items.RemoveAt(Id);
+            RowAdded(Id, Items);
+        }
+
+        void AddClicked(object sender, EventArgs args)
+        {
+            AddRow();
+        }
+
+        void RemoveClicked(object sender, EventArgs args)
+        {
+            int Index = CurrentSelection;
+            if(Index < 0) return;
+
+            DeleteRow(Index);
+            Viewer.Items.RemoveAt(Index);
+        }
+
+        void EditClicked(object sender, EventArgs args)
+        {
+            int Index = CurrentSelection;
+            if(Index < 0) return;
+
+            EditRow(Index);
+        }
+
+        void AddButton(TableLayoutPanel Panel, bool DependsOn, string Text, int Row, EventHandler Clicked)
+        {
+            if(DependsOn || GreyButtons)
+            {
+                Button Add = new Button();
+                Add.Text = Text;
+                Add.Enabled = DependsOn;
+                Add.Click += Clicked;
+                Panel.Controls.Add(Add, 0, Row);
+            }
         }
     }
 }
