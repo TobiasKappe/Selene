@@ -83,19 +83,19 @@ namespace Selene.Testing
             Dialog.Run(new Change());
 
             // We stuplidly assume every widget is changed once
-            Console.WriteLine(TimesChanged);
-
 #if QYOTO
             Assert.GreaterOrEqual(TimesChanged, 11);
 #endif
 #if GTK
             Assert.GreaterOrEqual(TimesChanged, 18);
 #endif
+#if WINDOWS
+            Assert.GreaterOrEqual(TimesChanged, 14);
+#endif
         }
 
         void HandleChange(object Sender, EventArgs Args)
         {
-            Console.WriteLine("Change");
             TimesChanged++;
         }
     }

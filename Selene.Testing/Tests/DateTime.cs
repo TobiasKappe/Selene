@@ -46,6 +46,7 @@ namespace Selene.Testing
 {
     public partial class Harness
     {
+#if !WINDOWS
         class DateTimeTest
         {
             #pragma warning disable 0649
@@ -71,5 +72,6 @@ namespace Selene.Testing
             var Dialog = new NotebookDialog<DateTimeTest>(Title);
             Assert.IsTrue(Dialog.Run(new DateTimeTest()));
         }
+#endif
     }
 }
