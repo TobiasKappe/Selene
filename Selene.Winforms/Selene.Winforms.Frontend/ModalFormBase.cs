@@ -40,6 +40,8 @@ namespace Selene.Winforms.Frontend
         protected Form Win;
         protected TableLayoutPanel MainPanel;
 
+        internal Form Owner;
+
         public ModalFormBase(string Title)
         {
             Win = new Form();
@@ -89,7 +91,10 @@ namespace Selene.Winforms.Frontend
         protected override bool Run ()
         {
             Win.Visible = false;
-            return Win.ShowDialog() == DialogResult.OK;
+
+            if(Owner != null)
+                return Win.ShowDialog(Owner) == DialogResult.OK;
+            else return Win.ShowDialog() == DialogResult.OK;
         }
 
         public override void Show ()
