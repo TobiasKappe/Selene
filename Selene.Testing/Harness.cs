@@ -52,7 +52,7 @@ namespace Selene.Testing
             // HACK: The constructor for QApplication calls System.Reflection.Assembly.GetEntryAssembly(),
             // which returns null when run through nunit (or probably any indirect running method),
             // causing a NullReferenceException. To work around this, we use smoke directly to call
-            // the native QApplication constructor. Bug/patch: https://bugs.kde.org/show_bug.cgi?id=215551
+            // the native QApplication constructor. Patched in KDE revision 1055893 (bug #215551)
 
             var Interceptor = new SmokeInvocation(typeof(QApplication), new QObject());
             string[] args = new string[] { "test" };
