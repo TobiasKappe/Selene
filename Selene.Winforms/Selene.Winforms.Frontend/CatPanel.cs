@@ -51,6 +51,13 @@ namespace Selene.Winforms.Frontend
 
         public void LayoutControls(List<IConverter<Forms.Control>> AddTo, ControlCategory Cat)
         {
+            if(Cat.Subcategories.Length == 1)
+            {
+                Controls.Add(LayoutSubcat(AddTo, Cat.Subcategories[0]), 1, 0);
+
+                return;
+            }
+
             int CatIndex = 0;
 
             foreach(ControlSubcategory Subcat in Cat.Subcategories)

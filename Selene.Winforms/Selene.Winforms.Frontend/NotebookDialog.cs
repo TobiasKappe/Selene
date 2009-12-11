@@ -63,6 +63,15 @@ namespace Selene.Winforms.Frontend
 
         protected override void Build (ControlManifest Manifest)
         {
+            if(Manifest.Categories.Length == 1)
+            {
+                CatPanel Panel = new CatPanel(ProcureState);
+                Panel.LayoutControls(State, Manifest.Categories[0]);
+                MainPanel.Controls.Add(Panel, 1,1);
+
+                return;
+            }
+
             Tabbed = new TabControl();
             Tabbed.AutoSize = true;
 
