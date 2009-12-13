@@ -40,6 +40,10 @@ using Selene.Qyoto.Frontend;
 using Qyoto;
 #endif
 
+#if WINDOWS
+using Selene.Winforms.Frontend;
+using System.Windows.Forms;
+#endif
 
 namespace Selene.Testing
 {
@@ -48,25 +52,28 @@ namespace Selene.Testing
         class EmbeddingTest
         {
             #pragma warning disable 0649
-            
-            [Control("Optimus")]
+
+            [ControlAttribute("Optimus")]
             public string Alpha;
             public bool Bravo;
 
-            [Control("Prime")]
+            [ControlAttribute("Prime")]
             public ushort[] Color = new ushort[3] { 65535, 0, 0 };
         }
 
-#if !WINDOWS
         public void Embedding()
         {
             var Embed = new NotebookDialog<EmbeddingTest>("Selene");
             var Test = new EmbeddingTest();
 
+            const string WindowTitle = "Selene";
+            const string LabelText = "This label is not part of the notebook";
+            const string ButtonText = "Neither is this button";
+
 #if GTK
-            Window Container = new Window("Selene");
-            Label Extra = new Label("This label is not part of the notebook");
-            Button Click = new Button("Neither is this button");
+            Window Container = new Window(WindowTitle);
+            Label Extra = new Label(LabelText);
+            Button Click = new Button(ButtonText);
             VBox Box = new VBox();
 
             Click.Clicked += delegate {
@@ -87,10 +94,10 @@ namespace Selene.Testing
             QHBoxLayout Lay = (QHBoxLayout) Embed.Content(Test);
             MainLay.AddLayout(Lay);
             Dialog.SetLayout(MainLay);
-            Dialog.SetWindowTitle("Selene");
+            Dialog.SetWindowTitle(WindowTitle);
 
-            QLabel Label = new QLabel("This label is not part of the notebook");
-            QPushButton Button = new QPushButton("Neither is this button");
+            QLabel Label = new QLabel(LabelText);
+            QPushButton Button = new QPushButton(ButtonText);
             MainLay.AddWidget(Label);
             MainLay.AddWidget(Button);
 
@@ -101,7 +108,39 @@ namespace Selene.Testing
 
             Dialog.Exec();
 #endif
-        }
+#if WINDOWS
+            Form MainForm = new Form();
+            TableLayoutPanel MainPanel = new TableLayoutPanel();
+            MainForm.Text = WindowTitle;
+
+            var Content = Embed.Content(Test);
+            Content.AutoSize = true;
+            MainPanel.Controls.Add(Content,1,1);
+
+            Label L = new Label();
+            L.Text = LabelText;
+            L.AutoSize = true;
+            MainPanel.Controls.Add(L,1,2);
+
+            Button B = new Button();
+            B.Text = ButtonText;
+            B.Click += delegate {
+                Embed.Save();
+                Console.WriteLine(Test.Alpha);
+            };
+
+            B.AutoSize = true;
+            B.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            MainPanel.Controls.Add(B,1,3);
+
+            MainPanel.AutoSize = true;
+            MainPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            MainForm.Controls.Add(MainPanel);
+
+            MainForm.AutoSize = true;
+            MainForm.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            MainForm.Show();
 #endif
+        }
     }
 }
