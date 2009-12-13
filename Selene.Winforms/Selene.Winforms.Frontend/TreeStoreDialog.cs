@@ -34,7 +34,7 @@ using Forms = System.Windows.Forms;
 
 namespace Selene.Winforms.Frontend
 {
-    public class TreeStoreDialog<T> : LeftNavFormBase
+    public class TreeStoreDialog<T> : LeftNavFormBase<T>
     {
         TreeView Tree;
 

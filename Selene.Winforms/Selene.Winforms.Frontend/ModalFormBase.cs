@@ -35,12 +35,29 @@ using Forms = System.Windows.Forms;
 
 namespace Selene.Winforms.Frontend
 {
-    public abstract class ModalFormBase : ModalPresenterBase<Forms.Control>, IDisposable
+    public abstract class ModalFormBase<T> : ModalPresenterBase<Forms.Control>, IDisposable, IEmbeddable<Forms.Control, T>
     {
         protected Form Win;
         protected TableLayoutPanel MainPanel;
+        protected bool mIsEmbedded = false;
 
         internal Form Owner;
+
+        public bool IsEmbedded {
+            get { return mIsEmbedded; }
+        }
+
+        protected abstract Forms.Control ActualWidget {
+            get;
+        }
+
+        public Forms.Control Content(T Present)
+        {
+            mIsEmbedded = true;
+            Prepare(typeof(T), Present, false);
+
+            return ActualWidget;
+        }
 
         public ModalFormBase(string Title)
         {

@@ -34,7 +34,7 @@ using Forms = System.Windows.Forms;
 
 namespace Selene.Winforms.Frontend
 {
-    public class ListStoreDialog<T> : LeftNavFormBase
+    public class ListStoreDialog<T> : LeftNavFormBase<T>
     {
         ListBox List;
 

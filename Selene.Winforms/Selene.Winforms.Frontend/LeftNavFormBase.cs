@@ -32,7 +32,7 @@ using System.Windows.Forms;
 namespace Selene.Winforms.Frontend
 {
     // Base class for ListStoreDialog and TreeStoreDialog in the Windows frontend
-    public abstract class LeftNavFormBase : ModalFormBase
+    public abstract class LeftNavFormBase<T> : ModalFormBase<T>
     {
         int MaxWidth = 0, MaxHeight;
         protected TableLayoutPanel Panel;
@@ -40,6 +40,10 @@ namespace Selene.Winforms.Frontend
 
         public LeftNavFormBase (string Title) : base(Title)
         {
+        }
+
+        protected override Control ActualWidget {
+            get { return Panel; }
         }
 
         protected void RightPanelResized (object sender, EventArgs e)

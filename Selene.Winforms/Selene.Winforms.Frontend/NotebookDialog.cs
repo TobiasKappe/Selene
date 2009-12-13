@@ -34,12 +34,16 @@ using Forms = System.Windows.Forms;
 
 namespace Selene.Winforms.Frontend
 {
-    public class NotebookDialog<T> : ModalFormBase
+    public class NotebookDialog<T> : ModalFormBase<T>
     {
         TabControl Tabbed;
 
         public NotebookDialog(string Title) : base(Title)
         {
+        }
+
+        protected override Forms.Control ActualWidget {
+            get { return Tabbed; }
         }
 
         void CatPanelResize(object Sender, EventArgs e)
