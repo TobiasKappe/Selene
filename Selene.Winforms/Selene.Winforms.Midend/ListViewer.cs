@@ -102,7 +102,7 @@ namespace Selene.Winforms.Midend
         {
             string[] Values = new string[Items.Length];
             for(int i = 0; i < Values.Length; i++)
-                Values[i] = Items[i].ToString();
+                Values[i] = Items[i] == null ? "" : Items[i].ToString();
 
             Viewer.Items.Insert(Id, new ListViewItem(Values));
 
