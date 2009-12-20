@@ -150,7 +150,7 @@ namespace Selene.Qyoto.Midend
                 else
                 {
                      Item = new QTableWidgetItem(TypeString);
-                     Item.SetText(Items[i].ToString());
+                     Item.SetText(Items[i] == null ? "" : Items[i].ToString());
                 }
 
                 Table.SetItem(Id, i, Item);
