@@ -50,6 +50,10 @@
     <Compile Include="Selene.Winforms.Frontend\TreeStoreDialog.cs" />
     <Compile Include="Selene.Winforms.Frontend\WizardDialog.cs" />
     <Compile Include="Selene.Winforms.Midend\ListViewer.cs" />
+    <Compile Include="Selene.Winforms.Ordering\IControlBox.cs" />
+    <Compile Include="Selene.Winforms.Ordering\ControlBox.cs" />
+    <Compile Include="Selene.Winforms.Ordering\ControlHBox.cs" />
+    <Compile Include="Selene.Winforms.Ordering\ControlVBox.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Selene.Backend\Selene.Backend.csproj">
@@ -58,4 +62,7 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Selene.Winforms.Ordering\" />
+  </ItemGroup>
 </Project>
