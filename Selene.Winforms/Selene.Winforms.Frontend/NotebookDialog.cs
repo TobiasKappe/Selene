@@ -71,8 +71,9 @@ namespace Selene.Winforms.Frontend
             {
                 CatPanel Panel = new CatPanel(ProcureState);
                 Panel.LayoutControls(State, Manifest.Categories[0]);
-                MainPanel.Controls.Add(Panel, 1,1);
+                MainBox.Controls.Add(Panel);
 
+                base.Build(Manifest);
                 return;
             }
 
@@ -89,14 +90,16 @@ namespace Selene.Winforms.Frontend
 
                 CatPanel Panel = new CatPanel(ProcureState);
 
+                Page.Controls.Add(Panel);
                 // Somehow the tab control can not autosize
                 Panel.SizeChanged += CatPanelResize;
 
                 Panel.LayoutControls(State, Cat);
-                Page.Controls.Add(Panel);
             }
 
-            MainPanel.Controls.Add(Tabbed, 1,1);
+            MainBox.Controls.Add(Tabbed);
+
+            base.Build(Manifest);
         }
     }
 }

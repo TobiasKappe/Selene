@@ -76,7 +76,9 @@ namespace Selene.Winforms.Frontend
             Panel.Controls.Add(Navigation, 1, 1);
             Panel.Location = new System.Drawing.Point(3,3);
             Panel.AutoSize = true;
-            MainPanel.Controls.Add(Panel, 1,1);
+            MainBox.Controls.Add(Panel);
+
+            base.Build(Manifest);
         }
 
         protected abstract void Build(Selene.Backend.ControlManifest Manifest, int Column);

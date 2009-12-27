@@ -27,23 +27,24 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
-using Selene.Backend;
-using SB = Selene.Backend;
 using System.Windows.Forms;
-using Forms = System.Windows.Forms;
 using System.Collections.Generic;
+
+using Selene.Backend;
+using Selene.Winforms.Ordering;
+
+using Forms = System.Windows.Forms;
+using SB = Selene.Backend;
 
 namespace Selene.Winforms.Frontend
 {
-    public class CatPanel : TableLayoutPanel
+    public class CatPanel : ControlVBox
     {
         public delegate IConverter<Forms.Control> ProcureState(SB.Control Cont);
         event ProcureState PState;
 
         public CatPanel (ProcureState State)
         {
-            AutoSize = true;
-            AutoSizeMode = AutoSizeMode.GrowAndShrink;
             Location = new System.Drawing.Point(3,3);
 
             this.PState = State;
@@ -53,7 +54,7 @@ namespace Selene.Winforms.Frontend
         {
             if(Cat.Subcategories.Length == 1)
             {
-                Controls.Add(LayoutSubcat(AddTo, Cat.Subcategories[0]), 1, 0);
+                Controls.Add(LayoutSubcat(AddTo, Cat.Subcategories[0]));
 
                 return;
             }
@@ -70,7 +71,7 @@ namespace Selene.Winforms.Frontend
                 TableLayoutPanel SubcatPanel = LayoutSubcat(AddTo, Subcat);
 
                 SubcatBox.Controls.Add(SubcatPanel);
-                Controls.Add(SubcatBox, 1, CatIndex);
+                Controls.Add(SubcatBox);
                 CatIndex++;
             }
         }

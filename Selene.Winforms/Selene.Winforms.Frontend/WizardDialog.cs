@@ -27,10 +27,13 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
-using Selene.Backend;
-using SB = Selene.Backend;
 using System.Windows.Forms;
+
+using Selene.Backend;
+using Selene.Winforms.Ordering;
+
 using Forms = System.Windows.Forms;
+using SB = Selene.Backend;
 
 namespace Selene.Winforms.Frontend
 {
@@ -46,7 +49,9 @@ namespace Selene.Winforms.Frontend
 
         Form Win;
         int mCurrentIndex, MaxIndex;
-        TableLayoutPanel ShiftingPanel, ButtonsPanel, MainPanel;
+        TableLayoutPanel ShiftingPanel;
+        ControlVBox MainBox;
+        ControlHBox ButtonBox;
         Button NextButton, PrevButton;
 
         IValidator<T> mValidator;
@@ -108,16 +113,16 @@ namespace Selene.Winforms.Frontend
 
         void SizeChanged (object sender, EventArgs e)
         {
-            MainPanel.Width = ShiftingPanel.Width = CurrentPanel.Width + 10;
+            MainBox.Width = ShiftingPanel.Width = CurrentPanel.Width + 10;
 
-            if(MainPanel.Height < CurrentPanel.Height + ButtonsPanel.Height + 20)
-                MainPanel.Height = CurrentPanel.Height + ButtonsPanel.Height + 20;
+            if(MainBox.Height < CurrentPanel.Height + ButtonBox.Height + 20)
+                MainBox.Height = CurrentPanel.Height + ButtonBox.Height + 20;
         }
 
         protected override void Build (ControlManifest Manifest)
         {
-            MainPanel = new TableLayoutPanel();
-            ButtonsPanel = new TableLayoutPanel { AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink };
+            MainBox = new ControlVBox();
+            ButtonBox = new ControlHBox();
             ShiftingPanel = new TableLayoutPanel { AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink };
 
             ShiftingPanel.SizeChanged += SizeChanged;
@@ -138,19 +143,18 @@ namespace Selene.Winforms.Frontend
 
             NextButton = new Button { Text = NextText };
             PrevButton = new Button { Text = PrevText };
-            ButtonsPanel.Controls.Add(PrevButton, 0, 0);
-            ButtonsPanel.Controls.Add(NextButton, 1, 0);
+            ButtonBox.Controls.Add(PrevButton);
+            ButtonBox.Controls.Add(NextButton);
 
-            MainPanel.Controls.Add(ShiftingPanel, 0, 1);
-            MainPanel.Controls.Add(ButtonsPanel, 0, 2);
+            MainBox.Controls.Add(ShiftingPanel);
+            MainBox.Controls.Add(ButtonBox);
 
             NextButton.Click += NextButtonClick;
             PrevButton.Click += PrevButtonClick;
 
-            Win.Controls.Add(MainPanel);
+            Win.Controls.Add(MainBox);
 
             CurrentIndex = 0;
-            MainPanel.Height = 0;
         }
 
         void PrevButtonClick (object sender, EventArgs e)
@@ -202,9 +206,7 @@ namespace Selene.Winforms.Frontend
         public override void Block()
         {
             while(Done == null)
-            {
                 Application.DoEvents();
-            }
         }
 
         public void Dispose ()

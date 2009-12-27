@@ -27,18 +27,21 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
-using Selene.Backend;
-using SB = Selene.Backend;
 using System.Windows.Forms;
-using Forms = System.Windows.Forms;
 
+using Selene.Backend;
+using Selene.Winforms.Ordering;
+
+using SB = Selene.Backend;
+using Forms = System.Windows.Forms;
 
 namespace Selene.Winforms.Frontend
 {
     public abstract class ModalFormBase<T> : ModalPresenterBase<Forms.Control>, IDisposable, IEmbeddable<Forms.Control, T>
     {
         protected Form Win;
-        protected TableLayoutPanel MainPanel;
+        protected ControlVBox MainBox;
+        protected ControlHBox ButtonBox;
         protected bool mIsEmbedded = false;
 
         internal Form Owner;
@@ -69,29 +72,24 @@ namespace Selene.Winforms.Frontend
             Win.AutoSize = true;
             Win.AutoSizeMode = AutoSizeMode.GrowAndShrink;
 
-            MainPanel = new TableLayoutPanel();
-            MainPanel.AutoSize = true;
-            MainPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            MainBox = new ControlVBox(2,5);
+            ButtonBox = new ControlHBox();
 
-            // There's got to be some better way...
-            TableLayoutPanel ButtonPanel = new TableLayoutPanel();
-            ButtonPanel.AutoSize = true;
+            Button Cancel = new Button { Text = "Cancel" };
+            ButtonBox.Controls.Add(Cancel);
 
-            Button OK = new Button();
-            OK.Text = "OK";
-            OK.Anchor = AnchorStyles.Right;
-            ButtonPanel.Controls.Add(OK, 2, 1);
-
-            Button Cancel = new Button();
-            Cancel.Text = "Cancel";
-            ButtonPanel.Controls.Add(Cancel, 1, 1);
+            Button OK = new Button { Text = "OK" };
+            ButtonBox.Controls.Add(OK);
 
             Cancel.Click += CancelClick;
             OK.Click += OKClick;
 
-            MainPanel.Controls.Add(ButtonPanel, 1, 2);
+            Win.Controls.Add(MainBox);
+        }
 
-            Win.Controls.Add(MainPanel);
+        protected override void Build (Selene.Backend.ControlManifest Manifest)
+        {
+            MainBox.Controls.Add(ButtonBox);
         }
 
         protected void OKClick (object sender, EventArgs e)
