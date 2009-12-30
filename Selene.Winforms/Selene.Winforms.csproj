@@ -54,6 +54,7 @@
     <Compile Include="Selene.Winforms.Ordering\ControlBox.cs" />
     <Compile Include="Selene.Winforms.Ordering\ControlHBox.cs" />
     <Compile Include="Selene.Winforms.Ordering\ControlVBox.cs" />
+    <Compile Include="Selene.Winforms.Midend\ColorPicker.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Selene.Backend\Selene.Backend.csproj">
