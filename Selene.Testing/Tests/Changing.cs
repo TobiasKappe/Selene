@@ -90,7 +90,7 @@ namespace Selene.Testing
             Assert.GreaterOrEqual(TimesChanged, 18);
 #endif
 #if WINDOWS
-            Assert.GreaterOrEqual(TimesChanged, 14);
+            Assert.GreaterOrEqual(TimesChanged, 16);
 #endif
         }
 
