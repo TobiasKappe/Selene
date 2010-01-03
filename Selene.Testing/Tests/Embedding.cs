@@ -42,6 +42,7 @@ using Qyoto;
 
 #if WINDOWS
 using Selene.Winforms.Frontend;
+using Selene.Winforms.Ordering;
 using System.Windows.Forms;
 #endif
 
@@ -110,17 +111,17 @@ namespace Selene.Testing
 #endif
 #if WINDOWS
             Form MainForm = new Form();
-            TableLayoutPanel MainPanel = new TableLayoutPanel();
+            ControlVBox MainBox = new ControlVBox(5,5);
             MainForm.Text = WindowTitle;
 
             var Content = Embed.Content(Test);
             Content.AutoSize = true;
-            MainPanel.Controls.Add(Content,1,1);
+            MainBox.Controls.Add(Content);
 
             Label L = new Label();
             L.Text = LabelText;
             L.AutoSize = true;
-            MainPanel.Controls.Add(L,1,2);
+            MainBox.Controls.Add(L);
 
             Button B = new Button();
             B.Text = ButtonText;
@@ -128,14 +129,9 @@ namespace Selene.Testing
                 Embed.Save();
                 Console.WriteLine(Test.Alpha);
             };
+            MainBox.Controls.Add(B);
 
-            B.AutoSize = true;
-            B.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            MainPanel.Controls.Add(B,1,3);
-
-            MainPanel.AutoSize = true;
-            MainPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            MainForm.Controls.Add(MainPanel);
+            MainForm.Controls.Add(MainBox);
 
             MainForm.AutoSize = true;
             MainForm.AutoSizeMode = AutoSizeMode.GrowAndShrink;
