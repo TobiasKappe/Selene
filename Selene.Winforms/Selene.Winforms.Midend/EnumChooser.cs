@@ -30,13 +30,13 @@ using System;
 using Forms = System.Windows.Forms;
 using System.Windows.Forms;
 using Selene.Backend;
+using Selene.Winforms.Ordering;
 
 namespace Selene.Winforms.Midend
 {
     public class EnumChooser : EnumBase<Forms.Control>
     {
         EventHandler RadioProxy;
-        int Options = 0;
         bool Vertical;
 
         protected override ControlType[] Supported {
@@ -74,11 +74,8 @@ namespace Selene.Winforms.Midend
         {
             if(Original.SubType == ControlType.Radio)
             {
-                var Ret = new TableLayoutPanel();
-                Ret.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-
                 Original.GetFlag<bool>(ref Vertical);
-                return Ret;
+                return Vertical ? (Forms.Control) new ControlVBox() : (Forms.Control) new ControlHBox();
             }
             else
             {
@@ -107,11 +104,9 @@ namespace Selene.Winforms.Midend
             {
                 RadioButton Add = new RadioButton();
                 Add.CheckedChanged += RadioCheckedChanged;
-                Add.AutoSize = true;
                 Add.Text = Value;
 
-                if(Vertical) (Widget as TableLayoutPanel).Controls.Add(Add, 1, Options++);
-                else (Widget as TableLayoutPanel).Controls.Add(Add, Options++, 1);
+                Widget.Controls.Add(Add);
             }
             else (Widget as ComboBox).Items.Add(Value);
         }
