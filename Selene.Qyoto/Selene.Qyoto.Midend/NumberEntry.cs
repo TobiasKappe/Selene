@@ -34,8 +34,24 @@ namespace Selene.Qyoto.Midend
     public class NumberEntry : QConverterProxy<int>
     {
         protected override int ActualValue {
-            get { return (Widget as QSpinBox).Value; }
-            set { (Widget as QSpinBox).Value = value; }
+            get 
+            { 
+                if(Original.SubType == ControlType.Spin || Original.SubType == ControlType.Default)
+                    return (Widget as QSpinBox).Value; 
+                else return (Widget as QSlider).Value;
+            }
+            set 
+            { 
+                if(Original.SubType == ControlType.Spin || Original.SubType == ControlType.Default)
+                    (Widget as QSpinBox).Value = value;
+                else (Widget as QSlider).Value = value;
+            }
+        }
+        
+        protected override ControlType[] Supported {
+            get {
+                return new ControlType[] { ControlType.Default, ControlType.Spin, ControlType.Glider };
+            }
         }
 
         protected override QObject Construct ()
@@ -47,18 +63,31 @@ namespace Selene.Qyoto.Midend
             Original.GetFlag(1, ref Max);
             Original.GetFlag(2, ref Step);
             Original.GetFlag(0, ref Wrap);
+            
+            if(Original.SubType == ControlType.Spin || Original.SubType == ControlType.Default)
+            {
+                QSpinBox Ret = new QSpinBox();
+                Ret.Maximum = Max;
+                Ret.Minimum = Min;
+                Ret.Wrapping = Wrap;
+                Ret.SingleStep = Step;
+                return Ret;
+            }
+            else if(Original.SubType == ControlType.Glider)
+            {
+                QSlider Ret = new QSlider(Qt.Orientation.Horizontal);
+                Ret.Maximum = Max;
+                Ret.Minimum = Min;
+                Ret.SingleStep = Step;
+                return Ret;
+            }
 
-            QSpinBox Ret = new QSpinBox();
-            Ret.Maximum = Max;
-            Ret.Minimum = Min;
-            Ret.Wrapping = Wrap;
-            Ret.SingleStep = Step;
-
-            return Ret;
+            return null;
         }
 
         protected override string SignalForType (ControlType Type)
         {
+            // Same for both QSpinBox and QSlider
             return "valueChanged(int)";
         }
     }
