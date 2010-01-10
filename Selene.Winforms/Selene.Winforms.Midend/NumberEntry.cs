@@ -36,38 +36,69 @@ namespace Selene.Winforms.Midend
     public class NumberEntry : ConverterBase<Forms.Control, int>
     {
         protected override int ActualValue {
-            get { return (int) (Widget as NumericUpDown).Value; }
-            set { (Widget as NumericUpDown).Value = value; }
+            get 
+            { 
+                if(Original.SubType == ControlType.Default || Original.SubType == ControlType.Spin)
+                    return (int) (Widget as NumericUpDown).Value;
+                else return (int) (Widget as TrackBar).Value;
+            }
+            set 
+            {
+                if(Original.SubType == ControlType.Default || Original.SubType == ControlType.Spin)
+                    (Widget as NumericUpDown).Value = value;
+                else (Widget as TrackBar).Value = value;
+            }
+        }
+        
+        protected override ControlType[] Supported {
+            get {
+                return new ControlType[] { ControlType.Default, ControlType.Spin, ControlType.Glider };
+            }
         }
 
         protected override Forms.Control Construct ()
         {
-            NumericUpDown Ret = new NumericUpDown();
-
             int Min = int.MinValue, Max = int.MaxValue, Step = 1;
-            bool Wrap = false;
 
             Original.GetFlag<int>(0, ref Min);
             Original.GetFlag(1, ref Max);
             Original.GetFlag(2, ref Step);
-            Original.GetFlag(0, ref Wrap);
-
-            Ret.Maximum = Max;
-            Ret.Minimum = Min;
-            Ret.Increment = Step;
-
-            if(Wrap)
+            
+            if(Original.SubType == ControlType.Default || Original.SubType == ControlType.Spin)
             {
-                Ret.ValueChanged += ValueChanged;
-
-                // We're safe from overflowing here, because
-                // int.MaxValue < decimal.MaxValue and int.MinValue > decimal.MinValue
-                // and the last value for these came from ints.
-                Ret.Maximum++;
-                Ret.Minimum--;
+                bool Wrap = false;
+                Original.GetFlag(0, ref Wrap);
+                
+                NumericUpDown Ret = new NumericUpDown();
+                Ret.Maximum = Max;
+                Ret.Minimum = Min;
+                Ret.Increment = Step;
+    
+                if(Wrap)
+                {
+                    Ret.ValueChanged += ValueChanged;
+    
+                    // We're safe from overflowing here, because
+                    // int.MaxValue < decimal.MaxValue and int.MinValue > decimal.MinValue
+                    // and the last value for these came from ints.
+                    Ret.Maximum++;
+                    Ret.Minimum--;
+                }
+                return Ret;
+            }
+            else if(Original.SubType == ControlType.Glider)
+            {
+                TrackBar Ret = new TrackBar();
+                Ret.Maximum = Max;
+                Ret.Minimum = Min;
+                Ret.SmallChange = Step;
+                Ret.LargeChange = Step*10;
+                Ret.TickStyle = TickStyle.None;
+                
+                return Ret;
             }
 
-            return Ret;
+            return null;
         }
 
         // Simulate wrapping
@@ -82,8 +113,18 @@ namespace Selene.Winforms.Midend
         }
 
         public override event EventHandler Changed {
-            add { (Widget as NumericUpDown).ValueChanged += value; }
-            remove { (Widget as NumericUpDown).ValueChanged -= value; }
+            add 
+            { 
+                if(Original.SubType == ControlType.Default || Original.SubType == ControlType.Spin)
+                    (Widget as NumericUpDown).ValueChanged += value; 
+                else (Widget as TrackBar).ValueChanged += value;
+            }
+            remove
+            {
+                if(Original.SubType == ControlType.Default || Original.SubType == ControlType.Spin)
+                    (Widget as NumericUpDown).ValueChanged -= value; 
+                else (Widget as TrackBar).ValueChanged -= value;                
+            }
         }
     }
 }
