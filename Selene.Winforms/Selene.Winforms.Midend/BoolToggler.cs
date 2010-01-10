@@ -42,16 +42,20 @@ namespace Selene.Winforms.Midend
 
         protected override ControlType[] Supported {
             get {
-                return new ControlType[] { ControlType.Default, ControlType.Check };
+                return new ControlType[] { ControlType.Default, ControlType.Check, ControlType.Toggle };
             }
         }
 
         protected override Forms.Control Construct ()
         {
-            Original.SubType = ControlType.Check;
-
             CheckBox Ret = new CheckBox();
+			
+            if(Original.SubType == ControlType.Toggle)
+            	Ret.Appearance = Appearance.Button;
+			
             Ret.Text = Original.Label;
+			
+            Original.SubType = ControlType.Check;
 
             return Ret;
         }
