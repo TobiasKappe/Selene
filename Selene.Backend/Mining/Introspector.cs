@@ -31,8 +31,6 @@ using System.Reflection;
 
 namespace Selene.Backend
 {
-    public enum ControlType { Default, Entry, Radio, Dropdown, Check, Toggle, FileSelect, DirectorySelect, Color }
-    
     public delegate void ControlWalker(ref Control Current);
     
     internal static class Introspector
