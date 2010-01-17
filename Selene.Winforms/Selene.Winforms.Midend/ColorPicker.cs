@@ -81,6 +81,10 @@ namespace Selene.Winforms.Midend
                     OnChanged(CurrentColor, null);
             }
         }
+		
+        protected override ControlType DefaultSubtype {
+            get { return ControlType.Color; }
+        }
 
         protected override Forms.Control Construct ()
         {

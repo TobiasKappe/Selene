@@ -39,10 +39,13 @@ namespace Selene.Winforms.Midend
         EventHandler RadioProxy;
         bool Vertical;
 
+        protected override ControlType DefaultSubtype {
+            get { return ControlType.Dropdown; }
+        }
+
         protected override ControlType[] Supported {
-            get
-            {
-                return new ControlType[] { ControlType.Default, ControlType.Radio };
+            get {
+                return new ControlType[] { ControlType.Radio };
             }
         }
 

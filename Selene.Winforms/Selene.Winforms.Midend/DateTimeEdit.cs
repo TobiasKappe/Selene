@@ -46,6 +46,10 @@ namespace Selene.Winforms.Midend
                 else (Widget as DateTimePicker).Value = value;
             }
         }
+		
+        protected override ControlType DefaultSubtype {
+            get { return ControlType.DateTime; }
+        }
 
         protected override Forms.Control Construct ()
         {

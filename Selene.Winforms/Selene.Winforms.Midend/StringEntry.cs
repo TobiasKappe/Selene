@@ -41,13 +41,13 @@ namespace Selene.Winforms.Midend
         protected override string ActualValue {
             get
             {
-                if(Original.SubType == ControlType.Default)
+                if(Original.SubType == ControlType.Entry)
                     return (Widget as TextBox).Text;
                 else return File;
             }
             set
             {
-                if(Original.SubType == ControlType.Default)
+                if(Original.SubType == ControlType.Entry)
                     (Widget as TextBox).Text = value;
                 else
                 {
@@ -57,17 +57,20 @@ namespace Selene.Winforms.Midend
                 }
             }
         }
+		
+        protected override ControlType DefaultSubtype {
+            get { return ControlType.Entry; }
+        }
 
         protected override ControlType[] Supported {
-            get
-            {
-                return new ControlType[] { ControlType.Default, ControlType.FileSelect, ControlType.DirectorySelect };
+            get {
+                return new ControlType[] { ControlType.FileSelect, ControlType.DirectorySelect };
             }
         }
 
         protected override Forms.Control Construct ()
         {
-            if(Original.SubType == ControlType.Default)
+            if(Original.SubType == ControlType.Entry)
                 return new TextBox();
             else
             {
@@ -107,13 +110,13 @@ namespace Selene.Winforms.Midend
         public override event EventHandler Changed {
             add
             {
-                if(Original.SubType == ControlType.Default)
+                if(Original.SubType == ControlType.Entry)
                     (Widget as TextBox).TextChanged += value;
                 else Proxy += value;
             }
             remove
             {
-                if(Original.SubType == ControlType.Default)
+                if(Original.SubType == ControlType.Entry)
                     (Widget as TextBox).TextChanged -= value;
                 else Proxy -= value;
             }

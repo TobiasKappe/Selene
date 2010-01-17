@@ -38,21 +38,25 @@ namespace Selene.Winforms.Midend
         protected override int ActualValue {
             get 
             { 
-                if(Original.SubType == ControlType.Default || Original.SubType == ControlType.Spin)
+                if(Original.SubType == ControlType.Spin)
                     return (int) (Widget as NumericUpDown).Value;
                 else return (int) (Widget as TrackBar).Value;
             }
             set 
             {
-                if(Original.SubType == ControlType.Default || Original.SubType == ControlType.Spin)
+                if(Original.SubType == ControlType.Spin)
                     (Widget as NumericUpDown).Value = value;
                 else (Widget as TrackBar).Value = value;
             }
         }
+		
+        protected override ControlType DefaultSubtype {
+            get { return ControlType.Spin; }
+        }
         
         protected override ControlType[] Supported {
             get {
-                return new ControlType[] { ControlType.Default, ControlType.Spin, ControlType.Glider };
+                return new ControlType[] { ControlType.Glider };
             }
         }
 
@@ -64,7 +68,7 @@ namespace Selene.Winforms.Midend
             Original.GetFlag(1, ref Max);
             Original.GetFlag(2, ref Step);
             
-            if(Original.SubType == ControlType.Default || Original.SubType == ControlType.Spin)
+            if(Original.SubType == ControlType.Spin)
             {
                 bool Wrap = false;
                 Original.GetFlag(0, ref Wrap);
@@ -115,13 +119,13 @@ namespace Selene.Winforms.Midend
         public override event EventHandler Changed {
             add 
             { 
-                if(Original.SubType == ControlType.Default || Original.SubType == ControlType.Spin)
+                if(Original.SubType == ControlType.Spin)
                     (Widget as NumericUpDown).ValueChanged += value; 
                 else (Widget as TrackBar).ValueChanged += value;
             }
             remove
             {
-                if(Original.SubType == ControlType.Default || Original.SubType == ControlType.Spin)
+                if(Original.SubType == ControlType.Spin)
                     (Widget as NumericUpDown).ValueChanged -= value; 
                 else (Widget as TrackBar).ValueChanged -= value;                
             }
