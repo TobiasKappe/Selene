@@ -44,6 +44,10 @@ namespace Selene.Gtk.Midend
                 (Widget as Calendar).Date = value;
             }
         }
+		
+        protected override ControlType DefaultSubtype {
+            get { return ControlType.DateTime; }
+        }
 
         protected override Widget Construct ()
         {

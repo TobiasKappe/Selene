@@ -36,7 +36,7 @@ namespace Selene.Gtk.Midend
     {
         protected override string ActualValue {
             get {
-                if(Original.SubType == ControlType.Entry || Original.SubType == ControlType.Default)
+                if(Original.SubType == ControlType.Entry)
                     return (Widget as Entry).Text;
                 if(Original.SubType == ControlType.FileSelect || Original.SubType == ControlType.DirectorySelect)
                     return (Widget as FileChooserButton).Filename;
@@ -44,21 +44,25 @@ namespace Selene.Gtk.Midend
                 return null;
             }
             set {
-                if(Original.SubType == ControlType.Entry || Original.SubType == ControlType.Default)
+                if(Original.SubType == ControlType.Entry)
                     (Widget as Entry).Text = value ?? string.Empty;
                 if(Original.SubType == ControlType.FileSelect || Original.SubType == ControlType.DirectorySelect)
                     (Widget as FileChooserButton).SelectFilename(value ?? string.Empty);
             }
         }
+		
+        protected override ControlType DefaultSubtype {
+            get { return ControlType.Entry; }
+        }
 
         protected override ControlType[] Supported {
             get {
-                return new ControlType[] { ControlType.DirectorySelect, ControlType.FileSelect, ControlType.Entry };
+                return new ControlType[] { ControlType.DirectorySelect, ControlType.FileSelect };
             }
         }
         protected override Widget Construct ()
         {
-            if(Original.SubType == ControlType.Entry || Original.SubType == ControlType.Default)
+            if(Original.SubType == ControlType.Entry)
             {
                 return new Entry();
             }
@@ -75,7 +79,7 @@ namespace Selene.Gtk.Midend
 
         void EventChange(EventHandler Subject, bool Add)
         {
-            if(Original.SubType == ControlType.Entry || Original.SubType == ControlType.Default)
+            if(Original.SubType == ControlType.Entry)
             {
                 if(Add) (Widget as Entry).Changed += Subject;
                 else (Widget as Entry).Changed -= Subject;

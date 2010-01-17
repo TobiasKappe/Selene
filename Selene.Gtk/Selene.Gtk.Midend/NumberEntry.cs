@@ -37,21 +37,25 @@ namespace Selene.Gtk.Midend
         protected override int ActualValue {
             get 
             { 
-                if(Original.SubType == ControlType.Spin || Original.SubType == ControlType.Default)
+                if(Original.SubType == ControlType.Spin)
                     return (int) (Widget as SpinButton).Value; 
                 else return (int) (Widget as Scale).Value;
             }
             set 
             {
-                if(Original.SubType == ControlType.Spin || Original.SubType == ControlType.Default)
+                if(Original.SubType == ControlType.Spin)
                     (Widget as SpinButton).Value = (double) value;
                 else (Widget as Scale).Value = (double) value;    
             }
         }
+		
+        protected override ControlType DefaultSubtype {
+            get { return ControlType.Spin; }
+        }
         
         protected override ControlType[] Supported {
             get {
-                return new ControlType[] { ControlType.Default, ControlType.Glider, ControlType.Spin };
+                return new ControlType[] { ControlType.Glider };
             }
         }
 
@@ -65,10 +69,11 @@ namespace Selene.Gtk.Midend
             Original.GetFlag(2, ref Step);
             Original.GetFlag(0, ref Wrap);
 
-            if(Original.SubType == ControlType.Spin || Original.SubType == ControlType.Default)
+            if(Original.SubType == ControlType.Spin)
             {
                 SpinButton Ret = new SpinButton((double)Min, (double)Max, (double) Step);
                 Ret.Wrap = Wrap;
+                return Ret;
             }
             else if(Original.SubType == ControlType.Glider)
             {
@@ -81,13 +86,13 @@ namespace Selene.Gtk.Midend
         public override event EventHandler Changed {
             add 
             { 
-                if(Original.SubType == ControlType.Spin || Original.SubType == ControlType.Default)
+                if(Original.SubType == ControlType.Spin)
                     (Widget as Entry).Changed += value; 
                 else (Widget as Scale).ValueChanged += value;
             }
             remove
             {
-                if(Original.SubType == ControlType.Spin || Original.SubType == ControlType.Default)
+                if(Original.SubType == ControlType.Spin)
                     (Widget as Entry).Changed -= value; 
                 else (Widget as Scale).ValueChanged -= value;                
             }

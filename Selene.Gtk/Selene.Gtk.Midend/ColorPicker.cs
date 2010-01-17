@@ -58,7 +58,11 @@ namespace Selene.Gtk.Midend
 
             return Ret;
         }
-
+		
+        protected override ControlType DefaultSubtype {
+            get { return ControlType.Color; }
+        }
+		
         protected override Widget Construct ()
         {
             return new ColorButton();

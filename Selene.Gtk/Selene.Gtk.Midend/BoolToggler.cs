@@ -45,22 +45,24 @@ namespace Selene.Gtk.Midend
                 (Widget as ToggleButton).Active = value;
             }
         }
+		
+        protected override ControlType DefaultSubtype {
+            get { return ControlType.Check; }
+        }
 
         protected override ControlType[] Supported {
             get {
-                return new ControlType[] { ControlType.Check, ControlType.Toggle };
+                return new ControlType[] { ControlType.Toggle };
             }
         }
 
         protected override Widget Construct ()
         {
-            if(Original.SubType == ControlType.Check || Original.SubType == ControlType.Default)
-            {
-                Original.SubType = ControlType.Check;
+            if(Original.SubType == ControlType.Check)
                 return new CheckButton(Original.Label);
-            }
             else if(Original.SubType == ControlType.Toggle)
                 return new ToggleButton(Original.Label);
+			
             else return null;
         }
 

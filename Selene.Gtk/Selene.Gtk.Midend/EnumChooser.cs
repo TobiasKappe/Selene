@@ -49,7 +49,7 @@ namespace Selene.Gtk.Midend
                         if((B.Children[i] as RadioButton).Active) return i;
                     }
                 }
-                else if(Original.SubType == ControlType.Dropdown || Original.SubType == ControlType.Default)
+                else if(Original.SubType == ControlType.Dropdown)
                     return (Widget as ComboBox).Active;
 
                 return 0;
@@ -61,16 +61,20 @@ namespace Selene.Gtk.Midend
                     Box B = (Widget as Box);
                     (B.Children[value] as RadioButton).Active = true;
                 }
-                else if(Original.SubType == ControlType.Dropdown || Original.SubType == ControlType.Default)
+                else if(Original.SubType == ControlType.Dropdown)
                 {
                     (Widget as ComboBox).Active = value;
                 }
             }
         }
+		
+        protected override ControlType DefaultSubtype {
+            get { return ControlType.Dropdown; }
+        }
 
         protected override ControlType[] Supported {
             get {
-                return new ControlType[] { ControlType.Default, ControlType.Radio, ControlType.Dropdown };
+                return new ControlType[] { ControlType.Radio };
             }
         }
 
@@ -108,16 +112,17 @@ namespace Selene.Gtk.Midend
 
                 return Box;
             }
-            else if(Original.SubType == ControlType.Dropdown || Original.SubType == ControlType.Default)
+            else if(Original.SubType == ControlType.Dropdown)
             {
                 return ComboBox.NewText();
             }
-            else throw new OverrideException(typeof(Enum), Original.SubType, ControlType.Dropdown, ControlType.Radio);
+            
+            return null;
         }
 
         void EventChange(EventHandler Subject, bool Add)
         {
-            if(Original.SubType == ControlType.Default || Original.SubType == ControlType.Dropdown)
+            if(Original.SubType == ControlType.Dropdown)
             {
                 if(Add) (Widget as ComboBox).Changed += Subject;
                 else (Widget as ComboBox).Changed -= Subject;
