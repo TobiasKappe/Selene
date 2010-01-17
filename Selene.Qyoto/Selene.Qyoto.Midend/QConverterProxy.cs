@@ -49,6 +49,10 @@ namespace Selene.Qyoto.Midend
         bool Connected = false;
         Control mOrig;
         QObject mWidg;
+		
+        protected override ControlType DefaultSubtype {
+            get { throw new System.NotImplementedException (); }
+        }
 
         protected Control Orig {
             get

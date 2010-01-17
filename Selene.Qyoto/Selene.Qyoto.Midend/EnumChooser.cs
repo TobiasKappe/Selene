@@ -38,17 +38,20 @@ namespace Selene.Qyoto.Midend
         QConverterProxy<Enum> Proxy;
         int i = 0;
 
+        protected override ControlType DefaultSubtype {
+            get { return ControlType.Dropdown; }
+        }
+		
         protected override ControlType[] Supported {
-            get
-            {
-                return new ControlType[] { ControlType.Default, ControlType.Dropdown, ControlType.Radio };
+            get {
+                return new ControlType[] { ControlType.Radio };
             }
         }
 
         protected override int CurrentIndex {
             get
             {
-                if(Original.SubType == ControlType.Dropdown || Original.SubType == ControlType.Default)
+                if(Original.SubType == ControlType.Dropdown)
                     return (Widget as QComboBox).CurrentIndex;
                 else if(Original.SubType == ControlType.Radio)
                     return ((Widget as QBoxLayout).Children()[0] as QButtonGroup).CheckedId();
@@ -57,7 +60,7 @@ namespace Selene.Qyoto.Midend
             }
             set
             {
-                if(Original.SubType == ControlType.Dropdown || Original.SubType == ControlType.Default)
+                if(Original.SubType == ControlType.Dropdown)
                     (Widget as QComboBox).CurrentIndex = value;
                 else if(Original.SubType == ControlType.Radio)
                     Group.Button(value).Checked = true;
@@ -66,7 +69,7 @@ namespace Selene.Qyoto.Midend
 
         protected string ResolveType(ControlType Type)
         {
-            if(Type == ControlType.Default || Type == ControlType.Dropdown) return "activated(int)";
+            if(Type == ControlType.Dropdown) return "activated(int)";
             else if(Type == ControlType.Radio) return "buttonPressed(int)";
             else return string.Empty;
         }
@@ -76,7 +79,7 @@ namespace Selene.Qyoto.Midend
             Proxy = new QConverterProxy<Enum>(Original, null);
             Proxy.Resolve = ResolveType;
 
-            if(Original.SubType == ControlType.Dropdown || Original.SubType == ControlType.Default)
+            if(Original.SubType == ControlType.Dropdown)
                 return Proxy.Widg = new QComboBox();
             else if(Original.SubType == ControlType.Radio)
             {
@@ -97,7 +100,7 @@ namespace Selene.Qyoto.Midend
 
         protected override void AddOption (string Value)
         {
-            if(Original.SubType == ControlType.Default || Original.SubType == ControlType.Dropdown)
+            if(Original.SubType == ControlType.Dropdown)
                 (Widget as QComboBox).AddItem(Value);
             else if(Original.SubType == ControlType.Radio)
             {

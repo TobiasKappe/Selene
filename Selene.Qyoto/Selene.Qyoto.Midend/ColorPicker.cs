@@ -103,13 +103,11 @@ namespace Selene.Qyoto.Midend
             (Widget as QPushButton).icon = new QIcon(Map);
             (Widget as QPushButton).Text = ColorHelper.HtmlName(Color);
         }
-
-        protected override ControlType[] Supported {
-            get {
-                return new ControlType[] { ControlType.Default, ControlType.Color } ;
-            }
+		
+        protected override ControlType DefaultSubtype {
+            get { return ControlType.Color; }
         }
-
+		
         protected override QObject Construct ()
         {
             QPushButton Ret = new QPushButton();

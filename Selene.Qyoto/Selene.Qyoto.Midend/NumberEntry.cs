@@ -36,21 +36,25 @@ namespace Selene.Qyoto.Midend
         protected override int ActualValue {
             get 
             { 
-                if(Original.SubType == ControlType.Spin || Original.SubType == ControlType.Default)
+                if(Original.SubType == ControlType.Spin)
                     return (Widget as QSpinBox).Value; 
                 else return (Widget as QSlider).Value;
             }
             set 
             { 
-                if(Original.SubType == ControlType.Spin || Original.SubType == ControlType.Default)
+                if(Original.SubType == ControlType.Spin)
                     (Widget as QSpinBox).Value = value;
                 else (Widget as QSlider).Value = value;
             }
         }
-        
+		
+        protected override ControlType DefaultSubtype {
+            get { return ControlType.Spin; }
+        }
+
         protected override ControlType[] Supported {
             get {
-                return new ControlType[] { ControlType.Default, ControlType.Spin, ControlType.Glider };
+                return new ControlType[] { ControlType.Glider };
             }
         }
 
@@ -64,7 +68,7 @@ namespace Selene.Qyoto.Midend
             Original.GetFlag(2, ref Step);
             Original.GetFlag(0, ref Wrap);
             
-            if(Original.SubType == ControlType.Spin || Original.SubType == ControlType.Default)
+            if(Original.SubType == ControlType.Spin)
             {
                 QSpinBox Ret = new QSpinBox();
                 Ret.Maximum = Max;

@@ -38,13 +38,13 @@ namespace Selene.Qyoto.Midend
         protected override string ActualValue {
             get
             {
-                if(Orig.SubType == ControlType.Entry || Orig.SubType == ControlType.Default)
+                if(Orig.SubType == ControlType.Entry)
                     return (Widget as QLineEdit).Text;
                 else return Selected;
             }
             set
             {
-                if(Orig.SubType == ControlType.Entry || Orig.SubType == ControlType.Default)
+                if(Orig.SubType == ControlType.Entry)
                     (Widget as QLineEdit).Text = value;
                 else if(Orig.SubType == ControlType.FileSelect || Orig.SubType == ControlType.DirectorySelect)
                 {
@@ -56,11 +56,14 @@ namespace Selene.Qyoto.Midend
                 }
             }
         }
+		
+        protected override ControlType DefaultSubtype {
+            get { return ControlType.Entry; }
+        }
 
         protected override ControlType[] Supported {
-            get
-            {
-                return new ControlType[] { ControlType.Entry, ControlType.FileSelect, ControlType.DirectorySelect };
+            get {
+                return new ControlType[] { ControlType.FileSelect, ControlType.DirectorySelect };
             }
         }
 
@@ -83,7 +86,7 @@ namespace Selene.Qyoto.Midend
 
         protected override string SignalForType (ControlType Type)
         {
-            if(Orig.SubType == ControlType.Entry || Orig.SubType == ControlType.Default)
+            if(Orig.SubType == ControlType.Entry)
                 return "textChanged(QString)";
             else return null;
         }

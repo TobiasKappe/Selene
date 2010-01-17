@@ -48,6 +48,10 @@ namespace Selene.Qyoto.Midend
                 Edit.SetTime( new QTime(value.Hour, value.Minute, value.Second, value.Millisecond) );
             }
         }
+		
+        protected override ControlType DefaultSubtype {
+            get { return ControlType.DateTime; }
+        }
 
         protected override QObject Construct ()
         {

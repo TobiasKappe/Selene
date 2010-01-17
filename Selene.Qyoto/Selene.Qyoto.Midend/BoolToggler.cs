@@ -43,11 +43,9 @@ namespace Selene.Qyoto.Midend
                 (Widget as QCheckBox).Checked = value;
             }
         }
-
-        protected override ControlType[] Supported {
-            get {
-                return new ControlType[] { ControlType.Default, ControlType.Check };
-            }
+		
+        protected override ControlType DefaultSubtype {
+            get { return ControlType.Check; }
         }
 
         protected override QObject Construct ()
