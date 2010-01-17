@@ -40,6 +40,7 @@ namespace Selene.Backend
         DirectorySelect, 
         Color,
         Spin,
-        Glider
+        Glider,
+        DateTime
     }
 }

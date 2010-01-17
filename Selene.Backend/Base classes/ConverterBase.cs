@@ -56,9 +56,12 @@ namespace Selene.Backend
             for(i = 0; i < Supported.Length; i++)
                 if(Supported[i] == Original.SubType) break;
 
-            if(i == Supported.Length && Original.SubType != ControlType.Default)
-                throw new OverrideException(typeof(TDisplay), Original.SubType, Supported);
+            if(i == Supported.Length && Original.SubType != ControlType.Default && Original.SubType != DefaultSubtype)
+                throw new OverrideException(typeof(TDisplay), Original.SubType, DefaultSubtype, Supported);
 
+            if(this.Original.SubType == ControlType.Default)
+                this.Original.SubType = DefaultSubtype;
+			
             return Widget = Construct();
         }
 
@@ -74,6 +77,7 @@ namespace Selene.Backend
         }
         #endregion
 
+        // Anything else supported besides the default
         protected virtual ControlType[] Supported {
             get
             {
@@ -84,6 +88,11 @@ namespace Selene.Backend
         #region Abstract members
         protected abstract WidgetType Construct();
         protected abstract TDisplay ActualValue { get; set; }
+		
+        // The default override
+        protected abstract ControlType DefaultSubtype {
+            get;
+        }		
         #endregion
     }
 }

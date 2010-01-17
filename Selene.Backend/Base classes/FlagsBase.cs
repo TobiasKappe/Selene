@@ -38,6 +38,10 @@ namespace Selene.Backend
         {
             CurrentIndex = Convert.ToInt32(Intermediate);
         }
+		
+        protected override ControlType DefaultSubtype {
+            get { return ControlType.Default; }
+        }
 
         protected internal override string CurrentName {
             get

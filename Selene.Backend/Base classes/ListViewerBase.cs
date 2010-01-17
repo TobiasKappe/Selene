@@ -45,6 +45,10 @@ namespace Selene.Backend
         protected string DialogTitle {
             get { return Original.GetFlag<string>(); }
         }
+		
+        protected override ControlType DefaultSubtype {
+            get { return ControlType.Default; }
+        }
 
         int i = 0;
         List<object> Content;
