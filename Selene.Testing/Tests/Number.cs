@@ -60,6 +60,12 @@ namespace Selene.Testing
 
             [ControlFlags(0, 50, 5, true)]
             public int Stepped = 2;
+            
+            [Control(Override = ControlType.Glider), ControlFlags(0, 10)]
+            public int Horizontal;
+            
+            [Control(Override = ControlType.Glider), ControlFlags(true, 0, 10)]
+            public int Vertical;
         }
 
         [Test]
