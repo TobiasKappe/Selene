@@ -77,7 +77,16 @@ namespace Selene.Gtk.Midend
             }
             else if(Original.SubType == ControlType.Glider)
             {
-                return new HScale((double)Min, (double)Max, (double)Step);
+                bool Vertical = false;
+                Original.GetFlag<bool>(0, ref Vertical);
+                
+                if(Vertical) 
+                {
+                    VScale Ret = new VScale((double)Min, (double)Max, (double)Step);
+                    Ret.HeightRequest = 100;
+                    return Ret;
+                }
+                else return new HScale((double)Min, (double)Max, (double)Step);
             }
 
             return null;
