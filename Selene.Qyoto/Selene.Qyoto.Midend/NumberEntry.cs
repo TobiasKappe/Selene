@@ -83,6 +83,12 @@ namespace Selene.Qyoto.Midend
                 Ret.Maximum = Max;
                 Ret.Minimum = Min;
                 Ret.SingleStep = Step;
+                
+                bool Vertical = false;
+                Original.GetFlag<bool>(0, ref Vertical);
+                if(Vertical)
+                    Ret.Orientation = Qt.Orientation.Vertical;
+                
                 return Ret;
             }
 
