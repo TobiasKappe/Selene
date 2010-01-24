@@ -99,6 +99,11 @@ namespace Selene.Winforms.Midend
                 Ret.LargeChange = Step*10;
                 Ret.TickStyle = TickStyle.None;
                 
+                bool Vertical = false;
+                Original.GetFlag<bool>(0, ref Vertical);
+                if(Vertical)
+                    Ret.Orientation = Orientation.Vertical;
+                
                 return Ret;
             }
 
