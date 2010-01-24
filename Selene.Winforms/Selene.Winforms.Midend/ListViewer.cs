@@ -92,9 +92,7 @@ namespace Selene.Winforms.Midend
         {
             var Dialog = new NotebookDialog<Forms.Control>(DialogTitle);
 
-            // HACK: Probably not semantically correct.
-            // Maybe we should expose the parent dialog to widgets?
-            Dialog.Owner = new Form();
+            Dialog.Owner = Viewer.FindForm();
             return Dialog;
         }
 
