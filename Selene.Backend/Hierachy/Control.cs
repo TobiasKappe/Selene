@@ -66,12 +66,15 @@ namespace Selene.Backend
             get { return Info.Name; }
             set { WantedName = value; }
         }
-
+        
         [XmlAttribute]
         public ControlType SubType;
 
         [XmlElement("Flag")]
         public object[] Flags;
+        
+        [XmlAttribute]
+        public int Width, Height;
 
         public Control()
         {
@@ -85,6 +88,8 @@ namespace Selene.Backend
             // Use field name if no label is specified
             Label = Attribute == null || Attribute.Name == null ? Info.Name : Attribute.Name;
             SubType = Attribute == null ? ControlType.Default : Attribute.Override;
+            Width = Attribute == null ? 0 : Attribute.Width;
+            Height = Attribute == null ? 0 : Attribute.Height;
         }
 
         public void Save(object To, object Value)

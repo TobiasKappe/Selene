@@ -37,6 +37,7 @@ namespace Selene.Backend
         string mSubcategory = null;
         string mName = null;
         ControlType mOverride = ControlType.Default;
+        int mWidth, mHeight;
         
         public string Category {
             get { return mCategory; }
@@ -56,6 +57,16 @@ namespace Selene.Backend
         public ControlType Override {
             get { return mOverride; }
             set { mOverride = value; }
+        }
+        
+        public int Width {
+            get { return mWidth; }
+            set { mWidth = value; }
+        }
+        
+        public int Height {
+            get { return mHeight; }
+            set { mHeight = value; }
         }
         
         public ControlAttribute()
