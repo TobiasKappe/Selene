@@ -69,6 +69,11 @@ namespace Selene.Qyoto.Frontend
 
             if(Widg != null)
             {
+                if(Orig.Width != 0)
+                    Widg.SetFixedWidth(Orig.Width);
+                if(Orig.Height != 0)
+                    Widg.SetFixedHeight(Orig.Height);
+                
                 if(Col == 0 && HasHeading)
                 {
                     QHBoxLayout Shift = new QHBoxLayout();
@@ -84,7 +89,7 @@ namespace Selene.Qyoto.Frontend
                     AddWidget(Widg, i, Col);
                 }
             }
-            if(Lay != null)
+            else if(Lay != null)
                 AddLayout(Lay, i, Col);
 
             i++;
