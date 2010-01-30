@@ -58,6 +58,11 @@ namespace Selene.Gtk.Frontend
             Label Marker = new Label(Cont.Label);
             Marker.SetAlignment(0, 0.5f);
             uint Indent = HasHeading ? 20u : 0u;
+            
+            if(Cont.Width != 0)
+                Add.WidthRequest = Cont.Width;
+            if(Cont.Height != 0)
+                Add.HeightRequest = Cont.Height;
 
             if(Cont.SubType != ControlType.Check && Cont.SubType != ControlType.Toggle)
             {
