@@ -39,13 +39,17 @@ namespace Selene.Gtk.Midend
             { 
                 if(Original.SubType == ControlType.Spin)
                     return (int) (Widget as SpinButton).Value; 
-                else return (int) (Widget as Scale).Value;
+                else if(Original.SubType == ControlType.Glider)
+                    return (int) (Widget as Scale).Value;
+                else throw UnsupportedOverride();
             }
             set 
             {
                 if(Original.SubType == ControlType.Spin)
                     (Widget as SpinButton).Value = (double) value;
-                else (Widget as Scale).Value = (double) value;    
+                else if(Original.SubType == ControlType.Glider)
+                    (Widget as Scale).Value = (double) value;    
+                else throw UnsupportedOverride();
             }
         }
 		
@@ -88,8 +92,7 @@ namespace Selene.Gtk.Midend
                 }
                 else return new HScale((double)Min, (double)Max, (double)Step);
             }
-
-            return null;
+            else throw UnsupportedOverride();
         }
 
         public override event EventHandler Changed {
@@ -97,13 +100,17 @@ namespace Selene.Gtk.Midend
             { 
                 if(Original.SubType == ControlType.Spin)
                     (Widget as Entry).Changed += value; 
-                else (Widget as Scale).ValueChanged += value;
+                else if(Original.SubType == ControlType.Glider)
+                    (Widget as Scale).ValueChanged += value;
+                else throw UnsupportedOverride();
             }
             remove
             {
                 if(Original.SubType == ControlType.Spin)
                     (Widget as Entry).Changed -= value; 
-                else (Widget as Scale).ValueChanged -= value;                
+                else if(Original.SubType == ControlType.Glider)
+                    (Widget as Scale).ValueChanged -= value;                
+                else throw UnsupportedOverride();
             }
         }
     }

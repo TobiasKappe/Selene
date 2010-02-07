@@ -43,16 +43,19 @@ namespace Selene.Gtk.Midend
                 if(Original.SubType == ControlType.Radio)
                 {
                     Box B = (Widget as Box);
+                    
                     int i;
                     for(i = 0; i < B.Children.Length; i++)
                     {
-                        if((B.Children[i] as RadioButton).Active) return i;
+                        if((B.Children[i] as RadioButton).Active) 
+                            return i;
                     }
+                    
+                    return 0;
                 }
                 else if(Original.SubType == ControlType.Dropdown)
                     return (Widget as ComboBox).Active;
-
-                return 0;
+                else throw UnsupportedOverride();
             }
             set
             {
@@ -65,6 +68,7 @@ namespace Selene.Gtk.Midend
                 {
                     (Widget as ComboBox).Active = value;
                 }
+                else throw UnsupportedOverride();
             }
         }
 		
@@ -94,7 +98,9 @@ namespace Selene.Gtk.Midend
 
                 (Widget as Box).Add(Button);
             }
-            else (Widget as ComboBox).AppendText(Value);
+            else if(Original.SubType == ControlType.Dropdown)
+                (Widget as ComboBox).AppendText(Value);
+            else throw UnsupportedOverride();
         }
 
         protected override Widget Construct ()
@@ -132,6 +138,7 @@ namespace Selene.Gtk.Midend
                 if(Add) FirstBorn.Clicked += Subject;
                 else FirstBorn.Clicked -= Subject;
             }
+            else throw UnsupportedOverride();
         }
 
         public override event EventHandler Changed {

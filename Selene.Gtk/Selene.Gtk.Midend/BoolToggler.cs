@@ -62,8 +62,7 @@ namespace Selene.Gtk.Midend
                 return new CheckButton(Original.Label);
             else if(Original.SubType == ControlType.Toggle)
                 return new ToggleButton(Original.Label);
-			
-            else return null;
+            else throw UnsupportedOverride();
         }
 
         public override event EventHandler Changed {

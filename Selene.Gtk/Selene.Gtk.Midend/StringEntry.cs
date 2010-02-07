@@ -38,16 +38,16 @@ namespace Selene.Gtk.Midend
             get {
                 if(Original.SubType == ControlType.Entry)
                     return (Widget as Entry).Text;
-                if(Original.SubType == ControlType.FileSelect || Original.SubType == ControlType.DirectorySelect)
+                else if(Original.SubType == ControlType.FileSelect || Original.SubType == ControlType.DirectorySelect)
                     return (Widget as FileChooserButton).Filename;
-
-                return null;
+                else throw UnsupportedOverride();
             }
             set {
                 if(Original.SubType == ControlType.Entry)
                     (Widget as Entry).Text = value ?? string.Empty;
-                if(Original.SubType == ControlType.FileSelect || Original.SubType == ControlType.DirectorySelect)
+                else if(Original.SubType == ControlType.FileSelect || Original.SubType == ControlType.DirectorySelect)
                     (Widget as FileChooserButton).SelectFilename(value ?? string.Empty);
+                else throw UnsupportedOverride();
             }
         }
 		
@@ -66,15 +66,14 @@ namespace Selene.Gtk.Midend
             {
                 return new Entry();
             }
-            if(Original.SubType == ControlType.FileSelect || Original.SubType == ControlType.DirectorySelect)
+            else if(Original.SubType == ControlType.FileSelect || Original.SubType == ControlType.DirectorySelect)
             {
                 string Title = Original.GetFlag<string>();
 
                 return new FileChooserButton(Title ?? "Choose file", Original.SubType == ControlType.FileSelect ?
                                              FileChooserAction.Open : FileChooserAction.SelectFolder);
             }
-
-            return null;
+            else throw UnsupportedOverride();
         }
 
         void EventChange(EventHandler Subject, bool Add)
@@ -89,6 +88,7 @@ namespace Selene.Gtk.Midend
                 if(Add) (Widget as FileChooserButton).SelectionChanged += Subject;
                 else (Widget as FileChooserButton).SelectionChanged -= Subject;
             }
+            else throw UnsupportedOverride();
         }
 
         public override event EventHandler Changed {
