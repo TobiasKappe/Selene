@@ -36,7 +36,11 @@ namespace Selene.Backend
         public OverrideException(Type Target, ControlType Fault, ControlType Default, params ControlType[] Supported) 
             : base(BuildMessage(Target, Fault, Default, Supported))
         {
-
+        }
+        
+        public OverrideException(Control Orig, ControlType Default, ControlType[] Supported) 
+            : base(BuildMessage(Orig.Type, Orig.SubType, Default, Supported))
+        {
         }
         
         private static string BuildMessage(Type Target, ControlType Fault, ControlType Default, ControlType[] Supported)

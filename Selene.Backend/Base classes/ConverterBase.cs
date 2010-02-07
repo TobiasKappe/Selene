@@ -84,6 +84,12 @@ namespace Selene.Backend
                 return new ControlType[] { ControlType.Default };
             }
         }
+        
+        // Convenience method for subclasses
+        protected OverrideException UnsupportedOverride()
+        {
+            return new OverrideException(Original, DefaultSubtype, Supported);
+        }
 
         #region Abstract members
         protected abstract WidgetType Construct();
