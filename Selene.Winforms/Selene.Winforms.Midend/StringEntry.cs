@@ -43,18 +43,21 @@ namespace Selene.Winforms.Midend
             {
                 if(Original.SubType == ControlType.Entry)
                     return (Widget as TextBox).Text;
-                else return File;
+                else if(Original.SubType == ControlType.FileSelect || Original.SubType == ControlType.DirectorySelect)
+                    return File;
+                else throw UnsupportedOverride();
             }
             set
             {
                 if(Original.SubType == ControlType.Entry)
                     (Widget as TextBox).Text = value;
-                else
+                else if(Original.SubType == ControlType.FileSelect || Original.SubType == ControlType.DirectorySelect)
                 {
                     File = value;
                     if(File != string.Empty && File != null)
                         (Widget as Button).Text = System.IO.Path.GetFileName(value);
                 }
+                else throw UnsupportedOverride();
             }
         }
 		
@@ -72,13 +75,14 @@ namespace Selene.Winforms.Midend
         {
             if(Original.SubType == ControlType.Entry)
                 return new TextBox();
-            else
+            else if(Original.SubType == ControlType.FileSelect || Original.SubType == ControlType.DirectorySelect)
             {
                 Button Ret = new Button();
                 Ret.Text = "Choose a " + (Original.SubType == ControlType.DirectorySelect ? "directory" : "file");
                 Ret.Click += ButtonClick;
                 return Ret;
             }
+            else throw UnsupportedOverride();
         }
 
         void ButtonClick (object sender, EventArgs e)
@@ -105,6 +109,8 @@ namespace Selene.Winforms.Midend
                     if(Proxy != null) Proxy(Show, null);
                 }
             }
+            else if(Original.SubType != ControlType.Entry)
+                throw UnsupportedOverride();
         }
 
         public override event EventHandler Changed {
@@ -112,13 +118,17 @@ namespace Selene.Winforms.Midend
             {
                 if(Original.SubType == ControlType.Entry)
                     (Widget as TextBox).TextChanged += value;
-                else Proxy += value;
+                else if(Original.SubType == ControlType.FileSelect || Original.SubType == ControlType.DirectorySelect)
+                    Proxy += value;
+                else throw UnsupportedOverride();
             }
             remove
             {
                 if(Original.SubType == ControlType.Entry)
                     (Widget as TextBox).TextChanged -= value;
-                else Proxy -= value;
+                else if(Original.SubType == ControlType.FileSelect || Original.SubType == ControlType.DirectorySelect)
+                    Proxy -= value;
+                else throw UnsupportedOverride();
             }
         }
     }

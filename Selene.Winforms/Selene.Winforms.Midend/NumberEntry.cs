@@ -40,13 +40,17 @@ namespace Selene.Winforms.Midend
             { 
                 if(Original.SubType == ControlType.Spin)
                     return (int) (Widget as NumericUpDown).Value;
-                else return (int) (Widget as TrackBar).Value;
+                else if(Original.SubType == ControlType.Glider)
+                    return (int) (Widget as TrackBar).Value;
+                else throw UnsupportedOverride();
             }
             set 
             {
                 if(Original.SubType == ControlType.Spin)
                     (Widget as NumericUpDown).Value = value;
-                else (Widget as TrackBar).Value = value;
+                else if(Original.SubType == ControlType.Glider)
+                    (Widget as TrackBar).Value = value;
+                else throw UnsupportedOverride();
             }
         }
 		
@@ -106,8 +110,7 @@ namespace Selene.Winforms.Midend
                 
                 return Ret;
             }
-
-            return null;
+            else throw UnsupportedOverride();
         }
 
         // Simulate wrapping
@@ -126,13 +129,17 @@ namespace Selene.Winforms.Midend
             { 
                 if(Original.SubType == ControlType.Spin)
                     (Widget as NumericUpDown).ValueChanged += value; 
-                else (Widget as TrackBar).ValueChanged += value;
+                else if(Original.SubType == ControlType.Glider)
+                    (Widget as TrackBar).ValueChanged += value;
+                else throw UnsupportedOverride();
             }
             remove
             {
                 if(Original.SubType == ControlType.Spin)
                     (Widget as NumericUpDown).ValueChanged -= value; 
-                else (Widget as TrackBar).ValueChanged -= value;                
+                else if(Original.SubType == ControlType.Glider)
+                    (Widget as TrackBar).ValueChanged -= value;                
+                else throw UnsupportedOverride();
             }
         }
     }

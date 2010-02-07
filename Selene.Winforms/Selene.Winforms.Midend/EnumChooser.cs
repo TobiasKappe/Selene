@@ -63,13 +63,17 @@ namespace Selene.Winforms.Midend
 
                     return 0;
                 }
-                else return (Widget as ComboBox).SelectedIndex;
+                else if(Original.SubType == ControlType.Dropdown)
+                    return (Widget as ComboBox).SelectedIndex;
+                else throw UnsupportedOverride();
             }
             set
             {
                 if(Original.SubType == ControlType.Radio)
                     (Widget.Controls[value] as RadioButton).Checked = true;
-                else (Widget as ComboBox).SelectedIndex = value;
+                else if(Original.SubType == ControlType.Dropdown)
+                    (Widget as ComboBox).SelectedIndex = value;
+                else throw UnsupportedOverride();
             }
         }
 
@@ -80,24 +84,29 @@ namespace Selene.Winforms.Midend
                 Original.GetFlag<bool>(ref Vertical);
                 return Vertical ? (Forms.Control) new ControlVBox() : (Forms.Control) new ControlHBox();
             }
-            else
+            else if(Original.SubType == ControlType.Dropdown)
             {
                 ComboBox Ret = new ComboBox();
                 Ret.DropDownStyle = ComboBoxStyle.DropDownList;
                 return Ret;
             }
+            else throw UnsupportedOverride();
         }
 
         public override event EventHandler Changed {
             add
             {
                 if(Original.SubType == ControlType.Radio) RadioProxy += value;
-                else (Widget as ComboBox).SelectedIndexChanged += value;
+                else if(Original.SubType == ControlType.Dropdown)
+                    (Widget as ComboBox).SelectedIndexChanged += value;
+                else throw UnsupportedOverride();
             }
             remove
             {
                 if(Original.SubType == ControlType.Radio) RadioProxy -= value;
-                else (Widget as ComboBox).SelectedIndexChanged -= value;
+                else if(Original.SubType == ControlType.Dropdown)
+                    (Widget as ComboBox).SelectedIndexChanged -= value;
+                else throw UnsupportedOverride();
             }
         }
 

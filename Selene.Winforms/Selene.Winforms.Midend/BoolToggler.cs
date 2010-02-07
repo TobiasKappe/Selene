@@ -50,13 +50,14 @@ namespace Selene.Winforms.Midend
             }
         }
 
-
         protected override Forms.Control Construct ()
         {
             CheckBox Ret = new CheckBox();
 			
             if(Original.SubType == ControlType.Toggle)
             	Ret.Appearance = Appearance.Button;
+            else if(Original.SubType != ControlType.Check)
+                throw UnsupportedOverride();
 			
             Ret.Text = Original.Label;
 			
