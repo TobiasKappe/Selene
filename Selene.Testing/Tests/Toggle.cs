@@ -52,7 +52,6 @@ namespace Selene.Testing
             public bool ToggleMe;
         }
 
-#if !QYOTO
         [Test]
         public void Toggle()
         {
@@ -60,6 +59,5 @@ namespace Selene.Testing
             var Save = new ToggleTest();
             Assert.IsTrue(Present.Run(Save));
         }
-#endif
     }
 }
