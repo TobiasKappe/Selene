@@ -40,7 +40,9 @@ namespace Selene.Qyoto.Midend
             {
                 if(Orig.SubType == ControlType.Entry)
                     return (Widget as QLineEdit).Text;
-                else return Selected;
+                else if(Orig.SubType == ControlType.FileSelect || Orig.SubType == ControlType.DirectorySelect)
+                    return Selected;
+                else throw UnsupportedOverride();
             }
             set
             {
@@ -54,6 +56,7 @@ namespace Selene.Qyoto.Midend
                         (Widget as QPushButton).Text = System.IO.Path.GetFileName(Selected);
                     }
                 }
+                else throw UnsupportedOverride();
             }
         }
 		
@@ -81,14 +84,18 @@ namespace Selene.Qyoto.Midend
                 // TODO: Get an icon in here as soon as Qt has decent stock handling
                 return Button;
             }
-            else return new QLineEdit();
+            else if(Orig.SubType == ControlType.Entry)
+                return new QLineEdit();
+            else throw UnsupportedOverride();
         }
 
         protected override string SignalForType (ControlType Type)
         {
             if(Orig.SubType == ControlType.Entry)
                 return "textChanged(QString)";
-            else return null;
+            else if(Orig.SubType == ControlType.FileSelect || Orig.SubType == ControlType.DirectorySelect)
+                return null;
+            else throw UnsupportedOverride();
         }
 
         void ButtonClicked()

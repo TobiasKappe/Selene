@@ -40,8 +40,7 @@ namespace Selene.Qyoto.Midend
                     return (Widget as QCheckBox).Checked;
                 else if(Original.SubType == ControlType.Toggle)
                     return (Widget as QPushButton).Checked;
-                
-                return false;
+                else throw UnsupportedOverride();
             }
             set
             {
@@ -49,6 +48,7 @@ namespace Selene.Qyoto.Midend
                     (Widget as QCheckBox).Checked = value;
                 else if(Original.SubType == ControlType.Toggle)
                     (Widget as QPushButton).Checked = value;
+                else throw UnsupportedOverride();
             }
         }
 		
@@ -72,8 +72,7 @@ namespace Selene.Qyoto.Midend
                 Ret.Checkable = true;
                 return Ret;
             }
-            
-            return null;
+            else throw UnsupportedOverride();
         }
 
         protected override string SignalForType (ControlType Type)

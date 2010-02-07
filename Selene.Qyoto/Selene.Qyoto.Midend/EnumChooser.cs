@@ -55,8 +55,7 @@ namespace Selene.Qyoto.Midend
                     return (Widget as QComboBox).CurrentIndex;
                 else if(Original.SubType == ControlType.Radio)
                     return ((Widget as QBoxLayout).Children()[0] as QButtonGroup).CheckedId();
-
-                return 0;
+                else throw UnsupportedOverride();
             }
             set
             {
@@ -64,6 +63,7 @@ namespace Selene.Qyoto.Midend
                     (Widget as QComboBox).CurrentIndex = value;
                 else if(Original.SubType == ControlType.Radio)
                     Group.Button(value).Checked = true;
+                else throw UnsupportedOverride();
             }
         }
 
@@ -71,7 +71,7 @@ namespace Selene.Qyoto.Midend
         {
             if(Type == ControlType.Dropdown) return "activated(int)";
             else if(Type == ControlType.Radio) return "buttonPressed(int)";
-            else return string.Empty;
+            else throw UnsupportedOverride();
         }
 
         protected override QObject Construct ()
@@ -94,8 +94,7 @@ namespace Selene.Qyoto.Midend
 
                 return Lay;
             }
-
-            return null;
+            else throw UnsupportedOverride();
         }
 
         protected override void AddOption (string Value)
@@ -108,6 +107,7 @@ namespace Selene.Qyoto.Midend
                 Group.AddButton(Add, i++);
                 (Widget as QBoxLayout).AddWidget(Add);
             }
+            else throw UnsupportedOverride();
         }
 
         public override event EventHandler Changed {

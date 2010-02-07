@@ -38,13 +38,17 @@ namespace Selene.Qyoto.Midend
             { 
                 if(Original.SubType == ControlType.Spin)
                     return (Widget as QSpinBox).Value; 
-                else return (Widget as QSlider).Value;
+                else if(Original.SubType == ControlType.Glider)
+                    return (Widget as QSlider).Value;
+                else throw UnsupportedOverride();
             }
             set 
             { 
                 if(Original.SubType == ControlType.Spin)
                     (Widget as QSpinBox).Value = value;
-                else (Widget as QSlider).Value = value;
+                else if(Original.SubType == ControlType.Glider)
+                    (Widget as QSlider).Value = value;
+                else throw UnsupportedOverride();
             }
         }
 		
@@ -91,8 +95,7 @@ namespace Selene.Qyoto.Midend
                 
                 return Ret;
             }
-
-            return null;
+            else throw UnsupportedOverride();
         }
 
         protected override string SignalForType (ControlType Type)
