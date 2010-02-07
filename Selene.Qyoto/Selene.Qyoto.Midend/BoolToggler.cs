@@ -36,26 +36,49 @@ namespace Selene.Qyoto.Midend
         protected override bool ActualValue {
             get
             {
-                return (Widget as QCheckBox).Checked;
+                if(Original.SubType == ControlType.Check)
+                    return (Widget as QCheckBox).Checked;
+                else if(Original.SubType == ControlType.Toggle)
+                    return (Widget as QPushButton).Checked;
+                
+                return false;
             }
             set
             {
-                (Widget as QCheckBox).Checked = value;
+                if(Original.SubType == ControlType.Check)
+                    (Widget as QCheckBox).Checked = value;
+                else if(Original.SubType == ControlType.Toggle)
+                    (Widget as QPushButton).Checked = value;
             }
         }
 		
         protected override ControlType DefaultSubtype {
             get { return ControlType.Check; }
         }
+        
+        protected override ControlType[] Supported {
+            get {
+                return new ControlType[] { ControlType.Toggle };
+            }
+        }
 
         protected override QObject Construct ()
         {
-            Original.SubType = ControlType.Check;
-            return new QCheckBox(Original.Label);
+            if(Original.SubType == ControlType.Check)
+                return new QCheckBox(Original.Label);
+            else if(Original.SubType == ControlType.Toggle)
+            {
+                var Ret = new QPushButton(Original.Label);
+                Ret.Checkable = true;
+                return Ret;
+            }
+            
+            return null;
         }
 
         protected override string SignalForType (ControlType Type)
         {
+            // Same for both checkbox and togglebutton
             return "toggled(bool)";
         }
     }
