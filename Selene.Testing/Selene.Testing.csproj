@@ -63,6 +63,7 @@
     <Compile Include="Tests\Filling.cs" />
     <Compile Include="Tests\Toggle.cs" />
     <Compile Include="Tests\Sizing.cs" />
+    <Compile Include="Tests\Echo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
