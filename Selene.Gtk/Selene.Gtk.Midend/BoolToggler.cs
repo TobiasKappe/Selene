@@ -34,16 +34,10 @@ namespace Selene.Gtk.Midend
 {
     public class BoolToggler : ConverterBase<Widget, bool>
     {
+        // Checkbutton inherits from ToggleButton, so this covers both
         protected override bool ActualValue {
-            get {
-                // We can assume the widget derives from ToggleButton because ConverterBase would
-                // have thrown an exception on anything else than Check, Toggle or Default
-                return (Widget as ToggleButton).Active;
-            }
-            set {
-                // Checkbutton inherits from ToggleButton, so this covers both
-                (Widget as ToggleButton).Active = value;
-            }
+            get { return (Widget as ToggleButton).Active; }
+            set { (Widget as ToggleButton).Active = value; }
         }
 		
         protected override ControlType DefaultSubtype {
