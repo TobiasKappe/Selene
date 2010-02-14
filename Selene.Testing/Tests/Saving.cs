@@ -44,6 +44,12 @@ using Selene.Winforms.Frontend;
 
 namespace Selene.Testing
 {
+    /* Saving test - checks to see whether the converters properly return
+     * the value in the widget, and whether the backend then saves it in 
+     * the right field/property on the object. Fill in the answers as the
+     * test expects them below, and press OK.
+     */
+    
     public partial class Harness
     {
         // Used in filling test too

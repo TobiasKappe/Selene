@@ -42,6 +42,12 @@ using Selene.Winforms.Frontend;
 
 namespace Selene.Testing
 {
+    /* Property test - checks to see whether properties are supported as
+     * well as fields. The CheckMe property is always the opposite of the
+     * Asd field (not displayed because it is internal). The user should 
+     * check all checkboxes.
+     */
+    
     public partial class Harness
     {
         class PropertyTest

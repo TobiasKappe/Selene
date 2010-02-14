@@ -45,6 +45,12 @@ using Selene.Winforms.Frontend;
 
 namespace Selene.Testing
 {
+    /* Grouping test - uses the four standard dialogs implemented by the
+     * frontend, displaying the way they arrange the widgets. The user
+     * should check whether all pages are visible through the appropriate
+     * navigation widget. Press OK if this is the case.
+     */
+    
     public partial class Harness
     {
         class GroupingTest : ICloneable

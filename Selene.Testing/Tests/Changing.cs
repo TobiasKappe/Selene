@@ -44,6 +44,16 @@ using Selene.Winforms.Frontend;
 
 namespace Selene.Testing
 {
+    /* Changing test - tests to see whether the appropriate event is fired
+     * by each converter. It counts the events fired by making use of
+     * SubscribeAllChange<T>(). Note that the amount of events may differ
+     * per frontend, as some events fired by initializing the widgets
+     * could not be avoided.
+     * 
+     * To pass this test properly, make one (no more, no less) change to
+     * each widget presented in the window.
+     */
+    
     public partial class Harness
     {
         [Flags]

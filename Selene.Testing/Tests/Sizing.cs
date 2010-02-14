@@ -43,6 +43,13 @@ using Selene.Winforms.Frontend;
 
 namespace Selene.Testing
 {
+    /* Sizing test - checks to see whether the sizes specified by
+     * ControlAttribute are obeyed by the frontend. The textbox should
+     * become a square. Except for the Windows frontend, which does allow
+     * support setting the height of textboxes. Press OK if conditions 
+     * apply
+     */
+    
     public partial class Harness
     {
         class SizingTest

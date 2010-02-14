@@ -44,6 +44,25 @@ using Selene.Winforms.Frontend;
 
 namespace Selene.Testing
 {
+    /* Numbers test - the dialog presented will sport five different
+     * controls:
+     *  - The first will be a spinbutton filled with the value '42' No 
+     *    limits should be imposed on this spinbutton. 
+     *  - The second will be a spinbutton with a minimum value of 0 and
+     *    a maximum value of 10. 
+     *  - The third widget will be a spinbutton, again. This spinbutton
+     *    is wrapped, meaning it will jump from the maximum value to the 
+     *    minimum and vice-versa, if pushed over the limit. 
+     *  - The fourth will be a spinbutton with the value of '2', but 
+     *    configured to take steps of 5 between 0 and 50. Note that this
+     *    one is also wrapped.
+     *  - The fifth and sixth widgets will be gliders, respectively 
+     *    horizontal and vertical. These are bound from 0 to 10, but
+     *    should show no value.
+     * 
+     * If all above behave appropriately, press OK.
+     */
+    
     public partial class Harness
     {
         class NumberTest

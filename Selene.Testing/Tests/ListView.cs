@@ -43,6 +43,23 @@ using Selene.Winforms.Frontend;
 
 namespace Selene.Testing
 {
+    /* Listview test - this unit test checks the implementation of 
+     * ListViewerBase provided by the frontend. This test consists of
+     * three sub-tests.
+     * 
+     * Firstly, the user is presented with a dialog. The user should
+     * add one "person" to the list. The code then checks whether the
+     * length of the list is exactly 2.
+     * 
+     * Secondly, the test disables the add and remove buttons. The user
+     * should see the buttons, but they should be disabled. Press OK to
+     * confirm this
+     * 
+     * Lastly, the second test is re-run but this time not disabling the
+     * add and remove buttons, but completely hiding them. Again, press
+     * OK to confirm this.
+     */
+    
     public partial class Harness
     {
         static Enclosed Individual = new Enclosed { Name = "Lisa Cuddy", Single = true };

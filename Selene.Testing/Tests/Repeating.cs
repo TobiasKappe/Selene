@@ -42,6 +42,11 @@ using Selene.Winforms.Frontend;
 
 namespace Selene.Testing
 {
+    /* Repeating test - checks to see whether a dialog can be recycled
+     * with two different instances of an object. The first dialog 
+     * presented should be left unchanged, the second should be changed.
+     */
+    
     public partial class Harness
     {
         class RepeatTest

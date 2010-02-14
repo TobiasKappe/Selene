@@ -43,6 +43,12 @@ using Selene.Winforms.Frontend;
 
 namespace Selene.Testing
 {
+    /* Filling test - checks to see whether converters provided by the
+     * frontend are all filling the default values in properly. To pass 
+     * this test, see whether the values in the widgets match the values
+     * below. If so, press OK.
+     */
+    
     public partial class Harness
     {
         [Test]

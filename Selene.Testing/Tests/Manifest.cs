@@ -48,9 +48,17 @@ using Selene.Winforms.Frontend;
 
 namespace Selene.Testing
 {
+    /* Manifest test - checks to see whether an XML manifest in a file is
+     * loaded correctly by the backend. The user should be presented with
+     * a dialog configured as specified in manifest.xml, located in this
+     * solution. Press OK to pass the test.
+     * 
+     * NOTE: If the manifest.xml file is not present, this test will stub
+     * it and then exit gracefully.
+     */
+    
     public partial class Harness
     {
-
         enum Bananas { Good, Yellow, Square }
         const string ManifestFile = "../../manifest.xml";
 

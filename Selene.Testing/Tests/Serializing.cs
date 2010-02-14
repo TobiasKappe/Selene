@@ -45,6 +45,11 @@ using System.IO;
 
 namespace Selene.Testing
 {
+    /* Serializing - not really a test, rather a demonstration. Taken from
+     * the website, this code combines serializing and a listview. Always
+     * passes.
+     */
+    
     public partial class Harness
     {
         public class Person

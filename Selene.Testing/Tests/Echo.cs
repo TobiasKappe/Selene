@@ -42,6 +42,15 @@ using Selene.Winforms.Frontend;
 
 namespace Selene.Testing
 {
+    /* Echo test - checks to see whether the values filled in by the first
+     * run are displayed again when the dialog is displayed a second time.
+     * This is done to test reuse of dialogs on the one hand, while also
+     * checking to see whether the values are saved properly.
+     * 
+     * Fill in some values in the first dialog, and check if they are the
+     * same values displayed in the second dialog. Click OK if they match.
+     */ 
+    
     public partial class Harness
     {
         [Test]

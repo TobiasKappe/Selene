@@ -43,6 +43,11 @@ using Selene.Winforms.Frontend;
 
 namespace Selene.Testing
 {
+    /* Vertical test - checks to see whether the flag that sets
+     * orientation for radiobuttons is obeyed by the converter. A vertical
+     * list of radiobuttons should be displayed. Press OK to confirm.
+     */
+    
     public partial class Harness
     {
         enum Cat { Alive, Dead, Neither, Both }

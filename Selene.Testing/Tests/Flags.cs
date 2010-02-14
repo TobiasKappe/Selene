@@ -42,6 +42,10 @@ using Selene.Winforms.Frontend;
 
 namespace Selene.Testing
 {
+    /* Flags test - tests the implementation of FlagsBase given in the
+     * frontend. The user should check "apple" and "banana" and press OK.
+     */
+    
     public partial class Harness
     {
         class FlagsTest

@@ -42,6 +42,10 @@ using Selene.Winforms.Frontend;
 
 namespace Selene.Testing
 {
+    /* "Simplest" test - fill in the values as hinted in the title of the
+     * dialog and press OK. Tests saving by converters.
+     */
+    
     public partial class Harness
     {
         enum Sex { Male, Female }

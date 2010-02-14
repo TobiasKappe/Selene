@@ -43,6 +43,11 @@ using Selene.Winforms.Frontend;
 
 namespace Selene.Testing
 {
+    /* Toggle test - checks to see whether the Toggle override of a bool
+     * field is displayed as a togglebutton by the frontends. User should
+     * ascertain the togglebutton and press OK.
+     */
+    
     public partial class Harness
     {
         class ToggleTest

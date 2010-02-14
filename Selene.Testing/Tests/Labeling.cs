@@ -43,6 +43,10 @@ using Selene.Winforms.Frontend;
 
 namespace Selene.Testing
 {
+    /* Labeling test - semi-obsolete test checking appropriate display of
+     * labels specified by the user.
+     */
+    
     public partial class Harness
     {
         class LabelingTest

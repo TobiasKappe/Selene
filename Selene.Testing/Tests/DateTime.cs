@@ -44,6 +44,24 @@ using Selene.Winforms.Frontend;
 
 namespace Selene.Testing
 {
+    /* DateTime test - checks to see whether the custom flags provided
+     * by the Gtk and Qt/Qyoto frontends are displayed properly. To do
+     * so, we try to derive from the default settings as much as possible.
+     * 
+     * The Gtk frontend should show:
+     *  - No heading 
+     *  - No day names
+     *  - No month change
+     *  - Week numbers
+     *  - Monday not as the first day of the week
+     * The latter condition may or may not apply depending on the GTK
+     * settings that come with your operating system.
+     * 
+     * The Qt/Qyoto frontend should show a formatted date.
+     * 
+     * To pass this test, click "OK" if above conditions apply.
+     */
+    
     public partial class Harness
     {
 #if !WINDOWS

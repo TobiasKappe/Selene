@@ -47,6 +47,14 @@ using Selene.Winforms.Frontend;
 
 namespace Selene.Testing
 {
+    /* Validator test - checks the validation possiblility provided by the
+     * backend. The surname should be non-empty, the phone-number should
+     * conform to the regex found below. If these two conditions apply, 
+     * the "next" button should become clickable. Next, the file should be
+     * chosen and the checkbox checked, after which the "complete" button
+     * should be enabled. Test fails if window is closed, succeeds if user
+     * reaches the "complete" button. */
+    
     public class ValidTest : ICloneable
     {
         #pragma warning disable 0649

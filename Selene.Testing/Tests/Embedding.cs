@@ -48,6 +48,15 @@ using System.Windows.Forms;
 
 namespace Selene.Testing
 {
+    /* Embedding test - tries out the 'embedding' feature, meaning that
+     * the inner widget is taken from the dialog to be used in some other
+     * dialog. Note that most of this test is very frontend-specific code.
+     * 
+     * To pass this test, check to see whether the embedded widgets and 
+     * the user-provided widgets interact properly. If so, press OK. Note
+     * that this is test is not runnable from NUnit.
+     */
+    
     public partial class Harness
     {
         class EmbeddingTest
