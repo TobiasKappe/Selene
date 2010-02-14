@@ -38,6 +38,7 @@ namespace Selene.Backend
         protected ModalPresenterBase<WidgetType> Dialog;
         protected ControlManifest Manifest;
         protected EventHandler OnChange;
+        protected EventHandler Saving;
 
         protected bool AllowsEdit = true, AllowsRemove = true,
             AllowsAdd = true, GreyButtons = false;
@@ -49,9 +50,10 @@ namespace Selene.Backend
         protected override ControlType DefaultSubtype {
             get { return ControlType.Default; }
         }
+        
+        protected List<object> Content;
 
         int i = 0;
-        List<object> Content;
         ConstructorInfo Constructor;
         Type mUnderlying;
 
@@ -155,6 +157,9 @@ namespace Selene.Backend
             }
             get
             {
+                if(Saving != null)
+                    Saving(this, default(EventArgs));
+                
                 Type ToArray = mUnderlying.MakeArrayType();
 
                 // And now for the ugliest line in C# history:

@@ -36,82 +36,126 @@ namespace Selene.Winforms.Midend
 {
     public class ListViewer : ListViewerBase<Forms.Control>
     {
-        ListView Viewer;
+        DataGridView Grid;
+        Type[] Types;
 
         int CurrentSelection {
             get
             {
-                var Indices = Viewer.SelectedIndices;
-                if(Indices.Count == 0) return -1;
-
-                else return Indices[0];
+                return Grid.CurrentRow.Index;
             }
         }
 
         protected override void AddColumn (string Name, Type Type)
         {
-            Viewer.Columns.Add(Name, Name, 20);
+            if(Type == typeof(string))
+            {
+                DataGridViewTextBoxColumn Col = new DataGridViewTextBoxColumn();
+                PrepColumn(Col, Name);
+                Col.CellTemplate = new DataGridViewTextBoxCell();
+                Grid.Columns.Add(Col);
+            }
+            if(Type == typeof(bool))
+            {
+                DataGridViewCheckBoxColumn Col = new DataGridViewCheckBoxColumn();
+                PrepColumn(Col, Name);
+                Col.CellTemplate = new DataGridViewCheckBoxCell();
+                Grid.Columns.Add(Col);
+            }
+        }
+        
+        void PrepColumn(DataGridViewColumn Col, string Name)
+        {
+            Col.Name = Name;
+            Col.HeaderText = Name;
+            Col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
         }
 
         protected override void Clear ()
         {
-            // Viewer.Clear() cleans the whole widget
-            Viewer.Items.Clear();
+            Grid.Rows.Clear();
         }
 
         protected override Forms.Control Construct (Type[] Types)
         {
+            this.Types = Types;
+            
             TableLayoutPanel Panel = new TableLayoutPanel();
             TableLayoutPanel ButtonsPanel = new TableLayoutPanel();
 
-            Viewer = new Forms.ListView();
-            Viewer.FullRowSelect = true;
-            Viewer.AutoSize = true;
-            Viewer.View = View.Details;
-            Viewer.AllowColumnReorder = false;
-            Viewer.HeaderStyle = ColumnHeaderStyle.Nonclickable;
-            Viewer.MultiSelect = false;
-            Panel.Controls.Add(Viewer, 0, 0);
+            Grid = new DataGridView();
+            
+            // Mimic a list view
+            Grid.AutoGenerateColumns = false;
+            Grid.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Raised;
+            Grid.RowHeadersVisible = false;
+            Grid.MultiSelect = false;
+            Grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            Grid.AllowUserToAddRows = false;
+            Grid.AllowUserToOrderColumns = false;
+            
+            // Somehow the associated event is not fired
+            Grid.AllowUserToDeleteRows = false; 
+            
+            Grid.CellEndEdit += HandleGridCellEndEdit;
+            Panel.Controls.Add(Grid, 0, 0);
 
             AddButton(ButtonsPanel, AllowsAdd, "Add", 0, AddClicked);
             AddButton(ButtonsPanel, AllowsRemove,  "Remove", 1, RemoveClicked);
             AddButton(ButtonsPanel, AllowsEdit, "Edit", 2, EditClicked);
             ButtonsPanel.AutoSize = true;
             Panel.Controls.Add(ButtonsPanel, 1, 0);
+            
+            Saving += HandleSaving;
 
             return Panel;
         }
 
+        void HandleGridCellEndEdit (object sender, DataGridViewCellEventArgs e)
+        {
+            PatchRow(e.RowIndex, e.ColumnIndex);
+        }
+        
+        void HandleSaving(object Sender, EventArgs e)
+        {
+            // The user might still have uncommited changes hanging about
+            // (e.g. by not leaving the edited column). Make sure we save them.
+            // This triggers HandleGridCellEndEdit above.
+            Grid.EndEdit();
+        }
+        
+        void PatchRow(int Index, int Column)
+        {
+            int Cols = Grid.ColumnCount;
+            object[] Items = new object[Cols];
+            
+            for(int i = 0; i < Cols; i++)
+                Items[i] = Grid.Rows[Index].Cells[i].Value;
+            
+            RowChanged(Index, Items);
+        }
+
         protected override bool IsViewable (Type T)
         {
-            // Just strings for the moment
-            return T == typeof(string);
+            return T == typeof(string) || T == typeof(bool);
         }
 
         protected override ModalPresenterBase<Forms.Control> MakeDialog ()
         {
             var Dialog = new NotebookDialog<Forms.Control>(DialogTitle);
 
-            Dialog.Owner = Viewer.FindForm();
+            Dialog.Owner = Grid.FindForm();
             return Dialog;
         }
 
         protected override void RowAdded (int Id, object[] Items)
         {
-            string[] Values = new string[Items.Length];
-            for(int i = 0; i < Values.Length; i++)
-                Values[i] = Items[i] == null ? "" : Items[i].ToString();
-
-            Viewer.Items.Insert(Id, new ListViewItem(Values));
-
-            Viewer.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-            Viewer.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            Grid.Rows.Add(Items);
         }
 
         protected override void RowEdited (int Id, object[] Items)
         {
-            Viewer.Items.RemoveAt(Id);
-            RowAdded(Id, Items);
+            Grid.Rows[Id].SetValues(Items);
         }
 
         void AddClicked(object sender, EventArgs args)
@@ -124,8 +168,8 @@ namespace Selene.Winforms.Midend
             int Index = CurrentSelection;
             if(Index < 0) return;
 
+            Grid.Rows.RemoveAt(Index);
             DeleteRow(Index);
-            Viewer.Items.RemoveAt(Index);
         }
 
         void EditClicked(object sender, EventArgs args)
