@@ -116,7 +116,7 @@ namespace Selene.Winforms.Midend
                 UpdatePicture();
 
                 if(OnChanged != null)
-                    OnChanged(CurrentColor, null);
+                    OnChanged(Box, null);
             }
         }
 

@@ -82,7 +82,7 @@ namespace Selene.Winforms.Midend
         void HandleChange(object sender, EventArgs args)
         {
             if(Proxy != null)
-                Proxy(sender, args);
+                Proxy(Boxes, args);
         }
 
         public override event EventHandler Changed {

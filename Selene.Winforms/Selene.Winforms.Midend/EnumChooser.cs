@@ -126,7 +126,7 @@ namespace Selene.Winforms.Midend
         void RadioCheckedChanged (object sender, EventArgs e)
         {
             if((sender as RadioButton).Checked && RadioProxy != null)
-                RadioProxy(sender, e);
+                RadioProxy((sender as RadioButton).Parent, e);
         }
     }
 }
