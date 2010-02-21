@@ -27,6 +27,7 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 using Selene.Backend;
 using NUnit.Framework;
 
@@ -59,6 +60,9 @@ namespace Selene.Testing
         [Flags]
         enum Fruit { Apple = 1, Orange = 2, Banana = 4 }
         enum Direction { Left, Right, Back }
+        
+        List<object> Marked = new List<object>();
+        NotebookDialog<Change> Dialog;
 
         class Change
         {
@@ -88,25 +92,20 @@ namespace Selene.Testing
         [Test]
         public void Changing()
         {
-            var Dialog = new NotebookDialog<Change>("Selene");
+            Dialog = new NotebookDialog<Change>("Selene");
             Dialog.SubscribeAllChange<Change>(HandleChange);
             Dialog.Run(new Change());
 
-            // We stuplidly assume every widget is changed once
-#if QYOTO
-            Assert.GreaterOrEqual(TimesChanged, 11);
-#endif
-#if GTK
-            Assert.GreaterOrEqual(TimesChanged, 18);
-#endif
-#if WINDOWS
-            Assert.GreaterOrEqual(TimesChanged, 16);
-#endif
+            Assert.GreaterOrEqual(TimesChanged, 10);
         }
 
         void HandleChange(object Sender, EventArgs Args)
         {
+            if(!Dialog.Visible) return;
+            if(Marked.Contains(Sender)) return;
+            
             TimesChanged++;
+            Marked.Add(Sender);
         }
     }
 }
