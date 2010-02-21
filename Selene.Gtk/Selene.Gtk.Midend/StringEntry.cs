@@ -85,8 +85,8 @@ namespace Selene.Gtk.Midend
             }
             else if(Original.SubType == ControlType.FileSelect || Original.SubType == ControlType.DirectorySelect)
             {
-                if(Add) (Widget as FileChooserButton).SelectionChanged += Subject;
-                else (Widget as FileChooserButton).SelectionChanged -= Subject;
+                if(Add) (Widget as FileChooserButton).FileSet += Subject;
+                else (Widget as FileChooserButton).FileSet -= Subject;
             }
             else throw UnsupportedOverride();
         }
