@@ -110,7 +110,7 @@ namespace Selene.Winforms.Ordering
             LayoutIfVisible();
         }
 
-        protected void LayoutControls()
+        public void LayoutControls()
         {
             x = Padding;
             y = Padding;

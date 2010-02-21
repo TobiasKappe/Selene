@@ -78,6 +78,32 @@ namespace Selene.Winforms.Frontend
             }
 
             Tree.EndUpdate();
+            
+            Tree.AfterExpand += HandleTreeAfterExpand;
+        }
+
+        void HandleTreeAfterExpand (object sender, TreeViewEventArgs e)
+        {
+            Tree.Height = NodesHeight(Tree.Nodes) + 10;
+            
+            if(Tree.Height > ActivePanel.Height)
+            {
+                Panel.Height = Tree.Height;
+                MainBox.LayoutControls();
+                Win.Height = MainBox.Height + 25;
+            }
+        }
+        
+        int NodesHeight(TreeNodeCollection Nodes)
+        {
+            int TotalHeight = 0;
+            foreach(TreeNode Node in Nodes)
+            {
+                TotalHeight += Node.Bounds.Height;
+                TotalHeight += NodesHeight(Node.Nodes);
+            }
+            
+            return TotalHeight;
         }
 
         void TreeAfterSelect (object sender, TreeViewEventArgs e)
