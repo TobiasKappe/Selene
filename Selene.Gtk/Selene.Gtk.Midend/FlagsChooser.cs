@@ -53,7 +53,7 @@ namespace Selene.Gtk.Midend
 
         void HandleChange(object sender, EventArgs args)
         {
-            if(Parked != null) Parked(sender, args);
+            if(Parked != null) Parked(Options, args);
         }
 
         protected override Widget Construct ()
