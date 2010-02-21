@@ -49,6 +49,10 @@ namespace Selene.Winforms.Frontend
         public bool IsEmbedded {
             get { return mIsEmbedded; }
         }
+        
+        public override bool Visible {
+            get { return Win.Visible; }
+        }
 
         protected abstract Forms.Control ActualWidget {
             get;

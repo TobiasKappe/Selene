@@ -42,7 +42,11 @@ namespace Selene.Gtk.Frontend
         protected bool PerSubcat = false;
 
         private bool HasButtons = false;
-
+        
+        public override bool Visible {
+            get { return Win.Visible; }
+        }
+        
         public virtual Widget Content(T Present)
         {
             return Embed(Present, Book);
@@ -74,7 +78,7 @@ namespace Selene.Gtk.Frontend
         void HandleResponse(object o, ResponseArgs args)
         {
             if(args.ResponseId == ResponseType.Ok) Save();
-            Win.Hide();
+            Hide();
         }
 
         protected override bool Run ()

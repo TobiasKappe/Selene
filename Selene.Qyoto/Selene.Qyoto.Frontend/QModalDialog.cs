@@ -43,6 +43,10 @@ namespace Selene.Qyoto.Frontend
         QHBoxLayout Buttons;
         string Title;
 
+        public override bool Visible {
+            get { return Dialog.IsVisible(); }
+        }
+        
         public QModalDialog(string Title)
         {
             Dialog = new QDialog();

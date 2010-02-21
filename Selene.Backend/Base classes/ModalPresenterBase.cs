@@ -51,5 +51,7 @@ namespace Selene.Backend
         }
 
         protected abstract bool Run();
+        
+        public abstract bool Visible { get; }
     }
 }
