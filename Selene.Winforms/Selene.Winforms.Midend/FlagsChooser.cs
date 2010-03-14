@@ -37,46 +37,92 @@ namespace Selene.Winforms.Midend
     public class FlagsChooser : FlagsBase<Forms.Control>
     {
         TableLayoutPanel Boxes;
+        ListView List;
+        
         bool Vertical = false;
         int Pos = 0;
         EventHandler Proxy;
+        
+        protected override ControlType DefaultSubtype {
+            get { return ControlType.MultiCheck; }
+        }
+        
+        protected override ControlType[] Supported {
+            get { return new ControlType[] { ControlType.MultiSelect }; }
+        }
 
         protected override IEnumerable<int> SelectedIndices {
             get
             {
-                int i = 0;
-                foreach(CheckBox Box in Boxes.Controls)
+                if(Original.SubType == ControlType.MultiCheck)
                 {
-                    if(Box.Checked) yield return i;
-                    i++;
+                    int i = 0;
+                    foreach(CheckBox Box in Boxes.Controls)
+                    {
+                        if(Box.Checked) yield return i;
+                        i++;
+                    }
                 }
+                else if(Original.SubType == ControlType.MultiSelect)
+                {
+                    // For some reason we can not return the whole list at once
+                    foreach(int i in List.SelectedIndices)
+                        yield return i;
+                }
+                else throw UnsupportedOverride();
             }
         }
 
         protected override Forms.Control Construct ()
         {
-            Original.GetFlag<bool>(ref Vertical);
-
-            Boxes = new TableLayoutPanel();
-            Boxes.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-
-            return Boxes;
+            if(Original.SubType == ControlType.MultiCheck)
+            {
+                Original.GetFlag<bool>(ref Vertical);
+    
+                Boxes = new TableLayoutPanel();
+                Boxes.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+    
+                return Boxes;
+            }
+            else if(Original.SubType == ControlType.MultiSelect)
+            {
+                List = new ListView();
+                List.Columns.Add("Option");
+                List.SelectedIndexChanged += HandleChange;
+                List.FullRowSelect = true;
+                List.AllowColumnReorder = false;
+                List.View = View.Details;
+                List.HeaderStyle = ColumnHeaderStyle.None;
+                List.MultiSelect = true;
+                return List;
+            }
+            else throw UnsupportedOverride();
         }
 
         protected override void AddOption (string Value)
         {
-            CheckBox Add = new CheckBox();
-            Add.Text = Value;
-            Add.CheckedChanged += HandleChange;
-            Add.AutoSize = true;
-
-            if(Vertical) Boxes.Controls.Add(Add, 0, Pos++);
-            else Boxes.Controls.Add(Add, Pos++, 0);
+            if(Original.SubType == ControlType.MultiCheck)
+            {
+                CheckBox Add = new CheckBox();
+                Add.Text = Value;
+                Add.CheckedChanged += HandleChange;
+                Add.AutoSize = true;
+    
+                if(Vertical) Boxes.Controls.Add(Add, 0, Pos++);
+                else Boxes.Controls.Add(Add, Pos++, 0);
+            }
+            else if(Original.SubType == ControlType.MultiSelect)
+                List.Items.Add(Value);
+            else throw UnsupportedOverride();
         }
 
         protected override void ChangeIndex (int Index, bool Selected)
         {
-            (Boxes.Controls[Index] as CheckBox).Checked = Selected;
+            if(Original.SubType == ControlType.MultiCheck)
+                (Boxes.Controls[Index] as CheckBox).Checked = Selected;
+            else if(Original.SubType == ControlType.MultiSelect)
+                List.Items[Index].Selected = Selected;
+            else throw UnsupportedOverride();
         }
 
         void HandleChange(object sender, EventArgs args)
