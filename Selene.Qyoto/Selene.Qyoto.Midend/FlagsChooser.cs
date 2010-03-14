@@ -36,27 +36,60 @@ namespace Selene.Qyoto.Midend
     public class FlagsChooser : FlagsBase<QObject>
     {
         QButtonGroup Group;
+        QListWidget List;
         QConverterProxy<Enum> Proxy;
         int i = 0;
 
+        protected override ControlType DefaultSubtype {
+            get { return ControlType.MultiCheck; }
+        }
+        
+        protected override ControlType[] Supported {
+            get { return new ControlType[] { ControlType.MultiSelect }; }
+        }
+        
         protected override IEnumerable<int> SelectedIndices {
             get
             {
-                for(int p = 0; p < i; p++)
+                if(Original.SubType == ControlType.MultiCheck)
                 {
-                    if(Group.Button(p).Checked) yield return p;
+                    for(int p = 0; p < i; p++)
+                        if(Group.Button(p).Checked) yield return p;
                 }
+                else if(Original.SubType == ControlType.MultiSelect)
+                {
+                    // No way to get the index of a selected QListWidgetItem, so we just 
+                    // walk the list and return the indices of the selected items.
+                    for(int p = 0; p < List.Count; p++)
+                    {
+                        QListWidgetItem Item = List.Item(p);
+                        if(Item.IsSelected())
+                            yield return p;
+                    }
+                }
+                else throw UnsupportedOverride();
             }
         }
 
         protected override void ChangeIndex (int Index, bool Selected)
         {
-            Group.Button(Index).Checked = Selected;
+            if(Original.SubType == ControlType.MultiCheck)
+                Group.Button(Index).Checked = Selected;
+            else if(Original.SubType == ControlType.MultiSelect)
+            {
+                QListWidgetItem Item = List.Item(Index);
+                Item.SetSelected(Selected);
+            }
+            else throw UnsupportedOverride();
         }
 
         protected string ResolveType(ControlType Type)
         {
-            return "buttonPressed(int)";
+            if(Original.SubType == ControlType.MultiCheck)
+                return "buttonPressed(int)";
+            else if(Original.SubType == ControlType.MultiSelect)
+                return "itemSelectionChanged()";
+            else throw UnsupportedOverride();
         }
 
         protected override QObject Construct ()
@@ -64,25 +97,47 @@ namespace Selene.Qyoto.Midend
             Proxy = new QConverterProxy<Enum>(Original, null);
             Proxy.Resolve = ResolveType;
 
-            bool Vertical = false;
-            Original.GetFlag<bool>(ref Vertical);
+            if(Original.SubType == ControlType.MultiCheck)
+            {
+                bool Vertical = false;
+                Original.GetFlag<bool>(ref Vertical);
+    
+                QBoxLayout Lay;
+                if(Vertical) Lay = new QVBoxLayout();
+                else Lay = new QHBoxLayout();
+                Group = new QButtonGroup(Lay);
+                Proxy.Widg = Group;
+    
+                Group.Exclusive = false;
 
-            QBoxLayout Lay;
-            if(Vertical) Lay = new QVBoxLayout();
-            else Lay = new QHBoxLayout();
-            Group = new QButtonGroup(Lay);
-            Proxy.Widg = Group;
-
-            Group.Exclusive = false;
-
-            return Lay;
+                return Lay;
+            }
+            else if(Original.SubType == ControlType.MultiSelect)
+            {
+                List = new QListWidget();
+                List.selectionBehavior = QAbstractItemView.SelectionBehavior.SelectRows;
+                List.selectionMode = QAbstractItemView.SelectionMode.MultiSelection;
+                
+                //Proxy.Widg = List;
+                
+                return List;
+            }
+            else throw UnsupportedOverride();
         }
 
         protected override void AddOption (string Value)
         {
-            QCheckBox Add = new QCheckBox(Value);
-            Group.AddButton(Add, i++);
-            (Widget as QBoxLayout).AddWidget(Add);
+            if(Original.SubType == ControlType.MultiCheck)
+            {
+                QCheckBox Add = new QCheckBox(Value);
+                Group.AddButton(Add, i++);
+                (Widget as QBoxLayout).AddWidget(Add);
+            }
+            else if(Original.SubType == ControlType.MultiSelect)
+            {
+                List.AddItem(Value);
+            }
+            else throw UnsupportedOverride();
         }
 
         public override event EventHandler Changed {
