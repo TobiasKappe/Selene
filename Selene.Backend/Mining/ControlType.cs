@@ -41,6 +41,8 @@ namespace Selene.Backend
         Color,
         Spin,
         Glider,
-        DateTime
+        DateTime,
+        MultiCheck,
+        MultiSelect
     }
 }
