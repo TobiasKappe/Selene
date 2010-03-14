@@ -36,18 +36,42 @@ namespace Selene.Gtk.Midend
     public class FlagsChooser : FlagsBase<Widget>
     {
         Box Options;
+        TreeView View;
+            
         EventHandler Parked;
         EventHandler Proxy;
+        int Added = 0;
+        
+        protected override ControlType DefaultSubtype {
+            get { return ControlType.MultiCheck; }
+        }
+        
+        protected override ControlType[] Supported {
+            get { return new ControlType[] { ControlType.MultiSelect }; }
+        }
 
         protected override IEnumerable<int> SelectedIndices {
             get
             {
                 int i = 0;
-                foreach(CheckButton Button in Options.Children)
+                if(Original.SubType == ControlType.MultiCheck)
                 {
-                    if(Button.Active) yield return i;
-                    i++;
+                    foreach(CheckButton Button in Options.Children)
+                    {
+                        if(Button.Active) yield return i;
+                        i++;
+                    }
                 }
+                else if(Original.SubType == ControlType.MultiSelect)
+                {
+                    TreeIter Iter;
+                    foreach(TreePath Path in View.Selection.GetSelectedRows())
+                    {
+                        View.Model.GetIter(out Iter, Path);
+                        yield return (View.Model.GetValue(Iter, 1) as int?).Value;
+                    }
+                }
+                else throw UnsupportedOverride();
             }
         }
 
@@ -58,24 +82,62 @@ namespace Selene.Gtk.Midend
 
         protected override Widget Construct ()
         {
-            Proxy += HandleChange;
-            bool Vertical = false;
-            Original.GetFlag<bool>(ref Vertical);
-
-            if(!Vertical) return Options = new HBox();
-            else return Options = new VBox();
+            if(Original.SubType == ControlType.MultiCheck)
+            {
+                Proxy += HandleChange;
+                bool Vertical = false;
+                
+                Original.GetFlag<bool>(ref Vertical);
+                if(!Vertical) return Options = new HBox();
+                else return Options = new VBox();
+            }
+            else if(Original.SubType == ControlType.MultiSelect)
+            {
+                View = new TreeView();
+                View.Model = new ListStore(typeof(string), typeof(int));
+                View.HeadersVisible = false;
+                View.AppendColumn("Option", new CellRendererText(), "text", 0);
+                View.Selection.Mode = SelectionMode.Multiple;
+                View.Selection.Changed += HandleChange;
+                
+                Frame BorderMaker = new Frame();
+                BorderMaker.Add(View);
+                
+                return BorderMaker;
+            }
+            else throw UnsupportedOverride();
         }
 
         protected override void AddOption (string Value)
         {
-            CheckButton Add = new CheckButton(Value);
-            Add.Toggled += Proxy;
-            Options.Add(Add);
+            if(Original.SubType == ControlType.MultiCheck)
+            {
+                CheckButton Add = new CheckButton(Value);
+                Add.Toggled += Proxy;
+                Options.Add(Add);
+            }
+            else if(Original.SubType == ControlType.MultiSelect)
+            {
+                (View.Model as ListStore).AppendValues(Value, Added++);
+            }
+            else throw UnsupportedOverride();
         }
 
         protected override void ChangeIndex (int Index, bool Selected)
         {
-            (Options.Children[Index] as CheckButton).Active = Selected;
+            if(Original.SubType == ControlType.MultiCheck)
+            {
+                (Options.Children[Index] as CheckButton).Active = Selected;
+            }
+            else if(Original.SubType == ControlType.MultiSelect)
+            {
+                TreeIter Iter;
+                View.Model.IterNthChild(out Iter, Index);
+                
+                if(Selected) View.Selection.SelectIter(Iter);
+                else View.Selection.UnselectIter(Iter);
+            }
+            else throw UnsupportedOverride();
         }
 
         public override event EventHandler Changed {
