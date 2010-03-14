@@ -40,10 +40,17 @@ using Selene.Qyoto.Frontend;
 using Selene.Winforms.Frontend;
 #endif
 
+using Selene.Backend;
+
 namespace Selene.Testing
 {
     /* Flags test - tests the implementation of FlagsBase given in the
      * frontend. The user should check "apple" and "banana" and press OK.
+     * 
+     * TODO: The last clicked item gets painted unselected on the windows
+     * frontend as soon as the user clicks outside the widget. To the
+     * toolkit, however, this widget still appears selected. Should 
+     * probably file a bug with mono for this.
      */
     
     public partial class Harness
@@ -53,6 +60,9 @@ namespace Selene.Testing
             #pragma warning disable 0649
             
             public Fruit Choose;
+            
+            [Control(Override = ControlType.MultiSelect)]
+            public Fruit Choose2;
         }
 
         [Test]
@@ -60,11 +70,11 @@ namespace Selene.Testing
         {
             var Test = new NotebookDialog<FlagsTest>("Which is good?");
             FlagsTest Result = new FlagsTest();
+            
             Test.Run(Result);
 
-            Assert.AreEqual(Result.Choose | Fruit.Apple, Result.Choose);
-            Assert.AreNotEqual(Result.Choose | Fruit.Orange, Result.Choose);
-            Assert.AreEqual(Result.Choose | Fruit.Banana, Result.Choose);
+            Assert.AreEqual(Result.Choose, Fruit.Apple | Fruit.Banana);
+            Assert.AreEqual(Result.Choose2, Fruit.Apple | Fruit.Banana);
         }
     }
 }
