@@ -65,8 +65,34 @@ namespace Selene.Gtk.Midend
             AddButton(Buttons, AllowsRemove, Stock.Remove, HandleRemoveClicked);
             AddButton(Buttons, AllowsEdit, Stock.Edit, HandleEditClicked);
             Separator.PackStart(Buttons, false, false, 0);
-
+            
+            View.KeyReleaseEvent += HandleViewKeyReleaseEvent;
+            View.KeyPressEvent += HandleViewKeyPressEvent;
+            
             return Separator;
+        }
+
+        // HACK: We connect to this event solely to disable the error bell when the 
+        // delete key is pressed. When it is released, the bell is enabled again.
+        // The Glib.ConnectBefore attribute makes sure we're the first to receive it.
+        [GLib.ConnectBefore]
+        void HandleViewKeyPressEvent (object o, KeyPressEventArgs args)
+        {
+            if(args.Event.State == Gdk.ModifierType.None && AllowsRemove && args.Event.Key == Gdk.Key.Delete)
+                View.Settings.SetLongProperty("gtk-error-bell", 0, null);
+        }
+
+        void HandleViewKeyReleaseEvent (object o, KeyReleaseEventArgs args)
+        {
+            if(args.Event.State == Gdk.ModifierType.None && AllowsRemove && args.Event.Key == Gdk.Key.Delete)
+            {
+                HandleRemoveClicked(o, args);
+                View.Settings.SetLongProperty("gtk-error-bell", 1, null); // Enable the bell again
+                
+                // We should be the last to process this event.
+                args.RetVal = true; 
+            }
+            else args.RetVal = false;
         }
 
         void AddButton(VBox To, bool DependsOn, string Stock, EventHandler Click)
