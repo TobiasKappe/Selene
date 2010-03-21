@@ -81,15 +81,15 @@ namespace Selene.Testing
 
             Saver.Run(Test);
 
-            Assert.AreEqual(Test.Wuppertahl.ToLower(), "wuppertahl");
-            Assert.AreEqual(Test.Answer, 42);
-            Assert.AreEqual(Test.Newyear.DayOfYear, 1);
+            Assert.AreEqual("wuppertahl", Test.Wuppertahl.ToLower());
+            Assert.AreEqual(42, Test.Answer);
+            Assert.AreEqual(1, Test.Newyear.DayOfYear);
             Assert.IsTrue(Test.Check);
 
-            Assert.AreEqual(Test.Hosts, "/etc/hosts");
-            Assert.AreEqual(Test.Back, Direction.Back);
-            Assert.AreEqual(Test.Black, new ushort[] { 0, 0, 0 });
-            Assert.AreEqual(Test.Fr, Fruit.Apple | Fruit.Orange);
+            Assert.AreEqual("/etc/hosts", Test.Hosts);
+            Assert.AreEqual(Direction.Back, Test.Back);
+            Assert.AreEqual(new ushort[] { 0, 0, 0 }, Test.Black);
+            Assert.AreEqual(Fruit.Apple | Fruit.Orange, Test.Fr);
         }
     }
 }

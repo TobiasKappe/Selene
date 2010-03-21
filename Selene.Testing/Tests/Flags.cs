@@ -73,8 +73,8 @@ namespace Selene.Testing
             
             Test.Run(Result);
 
-            Assert.AreEqual(Result.Choose, Fruit.Apple | Fruit.Banana);
-            Assert.AreEqual(Result.Choose2, Fruit.Apple | Fruit.Banana);
+            Assert.AreEqual(Fruit.Apple | Fruit.Banana, Result.Choose);
+            Assert.AreEqual(Fruit.Apple | Fruit.Banana, Result.Choose2);
         }
     }
 }

@@ -96,7 +96,7 @@ namespace Selene.Testing
             Dialog.SubscribeAllChange<Change>(HandleChange);
             Dialog.Run(new Change());
 
-            Assert.GreaterOrEqual(TimesChanged, 10);
+            Assert.AreEqual(10, TimesChanged);
         }
 
         void HandleChange(object Sender, EventArgs Args)

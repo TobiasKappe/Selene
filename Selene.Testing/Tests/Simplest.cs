@@ -65,8 +65,8 @@ namespace Selene.Testing
             var Present = new NotebookDialog<Test>("Doe, Female, Yes");
             var SaveTo = new Test();
             Assert.IsTrue(Present.Run(SaveTo));
-            Assert.AreEqual(SaveTo.Surname, "Doe");
-            Assert.AreEqual(SaveTo.Gender, Sex.Female);
+            Assert.AreEqual("Doe", SaveTo.Surname);
+            Assert.AreEqual(Sex.Female, SaveTo.Gender);
             Assert.IsTrue(SaveTo.Newsletter);
         }
     }

@@ -96,7 +96,7 @@ namespace Selene.Testing
             var Disp = new NotebookDialog<Container>("Add one person");
             var Test = new Container();
             Assert.IsTrue(Disp.Run(Test));
-            Assert.AreEqual(Test.People.Length, 2);
+            Assert.AreEqual(2, Test.People.Length);
 
             var Disp2 = new NotebookDialog<EditListGrey>("Add/Remove grey");
             var Test2 = new EditListGrey();
