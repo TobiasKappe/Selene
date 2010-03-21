@@ -107,8 +107,20 @@ namespace Selene.Winforms.Midend
             Panel.Controls.Add(ButtonsPanel, 1, 0);
             
             Saving += HandleSaving;
+            
+            if(AllowsRemove)
+                Grid.KeyUp += HandleGridKeyUp;
 
             return Panel;
+        }
+
+        void HandleGridKeyUp (object sender, KeyEventArgs e)
+        {
+            if(Grid.Focused && e.Modifiers == Keys.None && e.KeyCode == Keys.Delete)
+            {
+                RemoveClicked(sender, e);
+                e.Handled = true;
+            }
         }
 
         void HandleGridCellEndEdit (object sender, DataGridViewCellEventArgs e)
