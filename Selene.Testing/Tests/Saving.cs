@@ -79,7 +79,7 @@ namespace Selene.Testing
 
             var Test = new MultiTest();
 
-            Saver.Run(Test);
+            Assert.IsTrue(Saver.Run(Test));
 
             Assert.AreEqual("wuppertahl", Test.Wuppertahl.ToLower());
             Assert.AreEqual(42, Test.Answer);

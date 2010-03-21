@@ -70,8 +70,7 @@ namespace Selene.Testing
             var Dialog = new NotebookDialog<PropertyTest>("Check both");
             var Test = new PropertyTest();
 
-            Dialog.Run(Test);
-
+            Assert.IsTrue(Dialog.Run(Test));
             Assert.IsTrue(Test.FieldChecker);
             Assert.IsTrue(Test.CheckMe);
             Assert.IsFalse(Test.Asd);

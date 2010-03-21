@@ -108,12 +108,7 @@ namespace Selene.Testing
         {
             var Disp = new WizardDialog<ValidTest>("Selene");
             var Test = new ValidTest();
-            Disp.Finished += delegate {
-                Console.WriteLine(Test.AgreesLicense);
-                Console.WriteLine(Test.Filename);
-                Console.WriteLine(Test.Surname);
-                Console.WriteLine(Test.PhoneNumber);
-            };
+            
             Disp.Validator = new Validator();
             Disp.Run(Test);
             Disp.Block();

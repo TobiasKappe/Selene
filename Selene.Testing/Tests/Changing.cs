@@ -94,8 +94,8 @@ namespace Selene.Testing
         {
             Dialog = new NotebookDialog<Change>("Selene");
             Dialog.SubscribeAllChange<Change>(HandleChange);
-            Dialog.Run(new Change());
-
+            
+            Assert.IsTrue(Dialog.Run(new Change()));
             Assert.AreEqual(10, TimesChanged);
         }
 

@@ -93,8 +93,6 @@ namespace Selene.Testing
             NotebookDialog<NumberTest> Test = new NotebookDialog<NumberTest>("Correct entries?");
             var Store = new NumberTest();
             Assert.IsTrue(Test.Run(Store));
-            Console.WriteLine(Store.Answer);
-            Console.WriteLine(Store.Bound);
         }
     }
 }

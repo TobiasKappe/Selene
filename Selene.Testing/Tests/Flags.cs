@@ -71,8 +71,7 @@ namespace Selene.Testing
             var Test = new NotebookDialog<FlagsTest>("Which is good?");
             FlagsTest Result = new FlagsTest();
             
-            Test.Run(Result);
-
+            Assert.IsTrue(Test.Run(Result));
             Assert.AreEqual(Fruit.Apple | Fruit.Banana, Result.Choose);
             Assert.AreEqual(Fruit.Apple | Fruit.Banana, Result.Choose2);
         }
