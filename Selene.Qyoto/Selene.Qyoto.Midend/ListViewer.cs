@@ -34,12 +34,30 @@ using Qyoto;
 
 namespace Selene.Qyoto.Midend
 {
+    // Proxy class to gain access to the KeyReleaseEvent 
+    // needed for binding to the delete key
+    class QTableWidgetProxy : QTableWidget
+    {
+        public SlotFunc DeleteKey;
+        
+        public QTableWidgetProxy (int rows, int columns) : base(rows, columns)
+        {
+        }
+        
+        protected override void KeyReleaseEvent (QKeyEvent ev)
+        {
+            if(ev.Matches(QKeySequence.StandardKey.Delete) && DeleteKey != null)
+                DeleteKey();
+            else base.KeyPressEvent (ev);
+        }
+    }
+    
     public class ListViewer : ListViewerBase<QObject>
     {
         static readonly int TypeString = 10;
         static readonly int TypeBool = 11;
 
-        QTableWidget Table;
+        QTableWidgetProxy Table;
         int Column = 0;
         Type[] Types;
         int Changes = 0;
@@ -61,7 +79,7 @@ namespace Selene.Qyoto.Midend
             QHBoxLayout MainLay = new QHBoxLayout();
             QVBoxLayout Buttons = new QVBoxLayout();
 
-            Table = new QTableWidget(0, Types.Length-1);
+            Table = new QTableWidgetProxy(0, Types.Length-1);
             Table.VerticalHeader().Hide();
 
             Table.HorizontalHeader().SetResizeMode(QHeaderView.ResizeMode.Stretch);
@@ -77,9 +95,12 @@ namespace Selene.Qyoto.Midend
 
             MainLay.AddWidget(Table);
             MainLay.AddLayout(Buttons);
-
+            
             Table.HorizontalHeader().HighlightSections = false;
-
+            
+            if(AllowsRemove)
+                Table.DeleteKey += HandleRemove;
+            
             return MainLay;
         }
 
