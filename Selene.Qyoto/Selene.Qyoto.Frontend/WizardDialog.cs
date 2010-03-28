@@ -34,6 +34,11 @@ namespace Selene.Qyoto.Frontend
 {
     public class WizardDialog<T> : NonModalPresenterBase<QObject>, IValidatable<T>, IDisposable where T : class, ICloneable
     {
+        static WizardDialog()
+        {
+            CacheConverters();
+        }
+        
         // This is actually surprisingly elegant
         class QValidatablePage : QWizardPage
         {

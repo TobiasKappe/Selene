@@ -34,6 +34,11 @@ namespace Selene.Qyoto.Frontend
 {
     public abstract class QModalDialog<T> : ModalPresenterBase<QObject>, IEmbeddable<QObject, T>, IDisposable where T : class
     {
+        static QModalDialog()
+        {
+            CacheConverters();
+        }
+        
         protected QDialog Dialog;
         protected QHBoxLayout InnerLayout;
         protected bool mIsEmbedded = false;
