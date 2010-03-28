@@ -33,11 +33,6 @@ namespace Selene.Backend
 {
     public abstract class NonModalPresenterBase<WidgetType> : DisplayBase<WidgetType>, INonModalPresenter
     {
-        static NonModalPresenterBase()
-        {
-            CacheConverters(Assembly.GetCallingAssembly());
-        }
-
         public event Done Finished;
         protected bool? Done = null;
 

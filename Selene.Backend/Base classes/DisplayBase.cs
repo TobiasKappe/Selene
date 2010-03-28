@@ -40,9 +40,12 @@ namespace Selene.Backend
         protected Type LastType;
         protected object Present;
 
-        internal static void CacheConverters(Assembly Calling)
+        protected internal static void CacheConverters()
         {
-            Factory = Introspector.GetConverters<WidgetType>(Calling);
+            // Static constructors are called again for different generic parameters.
+            // Therefore, make sure we only cache the converters once!
+            if(Factory == null)
+                Factory = Introspector.GetConverters<WidgetType>(Assembly.GetCallingAssembly());
         }
 
         public static void StubManifest<T>(string Filename)

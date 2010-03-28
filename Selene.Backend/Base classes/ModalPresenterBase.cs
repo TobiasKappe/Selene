@@ -33,11 +33,6 @@ namespace Selene.Backend
 {
     public abstract class ModalPresenterBase<WidgetType> : DisplayBase<WidgetType>, IModalPresenter
     {
-        static ModalPresenterBase()
-        {
-            CacheConverters(Assembly.GetCallingAssembly());
-        }
-
         public bool Run<T>(T Present)
         {
             return Run(typeof(T), Present);
