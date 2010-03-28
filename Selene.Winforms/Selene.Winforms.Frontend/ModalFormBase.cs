@@ -39,6 +39,11 @@ namespace Selene.Winforms.Frontend
 {
     public abstract class ModalFormBase<T> : ModalPresenterBase<Forms.Control>, IDisposable, IEmbeddable<Forms.Control, T>
     {
+        static ModalFormBase()
+        {
+            CacheConverters();
+        }
+        
         protected Form Win;
         protected ControlVBox MainBox;
         protected ControlHBox ButtonBox;

@@ -42,6 +42,11 @@ namespace Selene.Winforms.Frontend
 
     public class WizardDialog<T> : NonModalPresenterBase<Forms.Control>, IValidatable<T>, IDisposable where T : class, ICloneable
     {
+        static WizardDialog()
+        {
+            CacheConverters();
+        }
+        
         // Localisation?
         static readonly string NextText = "Next >";
         static readonly string PrevText = "< Previous";
