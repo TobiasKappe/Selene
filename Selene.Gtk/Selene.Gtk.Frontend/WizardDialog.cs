@@ -34,6 +34,11 @@ namespace Selene.Gtk.Frontend
 {
     public class WizardDialog<T> : NonModalPresenterBase<Widget>, IValidatable<T>, IDisposable where T : class, ICloneable
     {
+        static WizardDialog()
+        {
+            CacheConverters();
+        }
+        
         public Assistant Win;
         IValidator<T> mValidator;
 

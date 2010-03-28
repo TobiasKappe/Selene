@@ -34,6 +34,11 @@ namespace Selene.Gtk.Frontend
 {
     public class NotebookDialog<T> : ModalPresenterBase<Widget>, IEmbeddable<Widget, T>, IDisposable where T : class
     {
+        static NotebookDialog()
+        {
+            CacheConverters();
+        }
+        
         protected Notebook Book;
         protected Dialog Win;
         protected bool mIsEmbedded = false;
