@@ -174,14 +174,14 @@ namespace Selene.Gtk.Midend
             if(Type == typeof(bool))
             {
                 Renderer = new CellRendererToggle();
-                (Renderer as CellRendererToggle).Activatable = true;
+                (Renderer as CellRendererToggle).Activatable = AllowsEdit;
                 (Renderer as CellRendererToggle).Toggled += CellToggled;
                 View.AppendColumn(Name, Renderer, "active", CurrentColumn++);
             }
             else
             {
                 Renderer = new CellRendererText();
-                (Renderer as CellRendererText).Editable = true;
+                (Renderer as CellRendererText).Editable = AllowsEdit;
                 (Renderer as CellRendererText).Edited += CellEdited;
                 View.AppendColumn(Name, Renderer, "text", CurrentColumn++);
             }
