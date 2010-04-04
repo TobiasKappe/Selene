@@ -83,6 +83,12 @@ namespace Selene.Testing
             [ControlFlags("Person dialog", true, false, false, false)]
             public Enclosed[] People = new Enclosed[] { Individual };
         }
+        
+        class NonEditList
+        {
+            [ControlFlags("Person dialog", false, true, true, false)]
+            public Enclosed[] People = new Enclosed[] { Individual };
+        }
 
         class Enclosed
         {
@@ -105,6 +111,10 @@ namespace Selene.Testing
             var Disp3 = new NotebookDialog<EditListInv>("Invisible add/remove");
             var Test3 = new EditListInv();
             Assert.IsTrue(Disp3.Run(Test3));
+            
+            var Disp4 = new NotebookDialog<NonEditList>("Disabled inline edit");
+            var Test4 = new NonEditList();
+            Assert.IsTrue(Disp4.Run(Test4));
         }
     }
 }
