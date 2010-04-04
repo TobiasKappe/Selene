@@ -97,7 +97,6 @@ namespace Selene.Winforms.Midend
             // Somehow the associated event is not fired
             Grid.AllowUserToDeleteRows = false; 
             
-            Grid.CellEndEdit += HandleGridCellEndEdit;
             Panel.Controls.Add(Grid, 0, 0);
 
             AddButton(ButtonsPanel, AllowsAdd, "Add", 0, AddClicked);
@@ -110,6 +109,9 @@ namespace Selene.Winforms.Midend
             
             if(AllowsRemove)
                 Grid.KeyUp += HandleGridKeyUp;
+            
+            if(!AllowsEdit) Grid.ReadOnly = true;
+            else Grid.CellEndEdit += HandleGridCellEndEdit;
 
             return Panel;
         }
