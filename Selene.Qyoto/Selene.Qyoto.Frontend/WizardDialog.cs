@@ -111,7 +111,6 @@ namespace Selene.Qyoto.Frontend
 
         void Rejected()
         {
-            Console.WriteLine("Rejected");
             Success = false;
         }
 
