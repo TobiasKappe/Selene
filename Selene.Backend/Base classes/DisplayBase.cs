@@ -106,7 +106,7 @@ namespace Selene.Backend
                 Converter.Changed += Handler;
         }
 
-        internal void SetFields()
+        public void Update()
         {
             foreach(IConverter<WidgetType> Converter in State)
                 Converter.Value = Converter.Primitive.Obtain(Present);
@@ -125,7 +125,7 @@ namespace Selene.Backend
 
             this.Present = Present;
 
-            if(Present != null) SetFields();
+            if(Present != null) Update();
 
             if(DoShow) Show();
         }
