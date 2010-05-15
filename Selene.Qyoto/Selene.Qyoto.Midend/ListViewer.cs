@@ -176,9 +176,16 @@ namespace Selene.Qyoto.Midend
                 
                 /* Magic: Invert the flag, then binary-and it with the flags already
                  * on the widget. Doing so will leave the original flags intact, while
-                 * setting the ItemIsEditable flag to zero. */
+                 * setting the ItemIsEditable and ItemIsUserCheckable flags to zero. */
+                
                 if(!AllowsEdit)
+                {
                     Item.SetFlags(Item.Flags() & ~ (uint)Qt.ItemFlag.ItemIsEditable);
+                    Item.SetFlags(Item.Flags() & ~ (uint)Qt.ItemFlag.ItemIsUserCheckable);
+                    
+                    // Item.Flags() & ((~(uint)Qt.ItemFlag.ItemIsEditable) & (~(uint)Qt.ItemFlag.ItemIsUserCheckable))
+                    // Will do the same, but the above is more readable
+                }
 
                 Table.SetItem(Id, i, Item);
                 Item.SetTextAlignment((int)Qt.AlignmentFlag.AlignCenter);
