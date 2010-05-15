@@ -31,12 +31,13 @@ using Forms = System.Windows.Forms;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using Selene.Backend;
+using Selene.Winforms.Ordering;
 
 namespace Selene.Winforms.Midend
 {
     public class FlagsChooser : FlagsBase<Forms.Control>
     {
-        TableLayoutPanel Boxes;
+        ControlBox Boxes;
         ListView List;
         
         bool Vertical = false;
@@ -79,8 +80,7 @@ namespace Selene.Winforms.Midend
             {
                 Original.GetFlag<bool>(ref Vertical);
     
-                Boxes = new TableLayoutPanel();
-                Boxes.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+                Boxes = Vertical ? (ControlBox) new ControlVBox() : (ControlBox) new ControlHBox();
     
                 return Boxes;
             }
@@ -107,9 +107,7 @@ namespace Selene.Winforms.Midend
                 Add.Text = Value;
                 Add.CheckedChanged += HandleChange;
                 Add.AutoSize = true;
-    
-                if(Vertical) Boxes.Controls.Add(Add, 0, Pos++);
-                else Boxes.Controls.Add(Add, Pos++, 0);
+                Boxes.Controls.Add(Add);
             }
             else if(Original.SubType == ControlType.MultiSelect)
                 List.Items.Add(Value);
