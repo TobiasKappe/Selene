@@ -93,6 +93,8 @@ namespace Selene.Winforms.Midend
                 Show.CheckFileExists = true;
                 Show.CheckPathExists = true;
                 Show.FileName = File;
+                Show.Title = Original.GetFlag<string>();
+                
                 if(Show.ShowDialog() == DialogResult.OK)
                 {
                     ActualValue = Show.FileName;
