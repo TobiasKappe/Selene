@@ -58,7 +58,7 @@ namespace Selene.Testing
 
             [Control(Name = "Home directory", Override = ControlType.DirectorySelect)]
             public string HomeDir = "/home/"+System.Environment.UserName;
-            [Control(Name = "Favourite file", Override = ControlType.FileSelect)]
+            [Control(Name = "Favourite file", Override = ControlType.FileSelect), ControlFlags("Dialog title")]
             public string Favfile;
             public string Hostname = System.Environment.UserDomainName;
         }
@@ -66,7 +66,7 @@ namespace Selene.Testing
         [Test]
         public void Labeling()
         {
-            var Present = new NotebookDialog<LabelingTest>("OK if values match");
+            var Present = new NotebookDialog<LabelingTest>("OK if values match and dialog title given");
             LabelingTest Save = new LabelingTest();
             Assert.IsTrue(Present.Run(Save));
         }
