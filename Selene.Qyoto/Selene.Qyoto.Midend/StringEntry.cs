@@ -105,6 +105,8 @@ namespace Selene.Qyoto.Midend
                 Dialog.fileMode = QFileDialog.FileMode.DirectoryOnly;
             else if(Orig.SubType == ControlType.FileSelect)
                 Dialog.fileMode = QFileDialog.FileMode.ExistingFile;
+            
+            Dialog.SetWindowTitle(Original.GetFlag<string>());
 
             if(Dialog.Exec() != 0)
             {
